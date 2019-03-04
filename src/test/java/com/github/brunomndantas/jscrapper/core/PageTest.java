@@ -1,7 +1,7 @@
 package com.github.brunomndantas.jscrapper.core;
 
 import com.github.brunomndantas.jscrapper.core.driverSupplier.IDriverSupplier;
-import com.github.brunomndantas.jscrapper.core.pageLoader.IPageLoader;
+import com.github.brunomndantas.jscrapper.core.driverLoader.IDriverLoader;
 import org.junit.Test;
 
 import java.util.Collection;
@@ -26,10 +26,10 @@ public class PageTest {
     }
 
     @Test
-    public void getPageLoaderTest() {
-        IPageLoader pageLoader = driver -> { };
-        Page page = new Page(null, null, pageLoader, null, null);
-        assertSame(pageLoader, page.getPageLoader());
+    public void getDriverLoaderTest() {
+        IDriverLoader driverLoader = driver -> { };
+        Page page = new Page(null, null, driverLoader, null, null);
+        assertSame(driverLoader, page.getDriverLoader());
     }
 
     @Test
@@ -50,15 +50,15 @@ public class PageTest {
     public void constructorTest() {
         String id = "";
         String url = "";
-        IPageLoader pageLoader = driver -> { };
+        IDriverLoader driverLoader = driver -> { };
         IDriverSupplier driverSupplier = () -> null;
         Collection<Element> elements = new LinkedList<>();
 
-        Page page = new Page(id, url, pageLoader, driverSupplier, elements);
+        Page page = new Page(id, url, driverLoader, driverSupplier, elements);
 
         assertSame(id, page.getId());
         assertSame(url, page.getUrl());
-        assertSame(pageLoader, page.getPageLoader());
+        assertSame(driverLoader, page.getDriverLoader());
         assertSame(driverSupplier, page.getDriverSupplier());
         assertSame(elements, page.getElements());
     }

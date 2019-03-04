@@ -1,24 +1,24 @@
-package com.github.brunomndantas.jscrapper.core.pageLoader;
+package com.github.brunomndantas.jscrapper.core.driverLoader;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertSame;
 
-public class PageLoaderExceptionTest {
+public class DriverLoaderExceptionTest {
 
     @Test
     public void testConstructors() {
         String msg = "";
         Exception cause = new Exception();
-        PageLoaderException exception;
+        DriverLoaderException exception;
 
-        exception = new PageLoaderException(msg);
+        exception = new DriverLoaderException(msg);
         assertSame(msg, exception.getMessage());
 
-        exception = new PageLoaderException(cause);
+        exception = new DriverLoaderException(cause);
         assertSame(cause, exception.getCause());
 
-        exception = new PageLoaderException(msg, cause);
+        exception = new DriverLoaderException(msg, cause);
         assertSame(msg, exception.getMessage());
         assertSame(cause, exception.getCause());
     }

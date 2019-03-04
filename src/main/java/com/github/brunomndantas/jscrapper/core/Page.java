@@ -1,7 +1,7 @@
 package com.github.brunomndantas.jscrapper.core;
 
+import com.github.brunomndantas.jscrapper.core.driverLoader.IDriverLoader;
 import com.github.brunomndantas.jscrapper.core.driverSupplier.IDriverSupplier;
-import com.github.brunomndantas.jscrapper.core.pageLoader.IPageLoader;
 
 import java.util.Collection;
 
@@ -13,8 +13,8 @@ public class Page {
     private String url;
     public String getUrl() { return this.url; }
 
-    private IPageLoader pageLoader;
-    public IPageLoader getPageLoader() { return this.pageLoader; }
+    private IDriverLoader driverLoader;
+    public IDriverLoader getDriverLoader() { return this.driverLoader; }
 
     private IDriverSupplier driverSupplier;
     public IDriverSupplier getDriverSupplier() { return this.driverSupplier; }
@@ -24,10 +24,10 @@ public class Page {
 
 
 
-    public Page(String id, String url, IPageLoader pageLoader, IDriverSupplier driverSupplier, Collection<Element> elements) {
+    public Page(String id, String url, IDriverLoader driverLoader, IDriverSupplier driverSupplier, Collection<Element> elements) {
         this.id = id;
         this.url = url;
-        this.pageLoader = pageLoader;
+        this.driverLoader = driverLoader;
         this.driverSupplier = driverSupplier;
         this.elements = elements;
     }
