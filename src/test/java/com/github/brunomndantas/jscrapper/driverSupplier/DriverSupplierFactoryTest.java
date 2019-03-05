@@ -7,12 +7,15 @@ import com.github.brunomndantas.jscrapper.driverSupplier.annotation.DriverSuppli
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class DriverSupplierFactoryTest {
 
     public static class SupplierWithoutEmptyConstructor implements IDriverSupplier {
+
+        public SupplierWithoutEmptyConstructor(String str) { }
+
+
 
         @Override
         public WebDriver get() throws DriverSupplierException {
@@ -60,6 +63,7 @@ public class DriverSupplierFactoryTest {
 
         try {
             DriverSupplierFactory.create(klass);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("found"));
         }
@@ -71,6 +75,7 @@ public class DriverSupplierFactoryTest {
 
         try {
             DriverSupplierFactory.create(klass);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("empty constructor"));
         }

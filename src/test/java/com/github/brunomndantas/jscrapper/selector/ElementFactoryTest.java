@@ -11,12 +11,15 @@ import org.openqa.selenium.WebElement;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ElementFactoryTest {
 
     public static class SelectorWithoutEmptyConstructor implements ISelector {
+
+        public SelectorWithoutEmptyConstructor(String str) { }
+
+
 
         @Override
         public Collection<WebElement> select(WebDriver driver) throws SelectorException { return null; }
@@ -73,6 +76,7 @@ public class ElementFactoryTest {
 
         try {
             SelectorFactory.create(klass, field);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("found"));
         }

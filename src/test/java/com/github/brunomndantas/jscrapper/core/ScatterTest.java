@@ -28,6 +28,7 @@ import java.util.LinkedList;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ScatterTest {
 
@@ -142,6 +143,7 @@ public class ScatterTest {
 
         try {
             scrapper.scrap(Object.class);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
         }
@@ -159,6 +161,7 @@ public class ScatterTest {
 
         try {
             scrapper.scrap(Object.class);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
         }
@@ -177,6 +180,7 @@ public class ScatterTest {
 
         try {
             scrapper.scrap(Object.class);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
         }
@@ -195,6 +199,7 @@ public class ScatterTest {
 
         try {
             scrapper.scrap(Object.class);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
         }
@@ -215,6 +220,7 @@ public class ScatterTest {
 
         try {
             scrapper.scrap(Object.class);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
         }
@@ -235,6 +241,7 @@ public class ScatterTest {
 
         try {
             scrapper.scrap(Object.class);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
         }
@@ -255,6 +262,7 @@ public class ScatterTest {
 
         try {
             scrapper.scrap(Object.class);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
         }
@@ -275,6 +283,7 @@ public class ScatterTest {
 
         try {
             scrapper.scrap(Object.class);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
         }
@@ -298,6 +307,7 @@ public class ScatterTest {
 
         try {
             scrapper.scrap(Object.class);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
         }

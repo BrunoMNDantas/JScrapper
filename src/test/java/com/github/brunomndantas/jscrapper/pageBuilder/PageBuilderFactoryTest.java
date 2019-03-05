@@ -7,12 +7,15 @@ import com.github.brunomndantas.jscrapper.core.pageBuilder.PageBuilderException;
 import com.github.brunomndantas.jscrapper.pageBuilder.annotation.PageBuilder;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class PageBuilderFactoryTest {
 
     public static class BuilderWithoutEmptyConstructor implements IPageBuilder {
+
+        public BuilderWithoutEmptyConstructor(String str) { }
+
+
 
         @Override
         public Page build(Object instance) throws PageBuilderException { return null; }
@@ -56,6 +59,7 @@ public class PageBuilderFactoryTest {
 
         try {
             PageBuilderFactory.create(klass);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("found"));
         }
@@ -67,6 +71,7 @@ public class PageBuilderFactoryTest {
 
         try {
             PageBuilderFactory.create(klass);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("empty constructor"));
         }

@@ -9,12 +9,15 @@ import org.openqa.selenium.WebDriver;
 
 import java.lang.reflect.Field;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class DriverLoaderFactoryTest {
 
     public static class LoaderWithoutEmptyConstructor implements IDriverLoader {
+
+        public LoaderWithoutEmptyConstructor(String str) { }
+
+
 
         @Override
         public void load(WebDriver driver) throws DriverLoaderException { }
@@ -96,6 +99,7 @@ public class DriverLoaderFactoryTest {
 
         try {
             DriverLoaderFactory.create(klass);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("found"));
         }
@@ -108,6 +112,7 @@ public class DriverLoaderFactoryTest {
 
         try {
             DriverLoaderFactory.create(klass, field);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("found"));
         }
@@ -119,6 +124,7 @@ public class DriverLoaderFactoryTest {
 
         try {
             DriverLoaderFactory.create(klass);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("empty constructor"));
         }
@@ -128,8 +134,10 @@ public class DriverLoaderFactoryTest {
     public void createEntityWithNoEmptyConstructorDriverLoaderAnnotationOnFieldTest() throws Exception {
         Class<?> klass = EntityWithNoEmptyConstructorDriverLoaderAnnotationOnField.class;
         Field field = klass.getDeclaredField("f");
+
         try {
             DriverLoaderFactory.create(klass, field);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("empty constructor"));
         }

@@ -6,12 +6,15 @@ import com.github.brunomndantas.jscrapper.core.instanceFactory.InstanceFactoryEx
 import com.github.brunomndantas.jscrapper.instanceFactory.annotation.InstanceFactory;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class InstanceFactoryFactoryTest {
 
     public static class FactoryWithoutEmptyConstructor implements IInstanceFactory {
+
+        public FactoryWithoutEmptyConstructor(String str) { }
+
+
 
         @Override
         public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
@@ -55,6 +58,7 @@ public class InstanceFactoryFactoryTest {
 
         try {
             InstanceFactoryFactory.create(klass);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("found"));
         }
@@ -66,6 +70,7 @@ public class InstanceFactoryFactoryTest {
 
         try {
             InstanceFactoryFactory.create(klass);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("empty constructor"));
         }

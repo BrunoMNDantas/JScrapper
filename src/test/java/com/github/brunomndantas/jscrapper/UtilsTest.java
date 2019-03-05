@@ -76,6 +76,7 @@ public class UtilsTest {
     public void createWithNoEmptyConstructorTest() {
         try {
             Utils.createInstance(NoEmptyConstructor.class);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("has no empty constructor"));
         }
@@ -105,6 +106,7 @@ public class UtilsTest {
     public void wrapsExceptionTest() {
         try {
             Utils.createInstance(ExceptionConstructor.class);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getCause() instanceof InvocationTargetException);
             assertSame(ExceptionConstructor.exception, e.getCause().getCause());

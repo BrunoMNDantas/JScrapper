@@ -11,12 +11,15 @@ import org.openqa.selenium.WebElement;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ParserFactoryTest {
 
     public static class ParserWithoutEmptyConstructor implements IParser {
+
+        public ParserWithoutEmptyConstructor(String str) { }
+
+
 
         @Override
         public Object parse(WebDriver driver, Collection<WebElement> elements) throws ParserException { return null; }
@@ -75,6 +78,7 @@ public class ParserFactoryTest {
 
         try {
             ParserFactory.create(klass, field);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("found"));
         }
@@ -87,6 +91,7 @@ public class ParserFactoryTest {
 
         try {
             ParserFactory.create(klass, field);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("empty constructor"));
         }
