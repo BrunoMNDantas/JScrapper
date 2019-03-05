@@ -8,12 +8,15 @@ import org.junit.Test;
 
 import java.lang.reflect.Field;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class PropertyFactoryTest {
 
     public static class PropertyWithoutEmptyConstructor implements IProperty {
+
+        public PropertyWithoutEmptyConstructor(String str) { }
+
+
 
         @Override
         public Object get(Object instance) throws PropertyException { return null; }
@@ -46,16 +49,38 @@ public class PropertyFactoryTest {
 
     }
 
-    public static class EntityWithoutPropertyAnnotation {
-
-        public String f;
-
-    }
-
     public static class EntityWithNoEmptyConstructorPropertyAnnotation {
 
         @Property(PropertyWithoutEmptyConstructor.class)
         public String f;
+
+    }
+
+    public static class PersonFieldGetFieldSet {
+
+        private String name;
+
+    }
+
+    public static class PersonFieldGetMethodSet {
+
+        private String name;
+        private void setName(String name) { this.name = name; }
+
+    }
+
+    public static class PersonMethodGetFieldSet {
+
+        private String name;
+        private String getName() { return this.name; }
+
+    }
+
+    public static class PersonMethodGetMethodSet {
+
+        private String name;
+        private String getName() { return this.name; }
+        private void setName(String name) { this.name = name; }
 
     }
 
@@ -72,27 +97,48 @@ public class PropertyFactoryTest {
     }
 
     @Test
-    public void createEntityWithoutPropertyAnnotationTest() throws Exception {
-        Class<?> klass = EntityWithoutPropertyAnnotation.class;
-        Field field = klass.getDeclaredField("f");
-
-        try {
-            PropertyFactory.create(klass, field);
-        } catch (ScrapperException e) {
-            assertTrue(e.getMessage().contains("found"));
-        }
-    }
-
-    @Test
     public void createEntityWithNoEmptyConstructorPropertyAnnotationTest() throws Exception {
         Class<?> klass = EntityWithNoEmptyConstructorPropertyAnnotation.class;
         Field field = klass.getDeclaredField("f");
 
         try {
             PropertyFactory.create(klass, field);
+            fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("empty constructor"));
         }
+    }
+
+    @Test
+    public void createPropertyTest() throws Exception {
+        Field field;
+        IProperty property;
+
+        field = PersonFieldGetFieldSet.class.getDeclaredField("name");
+        property = PropertyFactory.create(PersonFieldGetFieldSet.class, field);
+        assertTrue(property instanceof FieldProperty);
+        assertSame(field, ((FieldProperty)property).getField());
+
+        field = PersonFieldGetMethodSet.class.getDeclaredField("name");
+        property = PropertyFactory.create(PersonFieldGetMethodSet.class, field);
+        assertTrue(property instanceof ComposedProperty);
+        assertTrue(((ComposedProperty)property).getGetter() instanceof  FieldProperty);
+        assertSame(field, ((FieldProperty)((ComposedProperty)property).getGetter()).getField());
+        assertTrue(((ComposedProperty)property).getSetter() instanceof MethodProperty);
+        assertSame(field, ((MethodProperty)((ComposedProperty)property).getSetter()).getField());
+
+        field = PersonMethodGetFieldSet.class.getDeclaredField("name");
+        property = PropertyFactory.create(PersonMethodGetFieldSet.class, field);
+        assertTrue(property instanceof ComposedProperty);
+        assertTrue(((ComposedProperty)property).getGetter() instanceof  MethodProperty);
+        assertSame(field, ((MethodProperty)((ComposedProperty)property).getGetter()).getField());
+        assertTrue(((ComposedProperty)property).getSetter() instanceof  FieldProperty);
+        assertSame(field, ((FieldProperty)((ComposedProperty)property).getSetter()).getField());
+
+        field = PersonMethodGetMethodSet.class.getDeclaredField("name");
+        property = PropertyFactory.create(PersonMethodGetMethodSet.class, field);
+        assertTrue(property instanceof MethodProperty);
+        assertSame(field, ((MethodProperty)property).getField());
     }
 
 }
