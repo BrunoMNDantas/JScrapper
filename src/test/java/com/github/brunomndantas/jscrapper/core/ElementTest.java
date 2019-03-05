@@ -50,8 +50,8 @@ public class ElementTest {
     @Test
     public void getPropertyTest() {
         IProperty property = new IProperty() {
-            @Override public Object get() throws PropertyException { return null; }
-            @Override public void set(Object value) throws PropertyException { }
+            @Override public Object get(Object instance) throws PropertyException { return null; }
+            @Override public void set(Object instance, Object value) throws PropertyException { }
         };
         Element element = new Element(null, null, null, null, null, property);
         assertSame(property, element.getProperty());
@@ -66,8 +66,8 @@ public class ElementTest {
         IElementLoader elementLoader = (driver, elements) -> {};
         IParser parser = (driver, elements) -> null;
         IProperty property = new IProperty() {
-            @Override public Object get() throws PropertyException { return null; }
-            @Override public void set(Object value) throws PropertyException { }
+            @Override public Object get(Object instance) throws PropertyException { return null; }
+            @Override public void set(Object instance, Object value) throws PropertyException { }
         };
 
         Element element = new Element(id, driverLoader, selector, elementLoader, parser, property);

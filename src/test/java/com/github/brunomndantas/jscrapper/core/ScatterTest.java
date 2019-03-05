@@ -101,8 +101,8 @@ public class ScatterTest {
             @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
         };
         IProperty property = new IProperty() {
-            @Override public Object get() throws PropertyException { return null; }
-            @Override public void set(Object value) throws PropertyException { }
+            @Override public Object get(Object instance) throws PropertyException { return null; }
+            @Override public void set(Object instance, Object value) throws PropertyException { }
         };
         Page page = new Page("", "www.google.pt", null, ScatterTest::getDriver, new LinkedList<>());
         Element element = new Element("", null, (driver) -> null, (driver, elements) -> {}, (driver, elements) -> null, property);
@@ -119,8 +119,8 @@ public class ScatterTest {
             @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
         };
         IProperty property = new IProperty() {
-            @Override public Object get() throws PropertyException { return null; }
-            @Override public void set(Object value) throws PropertyException { }
+            @Override public Object get(Object instance) throws PropertyException { return null; }
+            @Override public void set(Object instance, Object value) throws PropertyException { }
         };
         Page page = new Page("", "www.google.pt", null, ScatterTest::getDriver, new LinkedList<>());
         Element element = new Element("", (driver) -> {}, (driver) -> null, null, (driver, elements) -> null, property);
@@ -287,8 +287,8 @@ public class ScatterTest {
         };
         PropertyException exception = new PropertyException("");
         IProperty property = new IProperty() {
-            @Override public Object get() throws PropertyException { throw exception; }
-            @Override public void set(Object value) throws PropertyException { throw exception; }
+            @Override public Object get(Object instance) throws PropertyException { throw exception; }
+            @Override public void set(Object instance, Object value) throws PropertyException { throw exception; }
         };
 
         Page page = new Page("", "www.google.pt", null, ScatterTest::getDriver, new LinkedList<>());
@@ -329,8 +329,8 @@ public class ScatterTest {
         IElementLoader elementElementLoader = (d, e) -> { elementElementLoaderPassed[0] = d == driver && e == elements; };
         IParser parser = (d, e) -> { parserPassed[0] = d == driver && e == elements; return value; };
         IProperty property = new IProperty() {
-            @Override public Object get() throws PropertyException { return null; }
-            @Override public void set(Object v) throws PropertyException { propertyPassed[0] = v == value; }
+            @Override public Object get(Object instance) throws PropertyException { return null; }
+            @Override public void set(Object i, Object v) throws PropertyException { propertyPassed[0] = i == result && v == value; }
         };
 
         Page page = new Page("", "www.google.pt", pageDriverLoader, driverSupplier, new LinkedList<>());

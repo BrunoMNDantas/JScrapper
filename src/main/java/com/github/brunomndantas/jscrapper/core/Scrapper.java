@@ -34,7 +34,7 @@ public class Scrapper {
         WebDriver driver = scrapPage(page);
 
         for(Element element : page.getElements())
-            scrapElement(page, driver, element);
+            scrapElement(page, driver, instance, element);
 
         return instance;
     }
@@ -70,7 +70,7 @@ public class Scrapper {
         }
     }
 
-    protected void scrapElement(Page page, WebDriver driver, Element element) throws ScrapperException {
+    protected void scrapElement(Page page, WebDriver driver, Object instance, Element element) throws ScrapperException {
         try {
             if(element.getDriverLoader() != null)
                 element.getDriverLoader().load(driver);
@@ -82,7 +82,7 @@ public class Scrapper {
 
             Object value = element.getParser().parse(driver, elements);
 
-            element.getProperty().set(value);
+            element.getProperty().set(instance, value);
         } catch (Exception e) {
             throw new ScrapperException("Error scrapping Element:" + element.getId() + " if Page:" + page.getId() + "!", e);
         }
