@@ -4,6 +4,8 @@ import com.github.brunomndantas.jscrapper.core.ScrapperException;
 import com.github.brunomndantas.jscrapper.core.selector.ISelector;
 import com.github.brunomndantas.jscrapper.core.selector.SelectorException;
 import com.github.brunomndantas.jscrapper.selector.annotation.Selector;
+import com.github.brunomndantas.jscrapper.selector.css.annotation.CSSSelector;
+import com.github.brunomndantas.jscrapper.selector.xpath.annotation.XPathSelector;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,7 +15,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.*;
 
-public class ElementFactoryTest {
+public class SelectorFactoryTest {
 
     public static class SelectorWithoutEmptyConstructor implements ISelector {
 
@@ -57,6 +59,20 @@ public class ElementFactoryTest {
 
     }
 
+    public static class EntityWithCSSSelectorAnnotation {
+
+        @CSSSelector("")
+        public String f;
+
+    }
+
+    public static class EntityWithXPathSelectorAnnotation {
+
+        @XPathSelector("")
+        public String f;
+
+    }
+
 
 
     @Test
@@ -92,6 +108,26 @@ public class ElementFactoryTest {
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("empty constructor"));
         }
+    }
+
+    @Test
+    public void createEntityWithCSSSelectorAnnotation() throws Exception {
+        Class<?> klass = EntityWithCSSSelectorAnnotation.class;
+        Field field = klass.getDeclaredField("f");
+        ISelector selector = SelectorFactory.create(klass, field);
+
+        assertNotNull(selector);
+        assertTrue(selector instanceof com.github.brunomndantas.jscrapper.selector.css.CSSSelector);
+    }
+
+    @Test
+    public void createEntityWithXPathSelectorAnnotation() throws Exception {
+        Class<?> klass = EntityWithXPathSelectorAnnotation.class;
+        Field field = klass.getDeclaredField("f");
+        ISelector selector = SelectorFactory.create(klass, field);
+
+        assertNotNull(selector);
+        assertTrue(selector instanceof com.github.brunomndantas.jscrapper.selector.xpath.XPathSelector);
     }
 
 }
