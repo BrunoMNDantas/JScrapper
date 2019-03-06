@@ -53,15 +53,11 @@ public class InstanceFactoryFactoryTest {
     }
 
     @Test
-    public void createEntityWithoutInstanceFactoryAnnotationTest() {
+    public void createEntityWithoutInstanceFactoryAnnotationTest() throws Exception {
         Class<?> klass = EntityWithoutInstanceFactoryAnnotation.class;
 
-        try {
-            InstanceFactoryFactory.create(klass);
-            fail("Exception should be thrown!");
-        } catch (ScrapperException e) {
-            assertTrue(e.getMessage().contains("found"));
-        }
+        IInstanceFactory factory = InstanceFactoryFactory.create(klass);
+        assertTrue(factory instanceof EmptyConstructorInstanceFactory);
     }
 
     @Test

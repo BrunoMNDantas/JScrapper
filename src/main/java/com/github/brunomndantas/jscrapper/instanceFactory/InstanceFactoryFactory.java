@@ -8,13 +8,26 @@ import com.github.brunomndantas.jscrapper.instanceFactory.annotation.InstanceFac
 public class InstanceFactoryFactory {
 
     public static IInstanceFactory create(Class<?> klass) throws ScrapperException {
-        InstanceFactory annotation = klass.getAnnotation(InstanceFactory.class);
+        IInstanceFactory factory = createUserDefinedFactory(klass);
+
+        if(factory != null)
+            return factory;
+
+        return createDefaultFactory(klass);
+    }
+
+    private static IInstanceFactory createUserDefinedFactory(Class<?> klass) throws ScrapperException {
+        com.github.brunomndantas.jscrapper.instanceFactory.annotation.InstanceFactory annotation = klass.getAnnotation(InstanceFactory.class);
 
         if(annotation == null)
-            throw new ScrapperException("No InstanceFactory found!");
+            return null;
 
         Class<? extends IInstanceFactory> instanceFactoryClass = annotation.value();
         return Utils.createInstance(instanceFactoryClass);
+    }
+
+    private static IInstanceFactory createDefaultFactory(Class<?> klass) {
+        return new EmptyConstructorInstanceFactory();
     }
 
 }
