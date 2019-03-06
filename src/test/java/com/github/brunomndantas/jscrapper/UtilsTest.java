@@ -103,13 +103,36 @@ public class UtilsTest {
     }
 
     @Test
-    public void wrapsExceptionTest() {
+    public void createInstanceWrapsExceptionTest() {
         try {
             Utils.createInstance(ExceptionConstructor.class);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getCause() instanceof InvocationTargetException);
             assertSame(ExceptionConstructor.exception, e.getCause().getCause());
+        }
+    }
+
+    @Test
+    public void getAbsolutePathTest() throws Exception {
+        String relativePath = "./";
+        String path = Utils.getAbsolutePath(relativePath);
+
+        assertNotNull(path);
+        assertFalse(path.isEmpty());
+        assertNotEquals(relativePath, path);
+
+        String absolutePath = System.getProperty("user.dir");
+        path = Utils.getAbsolutePath(absolutePath);
+
+        assertNotNull(path);
+        assertFalse(path.isEmpty());
+        assertEquals(absolutePath, path);
+
+        try {
+            Utils.getAbsolutePath("non_existent_path");
+        } catch (Exception e) {
+            assertTrue(e.getMessage().contains("Path not found"));
         }
     }
 

@@ -4,6 +4,12 @@ import com.github.brunomndantas.jscrapper.core.ScrapperException;
 import com.github.brunomndantas.jscrapper.core.driverSupplier.DriverSupplierException;
 import com.github.brunomndantas.jscrapper.core.driverSupplier.IDriverSupplier;
 import com.github.brunomndantas.jscrapper.driverSupplier.annotation.DriverSupplier;
+import com.github.brunomndantas.jscrapper.driverSupplier.chrome.ChromeDriver;
+import com.github.brunomndantas.jscrapper.driverSupplier.chrome.ChromeDriverSupplier;
+import com.github.brunomndantas.jscrapper.driverSupplier.firefox.FirefoxDriver;
+import com.github.brunomndantas.jscrapper.driverSupplier.firefox.FirefoxDriverSupplier;
+import com.github.brunomndantas.jscrapper.driverSupplier.phantom.PhantomDriver;
+import com.github.brunomndantas.jscrapper.driverSupplier.phantom.PhantomDriverSupplier;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
@@ -46,6 +52,15 @@ public class DriverSupplierFactoryTest {
     @DriverSupplier(SupplierWithoutEmptyConstructor.class)
     public static class EntityWithNoEmptyConstructorDriverSupplierAnnotation { }
 
+    @ChromeDriver(path = "chrome/chromedriver.exe")
+    public static class EntityWithChromeAnnotation { }
+
+    @FirefoxDriver(path = "firefox/geckodriver.exe")
+    public static class EntityWithFirefoxAnnotation { }
+
+    @PhantomDriver(path = "phantomjs/phantomjs.exe")
+    public static class EntityWithPhantomAnnotation { }
+
 
 
     @Test
@@ -79,6 +94,33 @@ public class DriverSupplierFactoryTest {
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("empty constructor"));
         }
+    }
+
+    @Test
+    public void createEntityWithChromeAnnotationTest() throws Exception {
+        Class<?> klass = EntityWithChromeAnnotation.class;
+        IDriverSupplier supplier = DriverSupplierFactory.create(klass);
+
+        assertNotNull(supplier);
+        assertTrue(supplier instanceof ChromeDriverSupplier);
+    }
+
+    @Test
+    public void createEntityWithFirefoxAnnotationTest() throws Exception {
+        Class<?> klass = EntityWithFirefoxAnnotation.class;
+        IDriverSupplier supplier = DriverSupplierFactory.create(klass);
+
+        assertNotNull(supplier);
+        assertTrue(supplier instanceof FirefoxDriverSupplier);
+    }
+
+    @Test
+    public void createEntityWithPhantomAnnotationTest() throws Exception {
+        Class<?> klass = EntityWithPhantomAnnotation.class;
+        IDriverSupplier supplier = DriverSupplierFactory.create(klass);
+
+        assertNotNull(supplier);
+        assertTrue(supplier instanceof PhantomDriverSupplier);
     }
 
 }

@@ -2,7 +2,9 @@ package com.github.brunomndantas.jscrapper;
 
 import com.github.brunomndantas.jscrapper.core.ScrapperException;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
+import java.net.URL;
 
 public class Utils {
 
@@ -27,6 +29,21 @@ public class Utils {
                 return (Constructor<T>) constructor;
 
         return null;
+    }
+
+
+    public static String getAbsolutePath(String path) throws ScrapperException {
+        URL url = ClassLoader.getSystemResource(path);
+
+        if(url != null)
+            return url.getPath();
+
+        File file = new File(path);
+
+        if(!file.exists())
+            throw new ScrapperException("Path not found:" + path + "!");
+
+        return path;
     }
 
 }
