@@ -28,7 +28,7 @@ public class PropertyFactory {
         return Utils.createInstance(propertyClass);
     }
 
-    public static IProperty createDefaultProperty(Class<?> klass, Field field) {
+    private static IProperty createDefaultProperty(Class<?> klass, Field field) {
         boolean hasGetter = MethodProperty.getGetter(klass, field) != null;
         boolean hasSetter = MethodProperty.getSetter(klass, field) != null;
 
