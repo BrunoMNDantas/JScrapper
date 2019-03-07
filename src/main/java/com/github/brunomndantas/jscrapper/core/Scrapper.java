@@ -1,8 +1,6 @@
 package com.github.brunomndantas.jscrapper.core;
 
 import com.github.brunomndantas.jscrapper.core.instanceFactory.InstanceFactoryException;
-import com.github.brunomndantas.jscrapper.core.pageBuilder.IPageBuilder;
-import com.github.brunomndantas.jscrapper.core.pageBuilder.PageBuilderException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -10,9 +8,7 @@ import java.util.Collection;
 
 public class Scrapper {
 
-    public <T> T scrap(Class<T> klass, IPageBuilder pageBuilder) throws ScrapperException {
-        Page page = buildPage(klass, pageBuilder);
-
+    public <T> T scrap(Class<T> klass, Page page) throws ScrapperException {
         T instance = createInstance(klass, page);
 
         WebDriver driver = scrapPage(page);
@@ -21,14 +17,6 @@ public class Scrapper {
             scrapElement(page, driver, instance, element);
 
         return instance;
-    }
-
-    protected Page buildPage(Class<?> klass, IPageBuilder pageBuilder) throws ScrapperException {
-        try {
-            return pageBuilder.build(klass);
-        } catch (PageBuilderException e) {
-            throw new ScrapperException("Error building Page for " +  klass.getName() + "!", e);
-        }
     }
 
     protected <T> T createInstance(Class<T> klass, Page page) throws ScrapperException {

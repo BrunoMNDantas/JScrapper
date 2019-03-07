@@ -8,8 +8,6 @@ import com.github.brunomndantas.jscrapper.core.elementLoader.ElementLoaderExcept
 import com.github.brunomndantas.jscrapper.core.elementLoader.IElementLoader;
 import com.github.brunomndantas.jscrapper.core.instanceFactory.IInstanceFactory;
 import com.github.brunomndantas.jscrapper.core.instanceFactory.InstanceFactoryException;
-import com.github.brunomndantas.jscrapper.core.pageBuilder.IPageBuilder;
-import com.github.brunomndantas.jscrapper.core.pageBuilder.PageBuilderException;
 import com.github.brunomndantas.jscrapper.core.parser.IParser;
 import com.github.brunomndantas.jscrapper.core.parser.ParserException;
 import com.github.brunomndantas.jscrapper.core.property.IProperty;
@@ -55,7 +53,7 @@ public class ScatterTest {
 
         Scrapper scrapper = new Scrapper();
 
-        scrapper.scrap(Object.class, (klass) -> page);
+        scrapper.scrap(Object.class, page);
     }
 
     @Test
@@ -73,7 +71,7 @@ public class ScatterTest {
 
         Scrapper scrapper = new Scrapper();
 
-        scrapper.scrap(Object.class, (klass) -> page);
+        scrapper.scrap(Object.class, page);
     }
 
     @Test
@@ -91,7 +89,7 @@ public class ScatterTest {
 
         Scrapper scrapper = new Scrapper();
 
-        scrapper.scrap(Object.class, (klass) -> page);
+        scrapper.scrap(Object.class, page);
     }
 
     @Test
@@ -105,25 +103,7 @@ public class ScatterTest {
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, (klass) -> page);
-            fail("Exception should be thrown!");
-        } catch (ScrapperException e) {
-            assertSame(exception, e.getCause());
-        }
-    }
-
-    @Test
-    public void wrapPageBuilderExceptionTest() {
-        IInstanceFactory instanceFactory = new IInstanceFactory() {
-            @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return (T) new Object(); }
-        };
-        PageBuilderException exception = new PageBuilderException("");
-        IPageBuilder pageBuilder = (k) -> { throw exception; };
-
-        Scrapper scrapper = new Scrapper();
-
-        try {
-            scrapper.scrap(Object.class, pageBuilder);
+            scrapper.scrap(Object.class, page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -142,7 +122,7 @@ public class ScatterTest {
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, (klass) -> page);
+            scrapper.scrap(Object.class, page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -161,7 +141,7 @@ public class ScatterTest {
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, (klass) -> page);
+            scrapper.scrap(Object.class, page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -182,7 +162,7 @@ public class ScatterTest {
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, (klass) -> page);
+            scrapper.scrap(Object.class, page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -203,7 +183,7 @@ public class ScatterTest {
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, (klass) -> page);
+            scrapper.scrap(Object.class, page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -224,7 +204,7 @@ public class ScatterTest {
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, (klass) -> page);
+            scrapper.scrap(Object.class, page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -245,7 +225,7 @@ public class ScatterTest {
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, (klass) -> page);
+            scrapper.scrap(Object.class, page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -269,7 +249,7 @@ public class ScatterTest {
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, (klass) -> page);
+            scrapper.scrap(Object.class, page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -286,7 +266,6 @@ public class ScatterTest {
         Collection<WebElement> elements = new LinkedList<>();
         Object value = new Object();
 
-        boolean[] pageBuilderPassed = new boolean[1];
         boolean[] driverSupplierPassed = new boolean[1];
         boolean[] pageDriverLoaderPassed = new boolean[1];
         boolean[] elementDriverLoaderPassed = new boolean[1];
@@ -310,12 +289,9 @@ public class ScatterTest {
         Element element = new Element("", elementDriverLoader, selector, elementElementLoader, parser, property);
         page.getElements().add(element);
 
-        IPageBuilder pageBuilder = (k) -> { pageBuilderPassed[0] = k == result.getClass(); return page; };
-
         Scrapper scrapper = new Scrapper();
-        assertSame(result, scrapper.scrap(Object.class, pageBuilder));
+        assertSame(result, scrapper.scrap(Object.class, page));
 
-        assertTrue(pageBuilderPassed[0]);
         assertTrue(driverSupplierPassed[0]);
         assertTrue(pageDriverLoaderPassed[0]);
         assertTrue(elementDriverLoaderPassed[0]);
