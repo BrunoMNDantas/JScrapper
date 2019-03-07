@@ -1,6 +1,5 @@
 package com.github.brunomndantas.jscrapper.core;
 
-import com.github.brunomndantas.jscrapper.core.instanceFactory.IInstanceFactory;
 import com.github.brunomndantas.jscrapper.core.instanceFactory.InstanceFactoryException;
 import com.github.brunomndantas.jscrapper.core.pageBuilder.IPageBuilder;
 import com.github.brunomndantas.jscrapper.core.pageBuilder.PageBuilderException;
@@ -11,25 +10,10 @@ import java.util.Collection;
 
 public class Scrapper {
 
-    private IInstanceFactory instanceFactory;
-    public IInstanceFactory getInstanceFactory() { return this.instanceFactory; }
+    public <T> T scrap(Class<T> klass, IPageBuilder pageBuilder) throws ScrapperException {
+        Page page = buildPage(klass, pageBuilder);
 
-    private IPageBuilder pageBuilder;
-    public IPageBuilder getPageBuilder() { return this.pageBuilder; }
-
-
-
-    public Scrapper(IInstanceFactory instanceFactory, IPageBuilder pageBuilder) {
-        this.instanceFactory = instanceFactory;
-        this.pageBuilder = pageBuilder;
-    }
-
-
-
-    public <T> T scrap(Class<T> klass) throws ScrapperException {
-        T instance = createInstance(klass);
-
-        Page page = buildPage(instance);
+        T instance = createInstance(klass, page);
 
         WebDriver driver = scrapPage(page);
 
@@ -39,19 +23,19 @@ public class Scrapper {
         return instance;
     }
 
-    protected <T> T createInstance(Class<T> klass) throws ScrapperException {
+    protected Page buildPage(Class<?> klass, IPageBuilder pageBuilder) throws ScrapperException {
         try {
-            return this.instanceFactory.create(klass);
-        } catch (InstanceFactoryException e) {
-            throw new ScrapperException("Error creating instance of " + klass.getName() + "!", e);
+            return pageBuilder.build(klass);
+        } catch (PageBuilderException e) {
+            throw new ScrapperException("Error building Page for " +  klass.getName() + "!", e);
         }
     }
 
-    protected Page buildPage(Object instance) throws ScrapperException {
+    protected <T> T createInstance(Class<T> klass, Page page) throws ScrapperException {
         try {
-            return this.pageBuilder.build(instance);
-        } catch (PageBuilderException e) {
-            throw new ScrapperException("Error building Page for " +  instance.getClass().getName() + "!", e);
+            return page.getInstanceFactory().create(klass);
+        } catch (InstanceFactoryException e) {
+            throw new ScrapperException("Error creating instance of " + klass.getName() + "!", e);
         }
     }
 

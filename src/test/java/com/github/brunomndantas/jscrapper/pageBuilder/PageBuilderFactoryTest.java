@@ -18,7 +18,7 @@ public class PageBuilderFactoryTest {
 
 
         @Override
-        public Page build(Object instance) throws PageBuilderException { return null; }
+        public Page build(Class<?> klass) throws PageBuilderException { return null; }
 
     }
 
@@ -29,7 +29,7 @@ public class PageBuilderFactoryTest {
 
 
         @Override
-        public Page build(Object instance) throws PageBuilderException { return null; }
+        public Page build(Class<?> klass) throws PageBuilderException { return null; }
 
     }
 
