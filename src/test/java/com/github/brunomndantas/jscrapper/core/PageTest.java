@@ -16,28 +16,21 @@ public class PageTest {
     @Test
     public void getIdTest() {
         String id = "";
-        Page page = new Page(id, null, null, null, null, null);
+        Page page = new Page(id, null, null, null, null);
         assertSame(id, page.getId());
-    }
-
-    @Test
-    public void getUrlTest() {
-        String url = "";
-        Page page = new Page(null, url, null, null, null, null);
-        assertSame(url, page.getUrl());
     }
 
     @Test
     public void getDriverLoaderTest() {
         IDriverLoader driverLoader = driver -> { };
-        Page page = new Page(null, null, driverLoader, null, null, null);
+        Page page = new Page(null, driverLoader, null, null, null);
         assertSame(driverLoader, page.getDriverLoader());
     }
 
     @Test
     public void getDriverSupplierTest() {
         IDriverSupplier driverSupplier = () -> null;
-        Page page = new Page(null, null, null, driverSupplier, null, null);
+        Page page = new Page(null, null, driverSupplier, null, null);
         assertSame(driverSupplier, page.getDriverSupplier());
     }
 
@@ -46,21 +39,20 @@ public class PageTest {
         IInstanceFactory factory = new IInstanceFactory() {
             @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
         };
-        Page page = new Page(null, null, null, null, factory, null);
+        Page page = new Page(null,  null, null, factory, null);
         assertSame(factory, page.getInstanceFactory());
     }
 
     @Test
     public void getElementsTest() {
         Collection<Element> elements = new LinkedList<>();
-        Page page = new Page(null, null, null, null, null, elements);
+        Page page = new Page(null, null, null, null, elements);
         assertSame(elements, page.getElements());
     }
 
     @Test
     public void constructorTest() {
         String id = "";
-        String url = "";
         IDriverLoader driverLoader = driver -> { };
         IDriverSupplier driverSupplier = () -> null;
         IInstanceFactory instanceFactory = new IInstanceFactory() {
@@ -68,10 +60,9 @@ public class PageTest {
         };
         Collection<Element> elements = new LinkedList<>();
 
-        Page page = new Page(id, url, driverLoader, driverSupplier, instanceFactory, elements);
+        Page page = new Page(id, driverLoader, driverSupplier, instanceFactory, elements);
 
         assertSame(id, page.getId());
-        assertSame(url, page.getUrl());
         assertSame(driverLoader, page.getDriverLoader());
         assertSame(driverSupplier, page.getDriverSupplier());
         assertSame(instanceFactory, page.getInstanceFactory());

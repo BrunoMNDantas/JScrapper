@@ -30,9 +30,7 @@ public class Scrapper {
     protected WebDriver scrapPage(Page page) throws ScrapperException {
         try {
             WebDriver driver = page.getDriverSupplier().get();
-
-            driver.get(page.getUrl());
-
+            
             if(page.getDriverLoader() != null)
                 page.getDriverLoader().load(driver);
 

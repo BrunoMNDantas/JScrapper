@@ -11,9 +11,6 @@ public class Page {
     private String id;
     public String getId() { return this.id; }
 
-    private String url;
-    public String getUrl() { return this.url; }
-
     private IDriverLoader driverLoader;
     public IDriverLoader getDriverLoader() { return this.driverLoader; }
 
@@ -28,9 +25,8 @@ public class Page {
 
 
 
-    public Page(String id, String url, IDriverLoader driverLoader, IDriverSupplier driverSupplier, IInstanceFactory instanceFactory, Collection<Element> elements) {
+    public Page(String id, IDriverLoader driverLoader, IDriverSupplier driverSupplier, IInstanceFactory instanceFactory, Collection<Element> elements) {
         this.id = id;
-        this.url = url;
         this.driverLoader = driverLoader;
         this.driverSupplier = driverSupplier;
         this.instanceFactory = instanceFactory;
