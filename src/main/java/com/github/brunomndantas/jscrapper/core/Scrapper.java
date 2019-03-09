@@ -54,7 +54,7 @@ public class Scrapper {
 
             element.getProperty().set(instance, value);
         } catch (Exception e) {
-            throw new ScrapperException("Error scrapping Element:" + element.getId() + " if Page:" + page.getId() + "!", e);
+            throw new ScrapperException("Error scrapping Element:" + element.getId() + " of Page:" + page.getId() + "!", e);
         }
     }
 
