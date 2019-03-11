@@ -26,7 +26,7 @@ import java.util.LinkedList;
 
 import static org.junit.Assert.*;
 
-public class ScatterTest {
+public class ScrapperTest {
 
     private static final String DRIVER_PATH = "phantomjs/phantomjs.exe";
 
@@ -47,7 +47,7 @@ public class ScatterTest {
     @Test
     public void nullPageDriverLoaderTest() throws Exception {
         IInstanceFactory instanceFactory = () -> null;
-        Page page = new Page("", null, ScatterTest::getDriver, instanceFactory, new LinkedList<>());
+        Page page = new Page("", null, ScrapperTest::getDriver, instanceFactory, new LinkedList<>());
 
         Scrapper scrapper = new Scrapper();
 
@@ -61,7 +61,7 @@ public class ScatterTest {
             @Override public Object get(Object instance) throws PropertyException { return null; }
             @Override public void set(Object instance, Object value) throws PropertyException { }
         };
-        Page page = new Page("", null, ScatterTest::getDriver, instanceFactory, new LinkedList<>());
+        Page page = new Page("", null, ScrapperTest::getDriver, instanceFactory, new LinkedList<>());
         Element element = new Element("", null, (driver) -> null, (driver, elements) -> {}, (driver, elements) -> null, property);
         page.getElements().add(element);
 
@@ -77,7 +77,7 @@ public class ScatterTest {
             @Override public Object get(Object instance) throws PropertyException { return null; }
             @Override public void set(Object instance, Object value) throws PropertyException { }
         };
-        Page page = new Page("", null, ScatterTest::getDriver, instanceFactory, new LinkedList<>());
+        Page page = new Page("", null, ScrapperTest::getDriver, instanceFactory, new LinkedList<>());
         Element element = new Element("", (driver) -> {}, (driver) -> null, null, (driver, elements) -> null, property);
         page.getElements().add(element);
 
@@ -91,7 +91,7 @@ public class ScatterTest {
         InstanceFactoryException exception = new InstanceFactoryException("");
         IInstanceFactory instanceFactory = () -> { throw exception; };
 
-        Page page = new Page("", null, ScatterTest::getDriver, instanceFactory, new LinkedList<>());
+        Page page = new Page("", null, ScrapperTest::getDriver, instanceFactory, new LinkedList<>());
         Scrapper scrapper = new Scrapper();
 
         try {
@@ -125,7 +125,7 @@ public class ScatterTest {
         DriverLoaderException exception = new DriverLoaderException("");
         IDriverLoader driverLoader = (driver) -> { throw exception; };
 
-        Page page = new Page("", driverLoader, ScatterTest::getDriver, instanceFactory, new LinkedList<>());
+        Page page = new Page("", driverLoader, ScrapperTest::getDriver, instanceFactory, new LinkedList<>());
         Scrapper scrapper = new Scrapper();
 
         try {
@@ -142,7 +142,7 @@ public class ScatterTest {
         DriverLoaderException exception = new DriverLoaderException("");
         IDriverLoader driverLoader = (driver) -> { throw exception; };
 
-        Page page = new Page("", null, ScatterTest::getDriver, instanceFactory, new LinkedList<>());
+        Page page = new Page("", null, ScrapperTest::getDriver, instanceFactory, new LinkedList<>());
         Element element = new Element("", driverLoader, null, null, null, null);
         page.getElements().add(element);
         Scrapper scrapper = new Scrapper();
@@ -161,7 +161,7 @@ public class ScatterTest {
         SelectorException  exception = new SelectorException("");
         ISelector selector = (driver) -> { throw exception; };
 
-        Page page = new Page("", null, ScatterTest::getDriver, instanceFactory, new LinkedList<>());
+        Page page = new Page("", null, ScrapperTest::getDriver, instanceFactory, new LinkedList<>());
         Element element = new Element("", null, selector, null, null, null);
         page.getElements().add(element);
         Scrapper scrapper = new Scrapper();
@@ -180,7 +180,7 @@ public class ScatterTest {
         ElementLoaderException exception = new ElementLoaderException("");
         IElementLoader elementLoader = (driver, elements) -> { throw exception; };
 
-        Page page = new Page("", null, ScatterTest::getDriver, instanceFactory, new LinkedList<>());
+        Page page = new Page("", null, ScrapperTest::getDriver, instanceFactory, new LinkedList<>());
         Element element = new Element("", null, (driver) -> null, elementLoader, null, null);
         page.getElements().add(element);
         Scrapper scrapper = new Scrapper();
@@ -199,7 +199,7 @@ public class ScatterTest {
         ParserException exception = new ParserException("");
         IParser parser = (driver, elements) -> { throw exception; };
 
-        Page page = new Page("", null, ScatterTest::getDriver, instanceFactory, new LinkedList<>());
+        Page page = new Page("", null, ScrapperTest::getDriver, instanceFactory, new LinkedList<>());
         Element element = new Element("", null, (driver) -> null, null, parser, null);
         page.getElements().add(element);
         Scrapper scrapper = new Scrapper();
@@ -221,7 +221,7 @@ public class ScatterTest {
             @Override public void set(Object instance, Object value) throws PropertyException { throw exception; }
         };
 
-        Page page = new Page("", null, ScatterTest::getDriver, instanceFactory, new LinkedList<>());
+        Page page = new Page("", null, ScrapperTest::getDriver, instanceFactory, new LinkedList<>());
         Element element = new Element("", null, (driver) -> null, null, (driver, elements) -> null, property);
         page.getElements().add(element);
         Scrapper scrapper = new Scrapper();
