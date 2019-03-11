@@ -17,7 +17,7 @@ public class InstanceFactoryFactoryTest {
 
 
         @Override
-        public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
+        public Object create() throws InstanceFactoryException { return null; }
 
     }
 
@@ -28,7 +28,7 @@ public class InstanceFactoryFactoryTest {
 
 
         @Override
-        public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
+        public Object create() throws InstanceFactoryException { return null; }
 
     }
 

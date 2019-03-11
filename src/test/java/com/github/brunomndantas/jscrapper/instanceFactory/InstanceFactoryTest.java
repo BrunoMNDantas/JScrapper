@@ -4,22 +4,41 @@ import com.github.brunomndantas.jscrapper.core.instanceFactory.InstanceFactoryEx
 import org.junit.Test;
 
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
 public class InstanceFactoryTest {
 
     @Test
+    public void getKlassTest() {
+        Class<?> klass = Object.class;
+        InstanceFactory factory = new InstanceFactory(klass) {
+            @Override protected Object createInstance() { return null; }
+        };
+
+        assertSame(klass, factory.getKlass());
+    }
+
+    @Test
+    public void constructorTest() {
+        Class<?> klass = Object.class;
+        InstanceFactory factory = new InstanceFactory(klass) {
+            @Override protected Object createInstance() { return null; }
+        };
+
+        assertSame(klass, factory.getKlass());
+    }
+
+    @Test
     public void wrapExceptionTest() {
         Exception exception = new Exception();
-        InstanceFactory factory = new InstanceFactory() {
+        InstanceFactory factory = new InstanceFactory(Object.class) {
             @Override
-            protected <T> T createInstance(Class<T> klass) throws Exception {
+            protected Object createInstance() throws Exception {
                 throw exception;
             }
         };
 
         try {
-            factory.create(Object.class);
+            factory.create();
         } catch (InstanceFactoryException e) {
             assertSame(exception, e.getCause());
         }
@@ -29,18 +48,15 @@ public class InstanceFactoryTest {
     public void createTest() throws InstanceFactoryException {
         Class<?> klass = Object.class;
         Object instance = new Object();
-        boolean[] passed = new boolean[1];
 
-        InstanceFactory factory = new InstanceFactory() {
+        InstanceFactory factory = new InstanceFactory(klass) {
             @Override
-            protected <T> T createInstance(Class<T> k) throws Exception {
-                passed[0] = k == klass;
-                return (T)instance;
+            protected Object createInstance() {
+                return instance;
             }
         };
 
-        assertSame(instance, factory.create(klass));
-        assertTrue(passed[0]);
+        assertSame(instance, factory.create());
     }
 
 }

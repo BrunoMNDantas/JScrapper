@@ -36,9 +36,7 @@ public class PageTest {
 
     @Test
     public void getInstanceFactoryTest() {
-        IInstanceFactory factory = new IInstanceFactory() {
-            @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
-        };
+        IInstanceFactory factory = () -> null;
         Page page = new Page(null,  null, null, factory, null);
         assertSame(factory, page.getInstanceFactory());
     }
@@ -55,9 +53,7 @@ public class PageTest {
         String id = "";
         IDriverLoader driverLoader = driver -> { };
         IDriverSupplier driverSupplier = () -> null;
-        IInstanceFactory instanceFactory = new IInstanceFactory() {
-            @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
-        };
+        IInstanceFactory instanceFactory = () -> null;
         Collection<Element> elements = new LinkedList<>();
 
         Page page = new Page(id, driverLoader, driverSupplier, instanceFactory, elements);

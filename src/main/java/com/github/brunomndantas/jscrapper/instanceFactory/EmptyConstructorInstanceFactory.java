@@ -4,9 +4,15 @@ import com.github.brunomndantas.jscrapper.Utils;
 
 public class EmptyConstructorInstanceFactory extends InstanceFactory {
 
+    public EmptyConstructorInstanceFactory(Class<?> klass) {
+        super(klass);
+    }
+
+
+
     @Override
-    protected <T> T createInstance(Class<T> klass) throws Exception {
-        return Utils.createInstance(klass);
+    protected Object createInstance() throws Exception {
+        return Utils.createInstance(super.getKlass());
     }
 
 }

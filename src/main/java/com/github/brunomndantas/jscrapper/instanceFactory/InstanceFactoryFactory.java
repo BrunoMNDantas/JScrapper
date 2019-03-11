@@ -27,7 +27,7 @@ public class InstanceFactoryFactory {
     }
 
     private static IInstanceFactory createDefaultFactory(Class<?> klass) {
-        return new EmptyConstructorInstanceFactory();
+        return new EmptyConstructorInstanceFactory(klass);
     }
 
 }

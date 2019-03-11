@@ -5,10 +5,21 @@ import com.github.brunomndantas.jscrapper.core.instanceFactory.InstanceFactoryEx
 
 public abstract class InstanceFactory implements IInstanceFactory {
 
+    protected Class<?> klass;
+    public Class<?> getKlass() { return this.klass; }
+
+
+
+    public InstanceFactory(Class<?> klass) {
+        this.klass = klass;
+    }
+
+
+
     @Override
-    public <T> T create(Class<T> klass) throws InstanceFactoryException {
+    public Object create() throws InstanceFactoryException {
         try {
-            return createInstance(klass);
+            return createInstance();
         } catch (Exception e) {
             String msg = "Error creating instance of class:" + klass.getName();
             throw new InstanceFactoryException(msg, e);
@@ -17,6 +28,6 @@ public abstract class InstanceFactory implements IInstanceFactory {
 
 
 
-    protected abstract <T> T createInstance(Class<T> klass) throws Exception;
+    protected abstract Object createInstance() throws Exception;
 
 }

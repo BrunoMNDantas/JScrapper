@@ -8,8 +8,8 @@ import java.util.Collection;
 
 public class Scrapper {
 
-    public <T> T scrap(Class<T> klass, Page page) throws ScrapperException {
-        T instance = createInstance(klass, page);
+    public Object scrap(Page page) throws ScrapperException {
+        Object instance = createInstance(page);
 
         WebDriver driver = scrapPage(page);
 
@@ -19,11 +19,11 @@ public class Scrapper {
         return instance;
     }
 
-    protected <T> T createInstance(Class<T> klass, Page page) throws ScrapperException {
+    protected Object createInstance(Page page) throws ScrapperException {
         try {
-            return page.getInstanceFactory().create(klass);
+            return page.getInstanceFactory().create();
         } catch (InstanceFactoryException e) {
-            throw new ScrapperException("Error creating instance of " + klass.getName() + "!", e);
+            throw new ScrapperException("Error creating instance of Page" + page.getId() + "!", e);
         }
     }
 

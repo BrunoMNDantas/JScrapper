@@ -29,10 +29,10 @@ public class EmptyConstructorInstanceFactoryTest {
     @Test
     public void createInstanceWithoutEmptyConstructor() {
         Class<?> klass = NoEmptyConstructor.class;
-        EmptyConstructorInstanceFactory factory = new EmptyConstructorInstanceFactory();
+        EmptyConstructorInstanceFactory factory = new EmptyConstructorInstanceFactory(klass);
 
         try {
-            factory.create(klass);
+            factory.create();
         } catch (Exception e) {
             assertTrue(e.getCause().getMessage().contains("empty constructor"));
         }
@@ -41,19 +41,19 @@ public class EmptyConstructorInstanceFactoryTest {
     @Test
     public void createInstanceWithEmptyConstructor() throws InstanceFactoryException {
         Class<EmptyConstructor> klass = EmptyConstructor.class;
-        EmptyConstructorInstanceFactory factory = new EmptyConstructorInstanceFactory();
+        EmptyConstructorInstanceFactory factory = new EmptyConstructorInstanceFactory(klass);
 
-        EmptyConstructor instance = factory.create(klass);
+        EmptyConstructor instance = (EmptyConstructor) factory.create();
         assertNotNull(instance);
     }
 
     @Test
     public void createInstanceWithExceptionConstructor() {
         Class<?> klass = ExceptionConstructor.class;
-        EmptyConstructorInstanceFactory factory = new EmptyConstructorInstanceFactory();
+        EmptyConstructorInstanceFactory factory = new EmptyConstructorInstanceFactory(klass);
 
         try {
-            factory.create(klass);
+            factory.create();
         } catch (Exception e) {
             assertSame(ExceptionConstructor.exception, e.getCause().getCause().getCause());
         }

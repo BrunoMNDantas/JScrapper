@@ -46,21 +46,17 @@ public class ScatterTest {
 
     @Test
     public void nullPageDriverLoaderTest() throws Exception {
-        IInstanceFactory instanceFactory = new IInstanceFactory() {
-            @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
-        };
+        IInstanceFactory instanceFactory = () -> null;
         Page page = new Page("", null, ScatterTest::getDriver, instanceFactory, new LinkedList<>());
 
         Scrapper scrapper = new Scrapper();
 
-        scrapper.scrap(Object.class, page);
+        scrapper.scrap(page);
     }
 
     @Test
     public void nullElementDriverLoaderTest() throws Exception {
-        IInstanceFactory instanceFactory = new IInstanceFactory() {
-            @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
-        };
+        IInstanceFactory instanceFactory = () -> null;
         IProperty property = new IProperty() {
             @Override public Object get(Object instance) throws PropertyException { return null; }
             @Override public void set(Object instance, Object value) throws PropertyException { }
@@ -71,14 +67,12 @@ public class ScatterTest {
 
         Scrapper scrapper = new Scrapper();
 
-        scrapper.scrap(Object.class, page);
+        scrapper.scrap(page);
     }
 
     @Test
     public void nullElementElementLoaderTest() throws Exception {
-        IInstanceFactory instanceFactory = new IInstanceFactory() {
-            @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
-        };
+        IInstanceFactory instanceFactory = () -> null;
         IProperty property = new IProperty() {
             @Override public Object get(Object instance) throws PropertyException { return null; }
             @Override public void set(Object instance, Object value) throws PropertyException { }
@@ -89,21 +83,19 @@ public class ScatterTest {
 
         Scrapper scrapper = new Scrapper();
 
-        scrapper.scrap(Object.class, page);
+        scrapper.scrap(page);
     }
 
     @Test
     public void wrapInstanceFactoryExceptionTest() {
         InstanceFactoryException exception = new InstanceFactoryException("");
-        IInstanceFactory instanceFactory = new IInstanceFactory() {
-            @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { throw exception; }
-        };
+        IInstanceFactory instanceFactory = () -> { throw exception; };
 
         Page page = new Page("", null, ScatterTest::getDriver, instanceFactory, new LinkedList<>());
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, page);
+            scrapper.scrap(page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -112,9 +104,7 @@ public class ScatterTest {
 
     @Test
     public void wrapPageDriverSupplierExceptionTest() {
-        IInstanceFactory instanceFactory = new IInstanceFactory() {
-            @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
-        };
+        IInstanceFactory instanceFactory = () -> null;
         DriverSupplierException exception = new DriverSupplierException("");
         IDriverSupplier driverSupplier = () -> { throw exception; };
 
@@ -122,7 +112,7 @@ public class ScatterTest {
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, page);
+            scrapper.scrap(page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -131,9 +121,7 @@ public class ScatterTest {
 
     @Test
     public void wrapPageDriverLoaderExceptionTest() {
-        IInstanceFactory instanceFactory = new IInstanceFactory() {
-            @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
-        };
+        IInstanceFactory instanceFactory = () -> null;
         DriverLoaderException exception = new DriverLoaderException("");
         IDriverLoader driverLoader = (driver) -> { throw exception; };
 
@@ -141,7 +129,7 @@ public class ScatterTest {
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, page);
+            scrapper.scrap(page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -150,9 +138,7 @@ public class ScatterTest {
 
     @Test
     public void wrapElementDriverLoaderExceptionTest() {
-        IInstanceFactory instanceFactory = new IInstanceFactory() {
-            @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
-        };
+        IInstanceFactory instanceFactory = () -> null;
         DriverLoaderException exception = new DriverLoaderException("");
         IDriverLoader driverLoader = (driver) -> { throw exception; };
 
@@ -162,7 +148,7 @@ public class ScatterTest {
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, page);
+            scrapper.scrap(page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -171,9 +157,7 @@ public class ScatterTest {
 
     @Test
     public void wrapElementSelectorExceptionTest() {
-        IInstanceFactory instanceFactory = new IInstanceFactory() {
-            @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
-        };
+        IInstanceFactory instanceFactory = () -> null;
         SelectorException  exception = new SelectorException("");
         ISelector selector = (driver) -> { throw exception; };
 
@@ -183,7 +167,7 @@ public class ScatterTest {
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, page);
+            scrapper.scrap(page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -192,9 +176,7 @@ public class ScatterTest {
 
     @Test
     public void wrapElementElementLoaderExceptionTest() {
-        IInstanceFactory instanceFactory = new IInstanceFactory() {
-            @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
-        };
+        IInstanceFactory instanceFactory = () -> null;
         ElementLoaderException exception = new ElementLoaderException("");
         IElementLoader elementLoader = (driver, elements) -> { throw exception; };
 
@@ -204,7 +186,7 @@ public class ScatterTest {
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, page);
+            scrapper.scrap(page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -213,9 +195,7 @@ public class ScatterTest {
 
     @Test
     public void wrapElementParserExceptionTest() {
-        IInstanceFactory instanceFactory = new IInstanceFactory() {
-            @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
-        };
+        IInstanceFactory instanceFactory = () -> null;
         ParserException exception = new ParserException("");
         IParser parser = (driver, elements) -> { throw exception; };
 
@@ -225,7 +205,7 @@ public class ScatterTest {
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, page);
+            scrapper.scrap(page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -234,9 +214,7 @@ public class ScatterTest {
 
     @Test
     public void wrapElementPropertyExceptionTest() {
-        IInstanceFactory instanceFactory = new IInstanceFactory() {
-            @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return null; }
-        };
+        IInstanceFactory instanceFactory = () -> null;
         PropertyException exception = new PropertyException("");
         IProperty property = new IProperty() {
             @Override public Object get(Object instance) throws PropertyException { throw exception; }
@@ -249,7 +227,7 @@ public class ScatterTest {
         Scrapper scrapper = new Scrapper();
 
         try {
-            scrapper.scrap(Object.class, page);
+            scrapper.scrap(page);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -259,9 +237,7 @@ public class ScatterTest {
     @Test
     public void scrapTest() throws ScrapperException {
         Object result = new Object();
-        IInstanceFactory instanceFactory = new IInstanceFactory() {
-            @Override public <T> T create(Class<T> klass) throws InstanceFactoryException { return (T)result; }
-        };
+        IInstanceFactory instanceFactory = () -> result;
         WebDriver driver = getDriver();
         Collection<WebElement> elements = new LinkedList<>();
         Object value = new Object();
@@ -290,7 +266,7 @@ public class ScatterTest {
         page.getElements().add(element);
 
         Scrapper scrapper = new Scrapper();
-        assertSame(result, scrapper.scrap(Object.class, page));
+        assertSame(result, scrapper.scrap(page));
 
         assertTrue(driverSupplierPassed[0]);
         assertTrue(pageDriverLoaderPassed[0]);
