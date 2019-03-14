@@ -14,7 +14,7 @@ public abstract class Selector implements ISelector {
         try {
             return selectElements(driver);
         } catch (Exception e) {
-            String msg = "Error selecting elements on page:" + driver.getCurrentUrl();
+            String msg = "Error selecting elements on url:" + driver.getCurrentUrl();
             throw new SelectorException(msg, e);
         }
     }
