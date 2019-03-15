@@ -1,5 +1,6 @@
 package com.github.brunomndantas.jscrapper.core;
 
+import com.github.brunomndantas.jscrapper.DummyDriver;
 import com.github.brunomndantas.jscrapper.core.config.FieldConfig;
 import com.github.brunomndantas.jscrapper.core.driverLoader.DriverLoaderException;
 import com.github.brunomndantas.jscrapper.core.elementLoader.ElementLoaderException;
@@ -10,9 +11,6 @@ import com.github.brunomndantas.jscrapper.core.selector.SelectorException;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -25,21 +23,7 @@ public class FieldScrapperTest {
         public String name;
     }
 
-
-
-    private static final String DRIVER_PATH = "phantomjs/phantomjs.exe";
-
-
-
-    private static WebDriver getDriver() {
-        String driverPath = ClassLoader.getSystemResource(DRIVER_PATH).getPath();
-
-        DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
-
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, driverPath);
-
-        return new PhantomJSDriver(capabilities);
-    }
+    
 
     private static FieldConfig createDummyFieldConfig() throws NoSuchFieldException {
         FieldConfig config = new FieldConfig(Person.class.getDeclaredField("name"));
@@ -156,7 +140,7 @@ public class FieldScrapperTest {
     @Test
     public void loadDriverTest() throws Exception {
         FieldConfig config = createDummyFieldConfig();
-        WebDriver driver = getDriver();
+        WebDriver driver = new DummyDriver();
         boolean[] passed = new boolean[1];
         config.setDriverLoader((d) -> passed[0] = d==driver);
 
@@ -180,7 +164,7 @@ public class FieldScrapperTest {
     @Test
     public void selectElementsTest() throws Exception {
         FieldConfig config = createDummyFieldConfig();
-        WebDriver driver = getDriver();
+        WebDriver driver = new DummyDriver();
         Collection<WebElement> elements = new LinkedList<>();
         boolean[] passed = new boolean[1];
         config.setSelector((d) -> { passed[0] = d==driver; return elements; });
@@ -205,7 +189,7 @@ public class FieldScrapperTest {
     @Test
     public void loadElementsTest() throws Exception {
         FieldConfig config = createDummyFieldConfig();
-        WebDriver driver = getDriver();
+        WebDriver driver = new DummyDriver();
         Collection<WebElement> elements = new LinkedList<>();
         boolean[] passed = new boolean[1];
         config.setElementLoader((d, e) -> passed[0] = d==driver && e==elements);
@@ -230,7 +214,7 @@ public class FieldScrapperTest {
     @Test
     public void parseElementsTest() throws Exception {
         FieldConfig config = createDummyFieldConfig();
-        WebDriver driver = getDriver();
+        WebDriver driver = new DummyDriver();
         Collection<WebElement> elements = new LinkedList<>();
         Object value = new Object();
         boolean[] passed = new boolean[1];

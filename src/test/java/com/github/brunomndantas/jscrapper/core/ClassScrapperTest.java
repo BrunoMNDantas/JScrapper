@@ -1,33 +1,17 @@
 package com.github.brunomndantas.jscrapper.core;
 
+import com.github.brunomndantas.jscrapper.DummyDriver;
 import com.github.brunomndantas.jscrapper.core.config.ClassConfig;
 import com.github.brunomndantas.jscrapper.core.driverLoader.DriverLoaderException;
 import com.github.brunomndantas.jscrapper.core.driverSupplier.DriverSupplierException;
 import com.github.brunomndantas.jscrapper.core.instanceFactory.InstanceFactoryException;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static org.junit.Assert.*;
 
 public class ClassScrapperTest {
-
-    private static final String DRIVER_PATH = "phantomjs/phantomjs.exe";
-
-
-
-    private static WebDriver getDriver() {
-        String driverPath = ClassLoader.getSystemResource(DRIVER_PATH).getPath();
-
-        DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
-
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, driverPath);
-
-        return new PhantomJSDriver(capabilities);
-    }
-
+    
     private static ClassConfig createDummyClassConfig() {
         ClassConfig config = new ClassConfig(Object.class);
         config.setInstanceFactory(() -> null);
@@ -118,7 +102,7 @@ public class ClassScrapperTest {
     @Test
     public void getDriverTest() throws Exception {
         ClassConfig config = createDummyClassConfig();
-        WebDriver driver = getDriver();
+        WebDriver driver = new DummyDriver();
         config.setDriverSupplier(() -> driver);
 
         assertSame(driver, new ClassScrapper(config).getDriver());
@@ -137,7 +121,7 @@ public class ClassScrapperTest {
     @Test
     public void loadDriverTest() throws Exception {
         ClassConfig config = createDummyClassConfig();
-        WebDriver driver = getDriver();
+        WebDriver driver = new DummyDriver();
 
         boolean[] passed = new boolean[1];
         config.setDriverLoader((d) -> passed[0] = d==driver);

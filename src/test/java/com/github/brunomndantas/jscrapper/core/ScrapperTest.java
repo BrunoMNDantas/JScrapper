@@ -1,5 +1,6 @@
 package com.github.brunomndantas.jscrapper.core;
 
+import com.github.brunomndantas.jscrapper.DummyDriver;
 import com.github.brunomndantas.jscrapper.core.config.ClassConfig;
 import com.github.brunomndantas.jscrapper.core.config.FieldConfig;
 import com.github.brunomndantas.jscrapper.core.config.ScrapperConfig;
@@ -20,9 +21,6 @@ import com.github.brunomndantas.jscrapper.core.selector.SelectorException;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -34,22 +32,6 @@ public class ScrapperTest {
 
     public static class Person {
         public String name;
-    }
-
-
-
-    private static final String DRIVER_PATH = "phantomjs/phantomjs.exe";
-
-
-
-    private static WebDriver getDriver() {
-        String driverPath = ClassLoader.getSystemResource(DRIVER_PATH).getPath();
-
-        DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
-
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, driverPath);
-
-        return new PhantomJSDriver(capabilities);
     }
 
 
@@ -458,7 +440,7 @@ public class ScrapperTest {
         Class klass = Person.class;
         Field field = klass.getDeclaredField("name");
         Object result = new Object();
-        WebDriver driver = getDriver();
+        WebDriver driver = new DummyDriver();
         Collection<WebElement> elements = new LinkedList<>();
         Object value = new Person();
 
