@@ -55,12 +55,28 @@ public class ScrapperTest {
 
 
     @Test
+    public void getConfigTest() {
+        ScrapperConfig config = new ScrapperConfig();
+        Scrapper scrapper = new Scrapper(config);
+
+        assertSame(config, scrapper.getConfig());
+    }
+
+    @Test
+    public void constructorTest() {
+        ScrapperConfig config = new ScrapperConfig();
+        Scrapper scrapper = new Scrapper(config);
+
+        assertSame(config, scrapper.getConfig());
+    }
+
+    @Test
     public void nonExistentClassConfigTest() {
         Class klass = Person.class;
         ScrapperConfig config = new ScrapperConfig();
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No config found for class"));
@@ -77,7 +93,7 @@ public class ScrapperTest {
         config.registerDriverLoader(klass, (d) -> {});
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No config found for field"));
@@ -93,7 +109,7 @@ public class ScrapperTest {
         config.registerClassConfig(new ClassConfig(klass));
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No InstanceFactory found"));
@@ -108,7 +124,7 @@ public class ScrapperTest {
         config.registerInstanceFactory(klass, () -> null);
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No DriverSupplier found"));
@@ -124,7 +140,7 @@ public class ScrapperTest {
         config.registerDriverSupplier(klass, () -> null);
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No DriverLoader found"));
@@ -143,7 +159,7 @@ public class ScrapperTest {
         config.registerFieldConfig(new FieldConfig(field));
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No DriverLoader found"));
@@ -163,7 +179,7 @@ public class ScrapperTest {
         config.registerDriverLoader(field, (d) -> {});
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No Selector found"));
@@ -184,7 +200,7 @@ public class ScrapperTest {
         config.registerSelector(field, (d) -> null);
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No ElementLoader found"));
@@ -206,7 +222,7 @@ public class ScrapperTest {
         config.registerElementLoader(field, (driver, elements) -> {});
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No Parser found"));
@@ -229,7 +245,7 @@ public class ScrapperTest {
         config.registerParser(field, (driver, elements) -> null);
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No Property found"));
@@ -250,7 +266,7 @@ public class ScrapperTest {
         config.registerDriverLoader(klass, (d) -> {});
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -269,7 +285,7 @@ public class ScrapperTest {
         config.registerDriverLoader(klass, (d) -> {});
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -288,7 +304,7 @@ public class ScrapperTest {
         config.registerDriverLoader(klass, driverLoader);
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -316,7 +332,7 @@ public class ScrapperTest {
         });
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -344,7 +360,7 @@ public class ScrapperTest {
         });
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -373,7 +389,7 @@ public class ScrapperTest {
         });
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -402,7 +418,7 @@ public class ScrapperTest {
 
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -430,7 +446,7 @@ public class ScrapperTest {
         config.registerProperty(field, property);
 
         try {
-            new Scrapper().scrap(config, klass);
+            new Scrapper(config).scrap(klass);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertSame(exception, e.getCause());
@@ -476,9 +492,9 @@ public class ScrapperTest {
         config.registerParser(field, parser);
         config.registerProperty(field, property);
 
-        Scrapper scrapper = new Scrapper();
+        Scrapper scrapper = new Scrapper(config);
 
-        assertSame(result, scrapper.scrap(config, klass));
+        assertSame(result, scrapper.scrap(klass));
 
         assertTrue(driverSupplierPassed[0]);
         assertTrue(classDriverLoaderPassed[0]);
