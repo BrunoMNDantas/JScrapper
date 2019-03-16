@@ -20,7 +20,7 @@ public class ParserTest {
         Object value = new Object();
         boolean[] passed = new boolean[1];
         Parser parser = new Parser() {
-            @Override
+
             protected Object parseElements(WebDriver d, Collection<WebElement> e) throws Exception {
                 passed[0] = d==driver && e==elements;
                 return value;
@@ -35,7 +35,7 @@ public class ParserTest {
     public void parseWrapsException() {
         Exception exception = new Exception();
         Parser parser = new Parser() {
-            @Override
+
             protected Object parseElements(WebDriver driver, Collection<WebElement> elements) throws Exception {
                 throw exception;
             }
