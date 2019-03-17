@@ -5,12 +5,12 @@ import org.openqa.selenium.WebElement;
 
 import java.util.Collection;
 
-public class ClickLoader extends ElementLoader {
+public class SubmitElementLoader extends ElementLoader {
 
     @Override
     protected void loadElements(WebDriver driver, Collection<WebElement> elements) throws Exception {
         for(WebElement element : elements)
-            element.click();
+            element.submit();
     }
 
 }

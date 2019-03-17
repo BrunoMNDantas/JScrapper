@@ -12,12 +12,12 @@ import java.util.Collection;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-public class SendKeysLoaderTest {
+public class SendKeysElementLoaderTest {
 
     @Test
     public void getKeysTest() {
         String keys = "keys";
-        SendKeysLoader loader = new SendKeysLoader(keys);
+        SendKeysElementLoader loader = new SendKeysElementLoader(keys);
 
         assertSame(keys, loader.getKeys());
     }
@@ -25,7 +25,7 @@ public class SendKeysLoaderTest {
     @Test
     public void constructorTest() {
         String keys = "keys";
-        SendKeysLoader loader = new SendKeysLoader(keys);
+        SendKeysElementLoader loader = new SendKeysElementLoader(keys);
 
         assertSame(keys, loader.getKeys());
     }
@@ -33,7 +33,7 @@ public class SendKeysLoaderTest {
     @Test
     public void loadTest() throws Exception {
         String keys = "keys";
-        SendKeysLoader loader = new SendKeysLoader(keys);
+        SendKeysElementLoader loader = new SendKeysElementLoader(keys);
         boolean[] passedA = new boolean[1];
         boolean[] passedB = new boolean[1];
 

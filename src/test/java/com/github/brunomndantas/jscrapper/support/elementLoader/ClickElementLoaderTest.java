@@ -11,7 +11,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertTrue;
 
-public class ClickLoaderTest {
+public class ClickElementLoaderTest {
 
     @Test
     public void loadTest() throws Exception {
@@ -34,7 +34,7 @@ public class ClickLoaderTest {
         };
         Collection<WebElement> elements = Arrays.asList(elementA, elementB);
 
-        ClickLoader loader = new ClickLoader();
+        ClickElementLoader loader = new ClickElementLoader();
         loader.load(driver, elements);
 
         assertTrue(passedA[0]);

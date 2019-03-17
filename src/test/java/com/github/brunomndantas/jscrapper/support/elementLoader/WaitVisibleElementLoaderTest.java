@@ -12,12 +12,12 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
-public class WaitVisibleLoaderTest {
+public class WaitVisibleElementLoaderTest {
 
     @Test
     public void getTimeUnitTest() {
         TimeUnit timeUnit = TimeUnit.SECONDS;
-        WaitVisibleLoader loader = new WaitVisibleLoader(timeUnit, 0);
+        WaitVisibleElementLoader loader = new WaitVisibleElementLoader(timeUnit, 0);
 
         assertSame(timeUnit, loader.getTimeUnit());
     }
@@ -25,7 +25,7 @@ public class WaitVisibleLoaderTest {
     @Test
     public void getTimeTest() {
         long time = 100;
-        WaitVisibleLoader loader = new WaitVisibleLoader(null, time);
+        WaitVisibleElementLoader loader = new WaitVisibleElementLoader(null, time);
 
         assertEquals(time, loader.getTime());
     }
@@ -34,7 +34,7 @@ public class WaitVisibleLoaderTest {
     public void constructorTest() {
         TimeUnit timeUnit = TimeUnit.SECONDS;
         long time = 100;
-        WaitVisibleLoader loader = new WaitVisibleLoader(timeUnit, time);
+        WaitVisibleElementLoader loader = new WaitVisibleElementLoader(timeUnit, time);
 
         assertSame(timeUnit, loader.getTimeUnit());
         assertEquals(time, loader.getTime());
@@ -42,7 +42,7 @@ public class WaitVisibleLoaderTest {
 
     @Test
     public void loadTest() throws Exception {
-        WaitVisibleLoader loader = new WaitVisibleLoader(TimeUnit.MILLISECONDS, 1000*10);
+        WaitVisibleElementLoader loader = new WaitVisibleElementLoader(TimeUnit.MILLISECONDS, 1000*10);
         boolean[] visibleA = new boolean[1];
         boolean[] visibleB = new boolean[1];
 
@@ -76,7 +76,7 @@ public class WaitVisibleLoaderTest {
 
     @Test
     public void loadBeforeVisibleTest() throws Exception {
-        WaitVisibleLoader loader = new WaitVisibleLoader(TimeUnit.MILLISECONDS, 1000);
+        WaitVisibleElementLoader loader = new WaitVisibleElementLoader(TimeUnit.MILLISECONDS, 1000);
         boolean[] visibleA = new boolean[1];
         boolean[] visibleB = new boolean[1];
 

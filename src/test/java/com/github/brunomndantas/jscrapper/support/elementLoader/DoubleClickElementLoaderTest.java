@@ -13,7 +13,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 
-public class DoubleClickLoaderTest {
+public class DoubleClickElementLoaderTest {
 
     private static final String DRIVER_PATH = "phantomjs/phantomjs.exe";
 
@@ -40,7 +40,7 @@ public class DoubleClickLoaderTest {
         WebElement element = driver.findElement(By.id("double"));
         Collection<WebElement> elements = Arrays.asList(element);
 
-        DoubleClickLoader loader = new DoubleClickLoader();
+        DoubleClickElementLoader loader = new DoubleClickElementLoader();
         loader.load(driver, elements);
 
         Thread.sleep(3000);

@@ -6,7 +6,11 @@ import org.openqa.selenium.WebElement;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
-public class WaitLoader extends ElementLoader {
+public class WaitVisibleElementLoader extends ElementLoader {
+
+    public static final long SLEEP_TIME = 1000;
+
+
 
     private TimeUnit timeUnit;
     public TimeUnit getTimeUnit() { return this.timeUnit; }
@@ -16,7 +20,7 @@ public class WaitLoader extends ElementLoader {
 
 
 
-    public WaitLoader(TimeUnit timeUnit, long time) {
+    public WaitVisibleElementLoader(TimeUnit timeUnit, long time) {
         this.timeUnit = timeUnit;
         this.time = time;
     }
@@ -26,7 +30,21 @@ public class WaitLoader extends ElementLoader {
     @Override
     protected void loadElements(WebDriver driver, Collection<WebElement> elements) throws Exception {
         for(WebElement element : elements)
-            Thread.sleep(this.timeUnit.toMillis(this.time));
+            waitFor(element);
+    }
+
+    private void waitFor(WebElement element) throws Exception {
+        long endTime = System.currentTimeMillis() + this.timeUnit.toMillis(this.time);
+
+        while(true) {
+            if(element.isEnabled() && element.isDisplayed())
+                return;
+
+            if(System.currentTimeMillis() >= endTime)
+                return;
+
+            Thread.sleep(SLEEP_TIME);
+        }
     }
 
 }

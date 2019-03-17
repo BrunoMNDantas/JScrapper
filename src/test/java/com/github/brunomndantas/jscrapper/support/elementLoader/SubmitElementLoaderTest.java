@@ -11,7 +11,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertTrue;
 
-public class ClearLoaderTest {
+public class SubmitElementLoaderTest {
 
     @Test
     public void loadTest() throws Exception {
@@ -22,19 +22,19 @@ public class ClearLoaderTest {
 
         WebElement elementA = new DummyElement() {
             @Override
-            public void clear() {
+            public void submit() {
                 passedA[0] = true;
             }
         };
         WebElement elementB = new DummyElement() {
             @Override
-            public void clear() {
+            public void submit() {
                 passedB[0] = true;
             }
         };
         Collection<WebElement> elements = Arrays.asList(elementA, elementB);
 
-        ClearLoader loader = new ClearLoader();
+        SubmitElementLoader loader = new SubmitElementLoader();
         loader.load(driver, elements);
 
         assertTrue(passedA[0]);

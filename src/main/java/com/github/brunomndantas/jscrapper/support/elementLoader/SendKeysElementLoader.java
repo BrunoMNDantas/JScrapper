@@ -5,14 +5,14 @@ import org.openqa.selenium.WebElement;
 
 import java.util.Collection;
 
-public class SendKeysLoader extends ElementLoader {
+public class SendKeysElementLoader extends ElementLoader {
 
     private String keys;
     public String getKeys() { return this.keys; }
 
 
 
-    public SendKeysLoader(String keys) {
+    public SendKeysElementLoader(String keys) {
         this.keys = keys;
     }
 
