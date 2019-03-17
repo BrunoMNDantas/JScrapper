@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
-public class WaitElementLoaderLoader extends ElementLoader {
+public class WaitElementLoader extends ElementLoader {
 
     private TimeUnit timeUnit;
     public TimeUnit getTimeUnit() { return this.timeUnit; }
@@ -16,7 +16,7 @@ public class WaitElementLoaderLoader extends ElementLoader {
 
 
 
-    public WaitElementLoaderLoader(TimeUnit timeUnit, long time) {
+    public WaitElementLoader(TimeUnit timeUnit, long time) {
         this.timeUnit = timeUnit;
         this.time = time;
     }

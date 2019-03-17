@@ -12,12 +12,12 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
-public class WaitElementLoaderLoaderTest {
+public class WaitElementLoaderTest {
 
     @Test
     public void getTimeUnitTest() {
         TimeUnit timeUnit = TimeUnit.SECONDS;
-        WaitElementLoaderLoader loader = new WaitElementLoaderLoader(timeUnit, 0);
+        WaitElementLoader loader = new WaitElementLoader(timeUnit, 0);
 
         assertSame(timeUnit, loader.getTimeUnit());
     }
@@ -25,7 +25,7 @@ public class WaitElementLoaderLoaderTest {
     @Test
     public void getTimeTest() {
         long time = 100;
-        WaitElementLoaderLoader loader = new WaitElementLoaderLoader(null, time);
+        WaitElementLoader loader = new WaitElementLoader(null, time);
 
         assertEquals(time, loader.getTime());
     }
@@ -34,7 +34,7 @@ public class WaitElementLoaderLoaderTest {
     public void constructorTest() {
         TimeUnit timeUnit = TimeUnit.SECONDS;
         long time = 100;
-        WaitElementLoaderLoader loader = new WaitElementLoaderLoader(timeUnit, time);
+        WaitElementLoader loader = new WaitElementLoader(timeUnit, time);
 
         assertSame(timeUnit, loader.getTimeUnit());
         assertEquals(time, loader.getTime());
@@ -42,7 +42,7 @@ public class WaitElementLoaderLoaderTest {
 
     @Test
     public void loadTest() throws Exception {
-        WaitElementLoaderLoader loader = new WaitElementLoaderLoader(TimeUnit.MILLISECONDS, 1000);
+        WaitElementLoader loader = new WaitElementLoader(TimeUnit.MILLISECONDS, 1000);
 
         WebDriver driver = new DummyDriver();
         Collection<WebElement> elements = Arrays.asList(new DummyElement(), new DummyElement(), new DummyElement());
