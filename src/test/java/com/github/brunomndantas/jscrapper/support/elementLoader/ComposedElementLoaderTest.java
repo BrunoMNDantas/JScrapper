@@ -43,7 +43,7 @@ public class ComposedElementLoaderTest {
         );
         ComposedElementLoader loader = new ComposedElementLoader(loaders);
 
-        loader.loadElements(driver, elements);
+        loader.load(driver, elements);
         assertTrue(passedA[0]);
         assertTrue(passedB[0]);
     }
