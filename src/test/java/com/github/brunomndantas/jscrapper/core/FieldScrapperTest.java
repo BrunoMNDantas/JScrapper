@@ -44,7 +44,7 @@ public class FieldScrapperTest {
     @Test
     public void getConfigTest() throws Exception {
         FieldConfig config = createDummyFieldConfig();
-        FieldScrapper scrapper = new FieldScrapper(config, Person.class);
+        FieldScrapper scrapper = new FieldScrapper(config);
 
         assertSame(config, scrapper.getConfig());
     }
@@ -56,7 +56,7 @@ public class FieldScrapperTest {
         config.setDriverLoader(null);
 
         try {
-            new FieldScrapper(config, Person.class);
+            new FieldScrapper(config);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("No DriverLoader found"));
@@ -72,7 +72,7 @@ public class FieldScrapperTest {
         config.setSelector(null);
         
         try {
-            new FieldScrapper(config, Person.class);
+            new FieldScrapper(config);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("No Selector found"));
@@ -88,7 +88,7 @@ public class FieldScrapperTest {
         config.setElementLoader(null);
 
         try {
-            new FieldScrapper(config, Person.class);
+            new FieldScrapper(config);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("No ElementLoader found"));
@@ -104,7 +104,7 @@ public class FieldScrapperTest {
         config.setParser(null);
         
         try {
-            new FieldScrapper(config, Person.class);
+            new FieldScrapper(config);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("No Parser found"));
@@ -120,7 +120,7 @@ public class FieldScrapperTest {
         config.setProperty(null);
 
         try {
-            new FieldScrapper(config, Person.class);
+            new FieldScrapper(config);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().contains("No Property found"));
@@ -132,7 +132,7 @@ public class FieldScrapperTest {
     @Test
     public void constructorTest() throws Exception {
         FieldConfig config = createDummyFieldConfig();
-        FieldScrapper scrapper = new FieldScrapper(config, Person.class);
+        FieldScrapper scrapper = new FieldScrapper(config);
 
         assertSame(config, scrapper.getConfig());
     }
@@ -144,7 +144,7 @@ public class FieldScrapperTest {
         boolean[] passed = new boolean[1];
         config.setDriverLoader((d) -> passed[0] = d==driver);
 
-        FieldScrapper scrapper = new FieldScrapper(config, Person.class);
+        FieldScrapper scrapper = new FieldScrapper(config);
 
         scrapper.loadDriver(driver);
         assertTrue(passed[0]);
@@ -156,7 +156,7 @@ public class FieldScrapperTest {
         FieldConfig config = createDummyFieldConfig();
         config.setDriverLoader((d) -> { throw exception; });
 
-        FieldScrapper scrapper = new FieldScrapper(config, Person.class);
+        FieldScrapper scrapper = new FieldScrapper(config);
 
         scrapper.loadDriver(null);
     }
@@ -169,7 +169,7 @@ public class FieldScrapperTest {
         boolean[] passed = new boolean[1];
         config.setSelector((d) -> { passed[0] = d==driver; return elements; });
 
-        FieldScrapper scrapper = new FieldScrapper(config, Person.class);
+        FieldScrapper scrapper = new FieldScrapper(config);
 
         assertSame(elements, scrapper.selectElements(driver));
         assertTrue(passed[0]);
@@ -181,7 +181,7 @@ public class FieldScrapperTest {
         FieldConfig config = createDummyFieldConfig();
         config.setSelector((d) -> { throw exception; });
 
-        FieldScrapper scrapper = new FieldScrapper(config, Person.class);
+        FieldScrapper scrapper = new FieldScrapper(config);
 
         scrapper.selectElements(null);
     }
@@ -194,7 +194,7 @@ public class FieldScrapperTest {
         boolean[] passed = new boolean[1];
         config.setElementLoader((d, e) -> passed[0] = d==driver && e==elements);
 
-        FieldScrapper scrapper = new FieldScrapper(config, Person.class);
+        FieldScrapper scrapper = new FieldScrapper(config);
         scrapper.loadElements(driver, elements);
 
         assertTrue(passed[0]);
@@ -206,7 +206,7 @@ public class FieldScrapperTest {
         FieldConfig config = createDummyFieldConfig();
         config.setElementLoader((d, e) -> { throw exception; });
 
-        FieldScrapper scrapper = new FieldScrapper(config, Person.class);
+        FieldScrapper scrapper = new FieldScrapper(config);
 
         scrapper.loadElements(null, null);
     }
@@ -220,7 +220,7 @@ public class FieldScrapperTest {
         boolean[] passed = new boolean[1];
         config.setParser((d, e) -> { passed[0] = d==driver && e==elements; return value; });
 
-        FieldScrapper scrapper = new FieldScrapper(config, Person.class);
+        FieldScrapper scrapper = new FieldScrapper(config);
 
         assertSame(value, scrapper.parseElements(driver, elements));
         assertTrue(passed[0]);
@@ -232,7 +232,7 @@ public class FieldScrapperTest {
         FieldConfig config = createDummyFieldConfig();
         config.setParser((d, e) -> { throw exception; });
 
-        FieldScrapper scrapper = new FieldScrapper(config, Person.class);
+        FieldScrapper scrapper = new FieldScrapper(config);
 
         scrapper.parseElements(null, null);
     }
@@ -248,7 +248,7 @@ public class FieldScrapperTest {
             @Override public void set(Object instance, Object value) { }
         });
 
-        FieldScrapper scrapper = new FieldScrapper(config, Person.class);
+        FieldScrapper scrapper = new FieldScrapper(config);
 
         assertSame(value, scrapper.getValue(instance));
         assertTrue(passed[0]);
@@ -263,7 +263,7 @@ public class FieldScrapperTest {
             @Override public void set(Object instance, Object value) throws PropertyException { }
         });
 
-        FieldScrapper scrapper = new FieldScrapper(config, Person.class);
+        FieldScrapper scrapper = new FieldScrapper(config);
 
         scrapper.getValue(null);
     }
@@ -279,7 +279,7 @@ public class FieldScrapperTest {
             @Override public void set(Object i, Object v) { passed[0] = i==instance && v==value; }
         });
 
-        FieldScrapper scrapper = new FieldScrapper(config, Person.class);
+        FieldScrapper scrapper = new FieldScrapper(config);
 
         scrapper.setValue(instance, value);
         assertTrue(passed[0]);
@@ -294,7 +294,7 @@ public class FieldScrapperTest {
             @Override public void set(Object instance, Object value) throws PropertyException { throw exception; }
         });
 
-        FieldScrapper scrapper = new FieldScrapper(config, Person.class);
+        FieldScrapper scrapper = new FieldScrapper(config);
 
         scrapper.setValue(null, null);
     }

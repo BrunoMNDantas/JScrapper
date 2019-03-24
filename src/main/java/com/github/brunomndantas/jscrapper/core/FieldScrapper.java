@@ -18,23 +18,23 @@ public class FieldScrapper {
 
 
 
-    public FieldScrapper(FieldConfig config, Class klass) throws ScrapperException {
+    public FieldScrapper(FieldConfig config) throws ScrapperException {
         this.config = config;
 
         if(config.getDriverLoader() == null)
-            throw new ScrapperException("No DriverLoader found for field:" + config.getField().getName() + " of class:" + klass.getName() + "!");
+            throw new ScrapperException("No DriverLoader found for field:" + config.getField().getName() + " of class:" + config.getField().getDeclaringClass().getName() + "!");
 
         if(config.getSelector() == null)
-            throw new ScrapperException("No Selector found for field:" + config.getField().getName() + " of class:" + klass.getName() + "!");
+            throw new ScrapperException("No Selector found for field:" + config.getField().getName() + " of class:" + config.getField().getDeclaringClass().getName() + "!");
 
         if(config.getElementLoader() == null)
-            throw new ScrapperException("No ElementLoader found for field:" + config.getField().getName() + " of class:" + klass.getName() + "!");
+            throw new ScrapperException("No ElementLoader found for field:" + config.getField().getName() + " of class:" + config.getField().getDeclaringClass().getName() + "!");
 
         if(config.getParser() == null)
-            throw new ScrapperException("No Parser found for field:" + config.getField().getName() + " of class:" + klass.getName() + "!");
+            throw new ScrapperException("No Parser found for field:" + config.getField().getName() + " of class:" + config.getField().getDeclaringClass().getName() + "!");
 
         if(config.getProperty() == null)
-            throw new ScrapperException("No Property found for field:" + config.getField().getName() + " of class:" + klass.getName() + "!");
+            throw new ScrapperException("No Property found for field:" + config.getField().getName() + " of class:" + config.getField().getDeclaringClass().getName() + "!");
     }
 
 

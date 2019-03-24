@@ -36,7 +36,7 @@ public class Scrapper {
             if(config.getConfigFor(field) == null)
                 throw new ScrapperException("No config found for field:" + field.getName() + " of class:" + klass.getName() + "!");
 
-            fieldScrapper = new FieldScrapper(config.getConfigFor(field), klass);
+            fieldScrapper = new FieldScrapper(config.getConfigFor(field));
             scrapField(fieldScrapper, driver, instance);
         }
 
