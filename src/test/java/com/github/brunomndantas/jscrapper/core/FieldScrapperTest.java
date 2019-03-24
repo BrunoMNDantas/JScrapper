@@ -150,15 +150,19 @@ public class FieldScrapperTest {
         assertTrue(passed[0]);
     }
 
-    @Test(expected = DriverLoaderException.class)
-    public void loadDriverFailTest() throws Exception {
+    @Test
+    public void wrapsDriverLoaderExceptionTest() throws Exception {
         DriverLoaderException exception = new DriverLoaderException("");
         FieldConfig config = createDummyFieldConfig();
         config.setDriverLoader((d) -> { throw exception; });
 
         FieldScrapper scrapper = new FieldScrapper(config);
 
-        scrapper.loadDriver(null);
+        try {
+            scrapper.loadDriver(null);
+        }catch (ScrapperException e) {
+            assertSame(e.getCause(), exception);
+        }
     }
 
     @Test
@@ -175,15 +179,19 @@ public class FieldScrapperTest {
         assertTrue(passed[0]);
     }
 
-    @Test(expected = SelectorException.class)
-    public void selectElementsFailTest() throws Exception {
+    @Test
+    public void wrapsSelectExceptionTest() throws Exception {
         SelectorException exception = new SelectorException("");
         FieldConfig config = createDummyFieldConfig();
         config.setSelector((d) -> { throw exception; });
 
         FieldScrapper scrapper = new FieldScrapper(config);
 
-        scrapper.selectElements(null);
+        try {
+            scrapper.selectElements(null);
+        }catch (ScrapperException e) {
+            assertSame(e.getCause(), exception);
+        }
     }
 
     @Test
@@ -200,15 +208,19 @@ public class FieldScrapperTest {
         assertTrue(passed[0]);
     }
 
-    @Test(expected = ElementLoaderException.class)
-    public void loadElementsFailTest() throws Exception {
+    @Test
+    public void wrapsElementLoaderExceptionTest() throws Exception {
         ElementLoaderException exception = new ElementLoaderException("");
         FieldConfig config = createDummyFieldConfig();
         config.setElementLoader((d, e) -> { throw exception; });
 
         FieldScrapper scrapper = new FieldScrapper(config);
 
-        scrapper.loadElements(null, null);
+        try {
+            scrapper.loadElements(null, null);
+        }catch (ScrapperException e) {
+            assertSame(e.getCause(), exception);
+        }
     }
 
     @Test
@@ -226,15 +238,19 @@ public class FieldScrapperTest {
         assertTrue(passed[0]);
     }
 
-    @Test(expected = ParserException.class)
-    public void parseElementsFailTest() throws Exception {
+    @Test
+    public void wrapsParseExceptionTest() throws Exception {
         ParserException exception = new ParserException("");
         FieldConfig config = createDummyFieldConfig();
         config.setParser((d, e) -> { throw exception; });
 
         FieldScrapper scrapper = new FieldScrapper(config);
 
-        scrapper.parseElements(null, null);
+        try {
+            scrapper.parseElements(null, null);
+        }catch (ScrapperException e) {
+            assertSame(e.getCause(), exception);
+        }
     }
 
     @Test
@@ -254,8 +270,8 @@ public class FieldScrapperTest {
         assertTrue(passed[0]);
     }
 
-    @Test(expected = PropertyException.class)
-    public void getValueFailTest() throws Exception {
+    @Test
+    public void wrapsPropertyExceptionGetValueTest() throws Exception {
         PropertyException exception = new PropertyException("");
         FieldConfig config = createDummyFieldConfig();
         config.setProperty(new IProperty() {
@@ -265,7 +281,11 @@ public class FieldScrapperTest {
 
         FieldScrapper scrapper = new FieldScrapper(config);
 
-        scrapper.getValue(null);
+        try {
+            scrapper.getValue(null);
+        }catch (ScrapperException e) {
+            assertSame(e.getCause(), exception);
+        }
     }
 
     @Test
@@ -285,8 +305,8 @@ public class FieldScrapperTest {
         assertTrue(passed[0]);
     }
 
-    @Test(expected = PropertyException.class)
-    public void setValueFailTest() throws Exception {
+    @Test
+    public void wrapsPropertyExceptionSetValueTest() throws Exception {
         PropertyException exception = new PropertyException("");
         FieldConfig config = createDummyFieldConfig();
         config.setProperty(new IProperty() {
@@ -296,7 +316,11 @@ public class FieldScrapperTest {
 
         FieldScrapper scrapper = new FieldScrapper(config);
 
-        scrapper.setValue(null, null);
+        try {
+            scrapper.setValue(null, null);
+        }catch (ScrapperException e) {
+            assertSame(e.getCause(), exception);
+        }
     }
 
 }

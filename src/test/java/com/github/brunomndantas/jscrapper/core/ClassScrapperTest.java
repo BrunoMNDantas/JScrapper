@@ -90,13 +90,17 @@ public class ClassScrapperTest {
         assertSame(instance, new ClassScrapper(config).createInstance());
     }
 
-    @Test(expected = InstanceFactoryException.class)
-    public void createInstanceFailTest() throws Exception {
+    @Test
+    public void wrapsInstanceFactoryExceptionTest() {
         InstanceFactoryException exception = new InstanceFactoryException("");
         ClassConfig config = createDummyClassConfig();
         config.setInstanceFactory(() -> { throw exception; });
 
-        new ClassScrapper(config).createInstance();
+        try {
+            new ClassScrapper(config).createInstance();
+        } catch (ScrapperException e) {
+            assertSame(e.getCause(), exception);
+        }
     }
 
     @Test
@@ -108,14 +112,18 @@ public class ClassScrapperTest {
         assertSame(driver, new ClassScrapper(config).getDriver());
     }
 
-    @Test(expected = DriverSupplierException.class)
-    public void getDriverFailTest() throws Exception {
+    @Test
+    public void wrapsDriverSupplierExceptionTest() {
         DriverSupplierException exception = new DriverSupplierException("");
         ClassConfig config = createDummyClassConfig();
         config.setDriverSupplier(() -> { throw exception; });
 
+        try {
+            new ClassScrapper(config).getDriver();
+        } catch (ScrapperException e) {
+            assertSame(e.getCause(), exception);
+        }
 
-        new ClassScrapper(config).getDriver();
     }
 
     @Test
@@ -130,13 +138,17 @@ public class ClassScrapperTest {
         assertTrue(passed[0]);
     }
 
-    @Test(expected = DriverLoaderException.class)
-    public void loadDriverFailTest() throws Exception {
+    @Test
+    public void wrapsDriverLoaderExceptionTest() {
         DriverLoaderException exception = new DriverLoaderException("");
         ClassConfig config = createDummyClassConfig();
         config.setDriverLoader((d) -> { throw exception; });
 
-        new ClassScrapper(config).loadDriver(null);
+        try {
+            new ClassScrapper(config).loadDriver(null);
+        } catch (ScrapperException e) {
+            assertSame(e.getCause(), exception);
+        }
     }
 
 }

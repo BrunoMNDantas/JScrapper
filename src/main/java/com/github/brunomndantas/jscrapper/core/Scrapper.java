@@ -1,7 +1,6 @@
 package com.github.brunomndantas.jscrapper.core;
 
 import com.github.brunomndantas.jscrapper.core.config.ScrapperConfig;
-import com.github.brunomndantas.jscrapper.core.instanceFactory.InstanceFactoryException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -27,7 +26,7 @@ public class Scrapper {
 
         ClassScrapper classScrapper = new ClassScrapper(config.getConfigFor(klass));
 
-        Object instance = createInstance(classScrapper);
+        Object instance = classScrapper.createInstance();
 
         WebDriver driver = scrapClass(classScrapper);
 
@@ -43,40 +42,24 @@ public class Scrapper {
         return instance;
     }
 
-    private Object createInstance(ClassScrapper classScrapper) throws ScrapperException {
-        try {
-            return classScrapper.createInstance();
-        } catch (InstanceFactoryException e) {
-            throw new ScrapperException("Error creating instance of class:" + classScrapper.getConfig().getKlass().getName() + "!", e);
-        }
-    }
-
     private WebDriver scrapClass(ClassScrapper classScrapper) throws ScrapperException {
-        try {
-            WebDriver driver = classScrapper.getDriver();
+        WebDriver driver = classScrapper.getDriver();
 
-            classScrapper.loadDriver(driver);
+        classScrapper.loadDriver(driver);
 
-            return driver;
-        } catch (Exception e) {
-            throw new ScrapperException("Error scrapping class:" + classScrapper.getConfig().getKlass().getName() + "!", e);
-        }
+        return driver;
     }
 
     private void scrapField(FieldScrapper fieldScrapper, WebDriver driver, Object instance) throws ScrapperException {
-        try {
-            fieldScrapper.loadDriver(driver);
+        fieldScrapper.loadDriver(driver);
 
-            Collection<WebElement> elements = fieldScrapper.selectElements(driver);
+        Collection<WebElement> elements = fieldScrapper.selectElements(driver);
 
-            fieldScrapper.loadElements(driver, elements);
+        fieldScrapper.loadElements(driver, elements);
 
-            Object value = fieldScrapper.parseElements(driver, elements);
+        Object value = fieldScrapper.parseElements(driver, elements);
 
-            fieldScrapper.setValue(instance, value);
-        } catch (Exception e) {
-            throw new ScrapperException("Error scrapping field:" + fieldScrapper.getConfig().getField().getName() + " of class:" + instance.getClass().getName() + "!", e);
-        }
+        fieldScrapper.setValue(instance, value);
     }
 
 }
