@@ -1,6 +1,8 @@
 package com.github.brunomndantas.jscrapper.core;
 
 import com.github.brunomndantas.jscrapper.core.config.ScrapperConfig;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -8,6 +10,10 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 
 public class Scrapper {
+
+    private final Logger LOGGER = LogManager.getLogger(Scrapper.class);
+
+
 
     private ScrapperConfig config;
     public ScrapperConfig getConfig() { return this.config; }
@@ -21,6 +27,8 @@ public class Scrapper {
 
 
     public Object scrap(Class klass) throws ScrapperException {
+        LOGGER.info("Scrapping class:" + klass + "!");
+
         if(config.getConfigFor(klass) == null)
             throw new ScrapperException("No config found for class:" + klass.getName());
 
