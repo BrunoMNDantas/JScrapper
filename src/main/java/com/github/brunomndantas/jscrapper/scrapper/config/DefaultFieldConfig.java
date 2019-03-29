@@ -34,41 +34,41 @@ public class DefaultFieldConfig {
 
 
 
-    public static FieldConfig getFieldConfig(Class klass, Field field) throws ScrapperException {
+    public static FieldConfig getFieldConfig(Field field) throws ScrapperException {
         FieldConfig config = new FieldConfig(field);
 
-        config.setDriverLoader(getDriverLoader(klass, field));
-        config.setSelector(getSelector(klass, field));
-        config.setElementLoader(getElementLoader(klass, field));
-        config.setParser(getParser(klass, field));
-        config.setProperty(getProperty(klass, field));
+        config.setDriverLoader(getDriverLoader(field));
+        config.setSelector(getSelector(field));
+        config.setElementLoader(getElementLoader(field));
+        config.setParser(getParser(field));
+        config.setProperty(getProperty(field));
 
         return config;
     }
 
-    public static IDriverLoader getDriverLoader(Class klass, Field field) throws ScrapperException {
+    public static IDriverLoader getDriverLoader(Field field) throws ScrapperException {
         return (diver) -> {};
     }
 
-    public static ISelector getSelector(Class klass, Field field) throws ScrapperException {
+    public static ISelector getSelector(Field field) throws ScrapperException {
        return new IdSelector(field.getName());
     }
 
-    public static IElementLoader getElementLoader(Class klass, Field field) throws ScrapperException {
+    public static IElementLoader getElementLoader(Field field) throws ScrapperException {
         return (driver, elements) -> {};
     }
 
-    public static IParser getParser(Class klass, Field field) throws ScrapperException {
+    public static IParser getParser(Field field) throws ScrapperException {
         if(field.getType().isArray())
-            return getArrayParser(klass, field);
+            return getArrayParser(field);
 
         if(field.getType().isAssignableFrom(Collection.class))
-            return getCollectionParser(klass, field);
+            return getCollectionParser(field);
 
-        return getSingleParser(klass, field);
+        return getSingleParser(field);
     }
 
-    public static IParser getArrayParser(Class klass, Field field) throws ScrapperException {
+    public static IParser getArrayParser(Field field) throws ScrapperException {
         if(field.getType().getComponentType().equals(boolean.class))
             return new ArrayPrimitiveBooleanTextParser();
 
@@ -130,7 +130,7 @@ public class DefaultFieldConfig {
         return null;
     }
 
-    public static IParser getCollectionParser(Class klass, Field field) throws ScrapperException {
+    public static IParser getCollectionParser(Field field) throws ScrapperException {
         if(((ParameterizedType)(field.getGenericType())).getActualTypeArguments()[0].equals(Boolean.class))
             return new CollectionReferenceBooleanTextParser();
 
@@ -167,7 +167,7 @@ public class DefaultFieldConfig {
         return null;
     }
 
-    public static IParser getSingleParser(Class klass, Field field) throws ScrapperException {
+    public static IParser getSingleParser(Field field) throws ScrapperException {
         if(field.getType().equals(boolean.class))
             return new SinglePrimitiveBooleanTextParser();
 
@@ -232,9 +232,9 @@ public class DefaultFieldConfig {
         return null;
     }
 
-    public static IProperty getProperty(Class klass, Field field) throws ScrapperException {
-        boolean hasGetter = MethodProperty.getGetter(klass, field) != null;
-        boolean hasSetter = MethodProperty.getSetter(klass, field) != null;
+    public static IProperty getProperty(Field field) throws ScrapperException {
+        boolean hasGetter = MethodProperty.getGetter(field.getDeclaringClass(), field) != null;
+        boolean hasSetter = MethodProperty.getSetter(field.getDeclaringClass(), field) != null;
 
         if(!hasGetter && !hasSetter)
             return new FieldProperty(field);
