@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 
 public class ArrayPrimitiveLongAttributeParser extends ArrayAttributeParser {
 
-    protected ArrayPrimitiveLongAttributeParser(String attribute) {
+    public ArrayPrimitiveLongAttributeParser(String attribute) {
         super(attribute, 0L);
     }
 

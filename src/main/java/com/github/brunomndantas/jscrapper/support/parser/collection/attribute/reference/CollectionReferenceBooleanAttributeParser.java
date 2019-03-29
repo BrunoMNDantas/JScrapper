@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 
 public class CollectionReferenceBooleanAttributeParser extends CollectionAttributeParser {
 
-    protected CollectionReferenceBooleanAttributeParser(String attribute) {
+    public CollectionReferenceBooleanAttributeParser(String attribute) {
         super(attribute, null);
     }
 

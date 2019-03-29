@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 
 public class ArrayPrimitiveFloatAttributeParser extends ArrayAttributeParser {
 
-    protected ArrayPrimitiveFloatAttributeParser(String attribute) {
+    public ArrayPrimitiveFloatAttributeParser(String attribute) {
         super(attribute, 0.0f);
     }
 

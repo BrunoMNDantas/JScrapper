@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 
 public class ArrayReferenceByteAttributeParser extends ArrayAttributeParser {
 
-    protected ArrayReferenceByteAttributeParser(String attribute) {
+    public ArrayReferenceByteAttributeParser(String attribute) {
         super(attribute, null);
     }
 

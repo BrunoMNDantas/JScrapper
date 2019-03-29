@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 
 public class ArrayPrimitiveDoubleAttributeParser extends ArrayAttributeParser {
 
-    protected ArrayPrimitiveDoubleAttributeParser(String attribute) {
+    public ArrayPrimitiveDoubleAttributeParser(String attribute) {
         super(attribute, 0.0d);
     }
 

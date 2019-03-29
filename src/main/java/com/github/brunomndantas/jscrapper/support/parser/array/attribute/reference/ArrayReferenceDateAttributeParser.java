@@ -12,7 +12,7 @@ public class ArrayReferenceDateAttributeParser extends ArrayAttributeParser {
 
 
 
-    protected ArrayReferenceDateAttributeParser(String attribute, String format) {
+    public ArrayReferenceDateAttributeParser(String attribute, String format) {
         super(attribute, null);
         this.format = format;
     }

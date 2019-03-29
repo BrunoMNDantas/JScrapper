@@ -12,7 +12,7 @@ public class CollectionReferenceDateAttributeParser extends CollectionAttributeP
 
 
 
-    protected CollectionReferenceDateAttributeParser(String attribute, String format) {
+    public CollectionReferenceDateAttributeParser(String attribute, String format) {
         super(attribute, null);
         this.format = format;
     }
