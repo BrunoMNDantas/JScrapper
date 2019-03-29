@@ -1,12 +1,12 @@
 package com.github.brunomndantas.jscrapper.core;
 
-import com.github.brunomndantas.jscrapper.core.config.ScrapperConfig;
+import com.github.brunomndantas.jscrapper.core.config.ClassConfig;
+import com.github.brunomndantas.jscrapper.core.config.FieldConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.lang.reflect.Field;
 import java.util.Collection;
 
 public class Scrapper {
@@ -15,35 +15,18 @@ public class Scrapper {
 
 
 
-    private ScrapperConfig config;
-    public ScrapperConfig getConfig() { return this.config; }
+    public Object scrap(ClassConfig classConfig) throws ScrapperException {
+        LOGGER.info("Scrapping class:" + classConfig.getKlass().getName() + "!");
 
-
-
-    public Scrapper(ScrapperConfig config) {
-        this.config = config;
-    }
-
-
-
-    public Object scrap(Class klass) throws ScrapperException {
-        LOGGER.info("Scrapping class:" + klass + "!");
-
-        if(config.getConfigFor(klass) == null)
-            throw new ScrapperException("No config found for class:" + klass.getName());
-
-        ClassScrapper classScrapper = new ClassScrapper(config.getConfigFor(klass));
+        ClassScrapper classScrapper = new ClassScrapper(classConfig);
 
         Object instance = classScrapper.createInstance();
 
         WebDriver driver = scrapClass(classScrapper);
 
         FieldScrapper fieldScrapper;
-        for(Field field : klass.getDeclaredFields()) {
-            if(config.getConfigFor(field) == null)
-                throw new ScrapperException("No config found for field:" + field.getName() + " of class:" + klass.getName() + "!");
-
-            fieldScrapper = new FieldScrapper(config.getConfigFor(field));
+        for(FieldConfig fieldConfig : classConfig.getFieldsConfig()) {
+            fieldScrapper = new FieldScrapper(fieldConfig);
             scrapField(fieldScrapper, driver, instance);
         }
 

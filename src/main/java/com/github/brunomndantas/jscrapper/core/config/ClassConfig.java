@@ -4,6 +4,9 @@ import com.github.brunomndantas.jscrapper.core.driverLoader.IDriverLoader;
 import com.github.brunomndantas.jscrapper.core.driverSupplier.IDriverSupplier;
 import com.github.brunomndantas.jscrapper.core.instanceFactory.IInstanceFactory;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 public class ClassConfig {
 
     private Class<?> klass;
@@ -22,19 +25,27 @@ public class ClassConfig {
     public IDriverLoader getDriverLoader() { return driverLoader; }
     public void setDriverLoader(IDriverLoader driverLoader) { this.driverLoader = driverLoader; }
 
+    private Collection<FieldConfig> fieldsConfig;
+    public Collection<FieldConfig> getFieldsConfig() { return this.fieldsConfig; }
+    public void  setFieldsConfig(Collection<FieldConfig> fieldsConfig) { this.fieldsConfig = fieldsConfig; }
 
 
-    public ClassConfig(Class<?> klass, IInstanceFactory instanceFactory, IDriverSupplier driverSupplier, IDriverLoader driverLoader) {
+
+    public ClassConfig(Class<?> klass, IInstanceFactory instanceFactory, IDriverSupplier driverSupplier, IDriverLoader driverLoader, Collection<FieldConfig> fieldsConfig) {
         this.klass = klass;
         this.instanceFactory = instanceFactory;
         this.driverSupplier = driverSupplier;
         this.driverLoader = driverLoader;
+        this.fieldsConfig = fieldsConfig;
     }
 
     public ClassConfig(Class<?> klass) {
+        this(klass, null, null, null, new LinkedList<>());
         this.klass = klass;
     }
 
-    public ClassConfig() { }
+    public ClassConfig() {
+        this(null, null, null, null, new LinkedList<>());
+    }
 
 }

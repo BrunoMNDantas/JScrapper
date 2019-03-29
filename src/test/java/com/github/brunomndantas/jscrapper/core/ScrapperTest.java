@@ -3,7 +3,6 @@ package com.github.brunomndantas.jscrapper.core;
 import com.github.brunomndantas.jscrapper.DummyDriver;
 import com.github.brunomndantas.jscrapper.core.config.ClassConfig;
 import com.github.brunomndantas.jscrapper.core.config.FieldConfig;
-import com.github.brunomndantas.jscrapper.core.config.ScrapperConfig;
 import com.github.brunomndantas.jscrapper.core.driverLoader.IDriverLoader;
 import com.github.brunomndantas.jscrapper.core.driverSupplier.IDriverSupplier;
 import com.github.brunomndantas.jscrapper.core.elementLoader.IElementLoader;
@@ -30,61 +29,12 @@ public class ScrapperTest {
 
 
     @Test
-    public void getConfigTest() {
-        ScrapperConfig config = new ScrapperConfig();
-        Scrapper scrapper = new Scrapper(config);
-
-        assertSame(config, scrapper.getConfig());
-    }
-
-    @Test
-    public void constructorTest() {
-        ScrapperConfig config = new ScrapperConfig();
-        Scrapper scrapper = new Scrapper(config);
-
-        assertSame(config, scrapper.getConfig());
-    }
-
-    @Test
-    public void nonExistentClassConfigTest() {
-        Class klass = Person.class;
-        ScrapperConfig config = new ScrapperConfig();
-
-        try {
-            new Scrapper(config).scrap(klass);
-            fail("Exception should be thrown!");
-        } catch(ScrapperException e) {
-            assertTrue(e.getMessage().contains("No config found for class"));
-            assertTrue(e.getMessage().contains(klass.getName()));
-        }
-    }
-
-    @Test
-    public void nonExistentFieldConfigTest() {
-        Class klass = Person.class;
-        ScrapperConfig config = new ScrapperConfig();
-        config.registerInstanceFactory(klass, () -> null);
-        config.registerDriverSupplier(klass, () -> null);
-        config.registerDriverLoader(klass, (d) -> {});
-
-        try {
-            new Scrapper(config).scrap(klass);
-            fail("Exception should be thrown!");
-        } catch(ScrapperException e) {
-            assertTrue(e.getMessage().contains("No config found for field"));
-            assertTrue(e.getMessage().contains(klass.getName()));
-            assertTrue(e.getMessage().contains("name"));
-        }
-    }
-
-    @Test
     public void nonExistentInstanceFactoryTest() {
         Class klass = Person.class;
-        ScrapperConfig config = new ScrapperConfig();
-        config.registerClassConfig(new ClassConfig(klass));
+        ClassConfig config = new ClassConfig(klass);
 
         try {
-            new Scrapper(config).scrap(klass);
+            new Scrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No InstanceFactory found"));
@@ -95,11 +45,11 @@ public class ScrapperTest {
     @Test
     public void nonExistentDriverSupplierTest() {
         Class klass = Person.class;
-        ScrapperConfig config = new ScrapperConfig();
-        config.registerInstanceFactory(klass, () -> null);
+        ClassConfig config = new ClassConfig(klass);
+        config.setInstanceFactory(() -> null);
 
         try {
-            new Scrapper(config).scrap(klass);
+            new Scrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No DriverSupplier found"));
@@ -110,12 +60,12 @@ public class ScrapperTest {
     @Test
     public void nonExistentClassDriverLoaderTest() {
         Class klass = Person.class;
-        ScrapperConfig config = new ScrapperConfig();
-        config.registerInstanceFactory(klass, () -> null);
-        config.registerDriverSupplier(klass, () -> null);
+        ClassConfig config = new ClassConfig(klass);
+        config.setInstanceFactory(() -> null);
+        config.setDriverSupplier(() -> null);
 
         try {
-            new Scrapper(config).scrap(klass);
+            new Scrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No DriverLoader found"));
@@ -127,14 +77,16 @@ public class ScrapperTest {
     public void nonExistentFieldDriverLoaderTest() throws NoSuchFieldException {
         Class klass = Person.class;
         Field field = Person.class.getDeclaredField("name");
-        ScrapperConfig config = new ScrapperConfig();
-        config.registerInstanceFactory(klass, Person::new);
-        config.registerDriverSupplier(klass, () -> null);
-        config.registerDriverLoader(klass, (d) -> {});
-        config.registerFieldConfig(new FieldConfig(field));
+        ClassConfig config = new ClassConfig(klass);
+        config.setInstanceFactory(Person::new);
+        config.setDriverSupplier(() -> null);
+        config.setDriverLoader((d) -> {});
+
+        FieldConfig fieldConfig = new FieldConfig(field);
+        config.getFieldsConfig().add(fieldConfig);
 
         try {
-            new Scrapper(config).scrap(klass);
+            new Scrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No DriverLoader found"));
@@ -147,14 +99,17 @@ public class ScrapperTest {
     public void nonExistentSelectorTest() throws NoSuchFieldException {
         Class klass = Person.class;
         Field field = Person.class.getDeclaredField("name");
-        ScrapperConfig config = new ScrapperConfig();
-        config.registerInstanceFactory(klass, Person::new);
-        config.registerDriverSupplier(klass, () -> null);
-        config.registerDriverLoader(klass, (d) -> {});
-        config.registerDriverLoader(field, (d) -> {});
+        ClassConfig config = new ClassConfig(klass);
+        config.setInstanceFactory(Person::new);
+        config.setDriverSupplier(() -> null);
+        config.setDriverLoader((d) -> {});
+
+        FieldConfig fieldConfig = new FieldConfig(field);
+        fieldConfig.setDriverLoader((d) -> {});
+        config.getFieldsConfig().add(fieldConfig);
 
         try {
-            new Scrapper(config).scrap(klass);
+            new Scrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No Selector found"));
@@ -167,15 +122,18 @@ public class ScrapperTest {
     public void nonExistentElementLoaderTest() throws NoSuchFieldException {
         Class klass = Person.class;
         Field field = Person.class.getDeclaredField("name");
-        ScrapperConfig config = new ScrapperConfig();
-        config.registerInstanceFactory(klass, Person::new);
-        config.registerDriverSupplier(klass, () -> null);
-        config.registerDriverLoader(klass, (d) -> {});
-        config.registerDriverLoader(field, (d) -> {});
-        config.registerSelector(field, (d) -> null);
+        ClassConfig config = new ClassConfig(klass);
+        config.setInstanceFactory(Person::new);
+        config.setDriverSupplier(() -> null);
+        config.setDriverLoader((d) -> {});
+
+        FieldConfig fieldConfig = new FieldConfig(field);
+        fieldConfig.setDriverLoader((d) -> {});
+        fieldConfig.setSelector((d) -> null);
+        config.getFieldsConfig().add(fieldConfig);
 
         try {
-            new Scrapper(config).scrap(klass);
+            new Scrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No ElementLoader found"));
@@ -188,16 +146,19 @@ public class ScrapperTest {
     public void nonExistentParserTest() throws NoSuchFieldException {
         Class klass = Person.class;
         Field field = Person.class.getDeclaredField("name");
-        ScrapperConfig config = new ScrapperConfig();
-        config.registerInstanceFactory(klass, Person::new);
-        config.registerDriverSupplier(klass, () -> null);
-        config.registerDriverLoader(klass, (d) -> {});
-        config.registerDriverLoader(field, (d) -> {});
-        config.registerSelector(field, (d) -> null);
-        config.registerElementLoader(field, (driver, elements) -> {});
+        ClassConfig config = new ClassConfig(klass);
+        config.setInstanceFactory(Person::new);
+        config.setDriverSupplier(() -> null);
+        config.setDriverLoader((d) -> {});
+
+        FieldConfig fieldConfig = new FieldConfig(field);
+        fieldConfig.setDriverLoader((d) -> {});
+        fieldConfig.setSelector((d) -> null);
+        fieldConfig.setElementLoader((driver, elements) -> {});
+        config.getFieldsConfig().add(fieldConfig);
 
         try {
-            new Scrapper(config).scrap(klass);
+            new Scrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No Parser found"));
@@ -210,17 +171,20 @@ public class ScrapperTest {
     public void nonExistentPropertyTest() throws NoSuchFieldException {
         Class klass = Person.class;
         Field field = Person.class.getDeclaredField("name");
-        ScrapperConfig config = new ScrapperConfig();
-        config.registerInstanceFactory(klass, Person::new);
-        config.registerDriverSupplier(klass, () -> null);
-        config.registerDriverLoader(klass, (d) -> {});
-        config.registerDriverLoader(field, (d) -> {});
-        config.registerSelector(field, (d) -> null);
-        config.registerElementLoader(field, (driver, elements) -> {});
-        config.registerParser(field, (driver, elements) -> null);
+        ClassConfig config = new ClassConfig(klass);
+        config.setInstanceFactory(Person::new);
+        config.setDriverSupplier(() -> null);
+        config.setDriverLoader((d) -> {});
+
+        FieldConfig fieldConfig = new FieldConfig(field);
+        fieldConfig.setDriverLoader((d) -> {});
+        fieldConfig.setSelector((d) -> null);
+        fieldConfig.setElementLoader((driver, elements) -> {});
+        fieldConfig.setParser((driver, elements) -> null);
+        config.getFieldsConfig().add(fieldConfig);
 
         try {
-            new Scrapper(config).scrap(klass);
+            new Scrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No Property found"));
@@ -258,19 +222,22 @@ public class ScrapperTest {
             @Override public void set(Object i, Object v) { propertyPassed[0] = i == result && v == value; }
         };
 
-        ScrapperConfig config = new ScrapperConfig();
-        config.registerInstanceFactory(klass, instanceFactory);
-        config.registerDriverSupplier(klass, driverSupplier);
-        config.registerDriverLoader(klass, classDriverLoader);
-        config.registerDriverLoader(field, fieldDriverLoader);
-        config.registerSelector(field, selector);
-        config.registerElementLoader(field, elementLoader);
-        config.registerParser(field, parser);
-        config.registerProperty(field, property);
+        ClassConfig config = new ClassConfig(klass);
+        config.setInstanceFactory(instanceFactory);
+        config.setDriverSupplier(driverSupplier);
+        config.setDriverLoader(classDriverLoader);
 
-        Scrapper scrapper = new Scrapper(config);
+        FieldConfig fieldConfig = new FieldConfig(field);
+        fieldConfig.setDriverLoader(fieldDriverLoader);
+        fieldConfig.setSelector(selector);
+        fieldConfig.setElementLoader(elementLoader);
+        fieldConfig.setParser(parser);
+        fieldConfig.setProperty(property);
+        config.getFieldsConfig().add(fieldConfig);
 
-        assertSame(result, scrapper.scrap(klass));
+        Scrapper scrapper = new Scrapper();
+
+        assertSame(result, scrapper.scrap(config));
 
         assertTrue(driverSupplierPassed[0]);
         assertTrue(classDriverLoaderPassed[0]);
