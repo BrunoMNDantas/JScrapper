@@ -285,9 +285,7 @@ public class AnnotationFieldConfigTest {
 
     @Test
     public void getFieldConfigAnnotationTest() throws Exception {
-        Element annotation = AnnotationConfigEntity.class.getDeclaredField("name").getDeclaredAnnotation(Element.class);
-
-        FieldConfig config = AnnotationFieldConfig.getFieldConfig(AnnotationConfigEntity.class.getDeclaredField("name"), annotation);
+        FieldConfig config = AnnotationFieldConfig.getFieldConfig(AnnotationConfigEntity.class.getDeclaredField("name"));
 
         assertEquals(AnnotationConfigEntity.class.getDeclaredField("name"), config.getField());
         assertNotNull(config.getDriverLoader());
@@ -304,11 +302,19 @@ public class AnnotationFieldConfigTest {
 
 
     @Test
+    public void getDriverLoaderWithoutAnnotationTest() throws Exception {
+        Field field = NoAnnotationConfigEntity.class.getDeclaredField("name");
+        assertNull(AnnotationFieldConfig.getDriverLoader(field));
+
+        field = NoAnnotationEntity.class.getDeclaredField("name");
+        assertNull(AnnotationFieldConfig.getDriverLoader(field));
+    }
+
+    @Test
     public void getDriverLoaderTest() throws Exception {
         Field field = AnnotationConfigEntity.class.getDeclaredField("name");
-        DriverLoader annotation = field.getDeclaredAnnotation(Element.class).driverLoader();
 
-        IDriverLoader loader = AnnotationFieldConfig.getDriverLoader(field, annotation);
+        IDriverLoader loader = AnnotationFieldConfig.getDriverLoader(field);
 
         assertTrue(loader instanceof MyDriverLoader);
     }
@@ -316,16 +322,17 @@ public class AnnotationFieldConfigTest {
     @Test
     public void getSelectorWithoutAnnotationTest() throws Exception {
         Field field = NoAnnotationConfigEntity.class.getDeclaredField("name");
-        Selector annotation = field.getDeclaredAnnotation(Element.class).selector();
-        assertNull(AnnotationFieldConfig.getSelector(field, annotation));
+        assertNull(AnnotationFieldConfig.getSelector(field));
+
+        field = NoAnnotationEntity.class.getDeclaredField("name");
+        assertNull(AnnotationFieldConfig.getSelector(field));
     }
 
     @Test
     public void getMyImplementationSelectorAnnotationTest() throws Exception {
         Field field = AnnotationConfigEntity.class.getDeclaredField("name");
-        Selector annotation = field.getDeclaredAnnotation(Element.class).selector();
 
-        ISelector selector = AnnotationFieldConfig.getSelector(field, annotation);
+        ISelector selector = AnnotationFieldConfig.getSelector(field);
 
         assertTrue(selector instanceof MySelector);
     }
@@ -333,9 +340,8 @@ public class AnnotationFieldConfigTest {
     @Test
     public void getSelectorIdAnnotationTest() throws Exception {
         Field field = SelectorConfigEntity.class.getDeclaredField("id");
-        Selector annotation = field.getDeclaredAnnotation(Element.class).selector();
 
-        ISelector selector = AnnotationFieldConfig.getSelector(field, annotation);
+        ISelector selector = AnnotationFieldConfig.getSelector(field);
 
         assertTrue(selector instanceof IdSelector);
         assertEquals("id", ((IdSelector)selector).getSelector());
@@ -344,9 +350,8 @@ public class AnnotationFieldConfigTest {
     @Test
     public void getSelectorNameAnnotationTest() throws Exception {
         Field field = SelectorConfigEntity.class.getDeclaredField("name");
-        Selector annotation = field.getDeclaredAnnotation(Element.class).selector();
 
-        ISelector selector = AnnotationFieldConfig.getSelector(field, annotation);
+        ISelector selector = AnnotationFieldConfig.getSelector(field);
 
         assertTrue(selector instanceof NameSelector);
         assertEquals("name", ((NameSelector)selector).getSelector());
@@ -355,9 +360,8 @@ public class AnnotationFieldConfigTest {
     @Test
     public void getSelectorClassAnnotationTest() throws Exception {
         Field field = SelectorConfigEntity.class.getDeclaredField("klass");
-        Selector annotation = field.getDeclaredAnnotation(Element.class).selector();
 
-        ISelector selector = AnnotationFieldConfig.getSelector(field, annotation);
+        ISelector selector = AnnotationFieldConfig.getSelector(field);
 
         assertTrue(selector instanceof ClassNameSelector);
         assertEquals("class", ((ClassNameSelector)selector).getSelector());
@@ -366,9 +370,8 @@ public class AnnotationFieldConfigTest {
     @Test
     public void getSelectorTagAnnotationTest() throws Exception {
         Field field = SelectorConfigEntity.class.getDeclaredField("tag");
-        Selector annotation = field.getDeclaredAnnotation(Element.class).selector();
 
-        ISelector selector = AnnotationFieldConfig.getSelector(field, annotation);
+        ISelector selector = AnnotationFieldConfig.getSelector(field);
 
         assertTrue(selector instanceof TagNameSelector);
         assertEquals("tag", ((TagNameSelector)selector).getSelector());
@@ -377,9 +380,8 @@ public class AnnotationFieldConfigTest {
     @Test
     public void getSelectorLinkTextAnnotationTest() throws Exception {
         Field field = SelectorConfigEntity.class.getDeclaredField("linkText");
-        Selector annotation = field.getDeclaredAnnotation(Element.class).selector();
 
-        ISelector selector = AnnotationFieldConfig.getSelector(field, annotation);
+        ISelector selector = AnnotationFieldConfig.getSelector(field);
 
         assertTrue(selector instanceof LinkTextSelector);
         assertEquals("linkText", ((LinkTextSelector)selector).getSelector());
@@ -388,9 +390,8 @@ public class AnnotationFieldConfigTest {
     @Test
     public void getSelectorPartialLinkTextAnnotationTest() throws Exception {
         Field field = SelectorConfigEntity.class.getDeclaredField("partialLinkText");
-        Selector annotation = field.getDeclaredAnnotation(Element.class).selector();
 
-        ISelector selector = AnnotationFieldConfig.getSelector(field, annotation);
+        ISelector selector = AnnotationFieldConfig.getSelector(field);
 
         assertTrue(selector instanceof PartialLinkTextSelector);
         assertEquals("partialLinkText", ((PartialLinkTextSelector)selector).getSelector());
@@ -399,9 +400,8 @@ public class AnnotationFieldConfigTest {
     @Test
     public void getSelectorCSSAnnotationTest() throws Exception {
         Field field = SelectorConfigEntity.class.getDeclaredField("css");
-        Selector annotation = field.getDeclaredAnnotation(Element.class).selector();
 
-        ISelector selector = AnnotationFieldConfig.getSelector(field, annotation);
+        ISelector selector = AnnotationFieldConfig.getSelector(field);
 
         assertTrue(selector instanceof CSSSelector);
         assertEquals("css", ((CSSSelector)selector).getSelector());
@@ -410,9 +410,8 @@ public class AnnotationFieldConfigTest {
     @Test
     public void getSelectorXPathAnnotationTest() throws Exception {
         Field field = SelectorConfigEntity.class.getDeclaredField("xpath");
-        Selector annotation = field.getDeclaredAnnotation(Element.class).selector();
 
-        ISelector selector = AnnotationFieldConfig.getSelector(field, annotation);
+        ISelector selector = AnnotationFieldConfig.getSelector(field);
 
         assertTrue(selector instanceof XPathSelector);
         assertEquals("xpath", ((XPathSelector)selector).getSelector());
@@ -421,16 +420,17 @@ public class AnnotationFieldConfigTest {
     @Test
     public void getElementLoaderWithoutAnnotationTest() throws Exception {
         Field field = NoAnnotationConfigEntity.class.getDeclaredField("name");
-        ElementLoader annotation = field.getDeclaredAnnotation(Element.class).elementLoader();
-        assertNull(AnnotationFieldConfig.getElementLoader(field, annotation));
+        assertNull(AnnotationFieldConfig.getElementLoader(field));
+
+        field = NoAnnotationEntity.class.getDeclaredField("name");
+        assertNull(AnnotationFieldConfig.getElementLoader(field));
     }
 
     @Test
     public void getMyImplementationElementLoaderAnnotationTest() throws Exception {
         Field field = AnnotationConfigEntity.class.getDeclaredField("name");
-        ElementLoader annotation = field.getDeclaredAnnotation(Element.class).elementLoader();
 
-        IElementLoader loader = AnnotationFieldConfig.getElementLoader(field, annotation);
+        IElementLoader loader = AnnotationFieldConfig.getElementLoader(field);
 
         assertTrue(loader instanceof MyElementLoader);
     }
@@ -439,7 +439,7 @@ public class AnnotationFieldConfigTest {
     public void getComposedElementLoaderAnnotationTest() throws Exception {
         Field field = ElementLoaderConfigEntity.class.getDeclaredField("name");
         ElementLoader.Action[] actions = field.getDeclaredAnnotation(Element.class).elementLoader().actions();
-        IElementLoader loader = AnnotationFieldConfig.getElementLoader(field, actions);
+        IElementLoader loader = AnnotationFieldConfig.getElementLoader(field);
 
         assertTrue(loader instanceof ComposedElementLoader);
 
@@ -450,53 +450,21 @@ public class AnnotationFieldConfigTest {
         assertTrue(loaders.get(1) instanceof ClickElementLoader);
         assertTrue(loaders.get(2) instanceof DoubleClickElementLoader);
         assertTrue(loaders.get(3) instanceof SendKeysElementLoader);
+        assertEquals("text", ((SendKeysElementLoader)loaders.get(3)).getKeys());
         assertTrue(loaders.get(4) instanceof SubmitElementLoader);
         assertTrue(loaders.get(5) instanceof WaitElementLoader);
+        assertEquals(1000, ((WaitElementLoader)loaders.get(5)).getTime());
+        assertEquals(TimeUnit.DAYS, ((WaitElementLoader)loaders.get(5)).getTimeUnit());
         assertTrue(loaders.get(6) instanceof WaitVisibleElementLoader);
-    }
-
-    @Test
-    public void getElementLoaderAnnotationTest() throws Exception {
-        Field field = ElementLoaderConfigEntity.class.getDeclaredField("name");
-        ElementLoader.Action[] actions = field.getDeclaredAnnotation(Element.class).elementLoader().actions();
-        ElementLoader.Action action = actions[0];
-
-        IElementLoader loader = AnnotationFieldConfig.getElementLoader(field, action);
-        assertTrue(loader instanceof ClearElementLoader);
-
-        action = actions[1];
-        loader = AnnotationFieldConfig.getElementLoader(field, action);
-        assertTrue(loader instanceof ClickElementLoader);
-
-        action = actions[2];
-        loader = AnnotationFieldConfig.getElementLoader(field, action);
-        assertTrue(loader instanceof DoubleClickElementLoader);
-
-        action = actions[3];
-        loader = AnnotationFieldConfig.getElementLoader(field, action);
-        assertTrue(loader instanceof SendKeysElementLoader);
-
-        action = actions[4];
-        loader = AnnotationFieldConfig.getElementLoader(field, action);
-        assertTrue(loader instanceof SubmitElementLoader);
-
-        action = actions[5];
-        loader = AnnotationFieldConfig.getElementLoader(field, action);
-        assertTrue(loader instanceof WaitElementLoader);
-
-        action = actions[6];
-        loader = AnnotationFieldConfig.getElementLoader(field, action);
-        assertTrue(loader instanceof WaitVisibleElementLoader);
+        assertEquals(1000, ((WaitVisibleElementLoader)loaders.get(6)).getTime());
+        assertEquals(TimeUnit.DAYS, ((WaitVisibleElementLoader)loaders.get(6)).getTimeUnit());
     }
 
     @Test
     public void getUnknownElementLoaderAnnotationTest() throws Exception {
         Field field = UnknownElementLoaderConfigEntity.class.getDeclaredField("name");
-        ElementLoader.Action[] actions = field.getDeclaredAnnotation(Element.class).elementLoader().actions();
-        ElementLoader.Action action = actions[0];
-
         try {
-            AnnotationFieldConfig.getElementLoader(field, action);
+            AnnotationFieldConfig.getElementLoader(field);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().toLowerCase().contains("unknown"));
@@ -505,93 +473,10 @@ public class AnnotationFieldConfigTest {
     }
 
     @Test
-    public void getElementLoaderClearAnnotationTest() throws Exception {
-        Field field = ElementLoaderConfigEntity.class.getDeclaredField("name");
-        ElementLoader.Action[] actions = field.getDeclaredAnnotation(Element.class).elementLoader().actions();
-        ElementLoader.Action action = actions[0];
-
-        ClearElementLoader loader = AnnotationFieldConfig.getElementLoader(field, action.clear());
-
-        assertNotNull(loader);
-    }
-
-    @Test
-    public void getElementLoaderClickAnnotationTest() throws Exception {
-        Field field = ElementLoaderConfigEntity.class.getDeclaredField("name");
-        ElementLoader.Action[] actions = field.getDeclaredAnnotation(Element.class).elementLoader().actions();
-        ElementLoader.Action action = actions[1];
-
-        ClickElementLoader loader = AnnotationFieldConfig.getElementLoader(field, action.click());
-
-        assertNotNull(loader);
-    }
-
-    @Test
-    public void getElementLoaderDoubleClickAnnotationTest() throws Exception {
-        Field field = ElementLoaderConfigEntity.class.getDeclaredField("name");
-        ElementLoader.Action[] actions = field.getDeclaredAnnotation(Element.class).elementLoader().actions();
-        ElementLoader.Action action = actions[2];
-
-        DoubleClickElementLoader loader = AnnotationFieldConfig.getElementLoader(field, action.doubleClick());
-
-        assertNotNull(loader);
-    }
-
-    @Test
-    public void getElementLoaderSendKeysAnnotationTest() throws Exception {
-        Field field  = ElementLoaderConfigEntity.class.getDeclaredField("name");
-        ElementLoader.Action[] actions = field.getDeclaredAnnotation(Element.class).elementLoader().actions();
-        ElementLoader.Action action = actions[3];
-
-        SendKeysElementLoader loader = AnnotationFieldConfig.getElementLoader(field, action.sendKeys());
-
-        assertNotNull(loader);
-        assertEquals("text", loader.getKeys());
-    }
-
-    @Test
-    public void getElementLoaderSubmitAnnotationTest() throws Exception {
-        Field field = ElementLoaderConfigEntity.class.getDeclaredField("name");
-        ElementLoader.Action[] actions = field.getDeclaredAnnotation(Element.class).elementLoader().actions();
-        ElementLoader.Action action = actions[4];
-
-        SubmitElementLoader loader = AnnotationFieldConfig.getElementLoader(field, action.submit());
-
-        assertNotNull(loader);
-    }
-
-    @Test
-    public void getElementLoaderWaitAnnotationTest() throws Exception {
-        Field field = ElementLoaderConfigEntity.class.getDeclaredField("name");
-        ElementLoader.Action[] actions = field.getDeclaredAnnotation(Element.class).elementLoader().actions();
-        ElementLoader.Action action = actions[5];
-
-        WaitElementLoader loader = AnnotationFieldConfig.getElementLoader(field, action.waitFor());
-
-        assertNotNull(loader);
-        assertEquals(1000, loader.getTime());
-        assertEquals(TimeUnit.DAYS, loader.getTimeUnit());
-    }
-
-    @Test
-    public void getElementLoaderWaitVisibleAnnotationTest() throws Exception {
-        Field field = ElementLoaderConfigEntity.class.getDeclaredField("name");
-        ElementLoader.Action[] actions = field.getDeclaredAnnotation(Element.class).elementLoader().actions();
-        ElementLoader.Action action = actions[6];
-
-        WaitVisibleElementLoader loader = AnnotationFieldConfig.getElementLoader(field, action.waitVisible());
-
-        assertNotNull(loader);
-        assertEquals(1000, loader.getTime());
-        assertEquals(TimeUnit.DAYS, loader.getTimeUnit());
-    }
-
-    @Test
     public void getMyImplementationParserAnnotationTest() throws Exception {
         Field field = AnnotationConfigEntity.class.getDeclaredField("name");
-        Parser annotation = field.getDeclaredAnnotation(Element.class).parser();
 
-        IParser parser = AnnotationFieldConfig.getParser(field, annotation);
+        IParser parser = AnnotationFieldConfig.getParser(field);
 
         assertTrue(parser instanceof MyParser);
     }
@@ -599,33 +484,28 @@ public class AnnotationFieldConfigTest {
     @Test
     public void getParserWithoutAnnotationTest() throws Exception {
         Field field = NoAnnotationConfigEntity.class.getDeclaredField("name");
-        Parser annotation = field.getDeclaredAnnotation(Element.class).parser();
-        assertNull(AnnotationFieldConfig.getParser(field, annotation));
+        assertNull(AnnotationFieldConfig.getParser(field));
+
+        field = NoAnnotationEntity.class.getDeclaredField("name");
+        assertNull(AnnotationFieldConfig.getParser(field));
     }
 
     @Test
     public void getParserTest() throws Exception {
         Field field = AnnotationConfigEntity.class.getDeclaredField("name");
-        Parser annotation = field.getDeclaredAnnotation(Element.class).parser();
-        IParser parser = AnnotationFieldConfig.getParser(field, annotation);
+        IParser parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof MyParser);
 
         field = PersonArrayParser.class.getDeclaredField("_boolean");
-        annotation = field.getDeclaredAnnotation(Element.class).parser();
-        parser = AnnotationFieldConfig.getParser(field, annotation);
-
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayPrimitiveBooleanAttributeParser);
 
         field = PersonCollectionParser.class.getDeclaredField("_Boolean");
-        annotation = field.getDeclaredAnnotation(Element.class).parser();
-        parser = AnnotationFieldConfig.getParser(field, annotation);
-
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof CollectionReferenceBooleanAttributeParser);
 
         field = PersonSingleParser.class.getDeclaredField("_boolean");
-        annotation = field.getDeclaredAnnotation(Element.class).parser();
-        parser = AnnotationFieldConfig.getParser(field, annotation);
-
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SinglePrimitiveBooleanAttributeParser);
     }
 
@@ -635,98 +515,98 @@ public class AnnotationFieldConfigTest {
         Field field;
 
         field = PersonArrayParser.class.getDeclaredField("_boolean");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayPrimitiveBooleanAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_byte");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayPrimitiveByteAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_char");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayPrimitiveCharacterAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_double");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayPrimitiveDoubleAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_float");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayPrimitiveFloatAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_int");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayPrimitiveIntegerAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_long");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayPrimitiveLongAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_short");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayPrimitiveShortAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_Boolean");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayReferenceBooleanAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_Byte");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayReferenceByteAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_Character");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayReferenceCharacterAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_Date");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayReferenceDateAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
         assertEquals("date", ((ArrayReferenceDateAttributeParser)parser).getFormat());
 
         field = PersonArrayParser.class.getDeclaredField("_Double");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayReferenceDoubleAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_Float");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayReferenceFloatAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_Integer");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayReferenceIntegerAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_Long");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayReferenceLongAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_Short");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayReferenceShortAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_String");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof ArrayReferenceStringAttributeParser);
         assertEquals("att",((ArrayAttributeParser)parser).getAttribute());
 
         field = PersonArrayParser.class.getDeclaredField("_Object");
-        parser = AnnotationFieldConfig.getArrayParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertNull(parser);
     }
 
@@ -736,58 +616,58 @@ public class AnnotationFieldConfigTest {
         Field field;
 
         field = PersonCollectionParser.class.getDeclaredField("_Boolean");
-        parser = AnnotationFieldConfig.getCollectionParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof CollectionReferenceBooleanAttributeParser);
         assertEquals("att",((CollectionAttributeParser)parser).getAttribute());
 
         field = PersonCollectionParser.class.getDeclaredField("_Byte");
-        parser = AnnotationFieldConfig.getCollectionParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof CollectionReferenceByteAttributeParser);
         assertEquals("att",((CollectionAttributeParser)parser).getAttribute());
 
         field = PersonCollectionParser.class.getDeclaredField("_Character");
-        parser = AnnotationFieldConfig.getCollectionParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof CollectionReferenceCharacterAttributeParser);
         assertEquals("att",((CollectionAttributeParser)parser).getAttribute());
 
         field = PersonCollectionParser.class.getDeclaredField("_Date");
-        parser = AnnotationFieldConfig.getCollectionParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof CollectionReferenceDateAttributeParser);
         assertEquals("att",((CollectionAttributeParser)parser).getAttribute());
         assertEquals("date", ((CollectionReferenceDateAttributeParser)parser).getFormat());
 
         field = PersonCollectionParser.class.getDeclaredField("_Double");
-        parser = AnnotationFieldConfig.getCollectionParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof CollectionReferenceDoubleAttributeParser);
         assertEquals("att",((CollectionAttributeParser)parser).getAttribute());
 
         field = PersonCollectionParser.class.getDeclaredField("_Float");
-        parser = AnnotationFieldConfig.getCollectionParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof CollectionReferenceFloatAttributeParser);
         assertEquals("att",((CollectionAttributeParser)parser).getAttribute());
 
         field = PersonCollectionParser.class.getDeclaredField("_Integer");
-        parser = AnnotationFieldConfig.getCollectionParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof CollectionReferenceIntegerAttributeParser);
         assertEquals("att",((CollectionAttributeParser)parser).getAttribute());
 
         field = PersonCollectionParser.class.getDeclaredField("_Long");
-        parser = AnnotationFieldConfig.getCollectionParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof CollectionReferenceLongAttributeParser);
         assertEquals("att",((CollectionAttributeParser)parser).getAttribute());
 
         field = PersonCollectionParser.class.getDeclaredField("_Short");
-        parser = AnnotationFieldConfig.getCollectionParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof CollectionReferenceShortAttributeParser);
         assertEquals("att",((CollectionAttributeParser)parser).getAttribute());
 
         field = PersonCollectionParser.class.getDeclaredField("_String");
-        parser = AnnotationFieldConfig.getCollectionParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof CollectionReferenceStringAttributeParser);
         assertEquals("att",((CollectionAttributeParser)parser).getAttribute());
 
         field = PersonCollectionParser.class.getDeclaredField("_Object");
-        parser = AnnotationFieldConfig.getCollectionParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertNull(parser);
     }
 
@@ -797,107 +677,106 @@ public class AnnotationFieldConfigTest {
         Field field;
 
         field = PersonSingleParser.class.getDeclaredField("_boolean");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SinglePrimitiveBooleanAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_byte");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SinglePrimitiveByteAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_char");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SinglePrimitiveCharacterAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_double");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SinglePrimitiveDoubleAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_float");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SinglePrimitiveFloatAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_int");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SinglePrimitiveIntegerAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_long");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SinglePrimitiveLongAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_short");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SinglePrimitiveShortAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_Boolean");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SingleReferenceBooleanAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_Byte");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SingleReferenceByteAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_Character");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SingleReferenceCharacterAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_Date");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SingleReferenceDateAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
         assertEquals("date", ((SingleReferenceDateAttributeParser)parser).getFormat());
 
         field = PersonSingleParser.class.getDeclaredField("_Double");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SingleReferenceDoubleAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_Float");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SingleReferenceFloatAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_Integer");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SingleReferenceIntegerAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_Long");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SingleReferenceLongAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_Short");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SingleReferenceShortAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_String");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertTrue(parser instanceof SingleReferenceStringAttributeParser);
         assertEquals("att",((SingleAttributeParser)parser).getAttribute());
 
         field = PersonSingleParser.class.getDeclaredField("_Object");
-        parser = AnnotationFieldConfig.getSingleParser(field, field.getDeclaredAnnotation(Element.class).parser());
+        parser = AnnotationFieldConfig.getParser(field);
         assertNull(parser);
     }
 
     @Test
     public void getMyImplementationPropertyAnnotationTest() throws Exception {
         Field field = AnnotationConfigEntity.class.getDeclaredField("name");
-        Property annotation = field.getDeclaredAnnotation(Element.class).property();
 
-        IProperty property = AnnotationFieldConfig.getProperty(field, annotation);
+        IProperty property = AnnotationFieldConfig.getProperty(field);
 
         assertTrue(property instanceof MyProperty);
     }
@@ -905,8 +784,10 @@ public class AnnotationFieldConfigTest {
     @Test
     public void getPropertyWithoutAnnotationTest() throws Exception {
         Field field = NoAnnotationConfigEntity.class.getDeclaredField("name");
-        Property annotation = field.getDeclaredAnnotation(Element.class).property();
-        assertNull(AnnotationFieldConfig.getProperty(field, annotation));
+        assertNull(AnnotationFieldConfig.getProperty(field));
+
+        field = NoAnnotationEntity.class.getDeclaredField("name");
+        assertNull(AnnotationFieldConfig.getProperty(field));
     }
 
 }

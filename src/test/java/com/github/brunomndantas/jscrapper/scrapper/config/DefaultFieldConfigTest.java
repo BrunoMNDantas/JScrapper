@@ -169,65 +169,65 @@ public class DefaultFieldConfigTest {
     public void getArrayParserTest() throws Exception {
         IParser parser;
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_boolean"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_boolean"));
         assertTrue(parser instanceof ArrayPrimitiveBooleanTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_byte"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_byte"));
         assertTrue(parser instanceof ArrayPrimitiveByteTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_char"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_char"));
         assertTrue(parser instanceof ArrayPrimitiveCharacterTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_double"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_double"));
         assertTrue(parser instanceof ArrayPrimitiveDoubleTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_float"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_float"));
         assertTrue(parser instanceof ArrayPrimitiveFloatTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_int"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_int"));
         assertTrue(parser instanceof ArrayPrimitiveIntegerTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_long"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_long"));
         assertTrue(parser instanceof ArrayPrimitiveLongTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_short"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_short"));
         assertTrue(parser instanceof ArrayPrimitiveShortTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_Boolean"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_Boolean"));
         assertTrue(parser instanceof ArrayReferenceBooleanTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_Byte"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_Byte"));
         assertTrue(parser instanceof ArrayReferenceByteTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_Character"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_Character"));
         assertTrue(parser instanceof ArrayReferenceCharacterTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_Date"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_Date"));
         assertTrue(parser instanceof ArrayReferenceDateTextParser);
         assertEquals(DefaultFieldConfig.DEFAULT_DATE_FORMAT, ((ArrayReferenceDateTextParser)parser).getFormat());
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_Double"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_Double"));
         assertTrue(parser instanceof ArrayReferenceDoubleTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_Float"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_Float"));
         assertTrue(parser instanceof ArrayReferenceFloatTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_Integer"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_Integer"));
         assertTrue(parser instanceof ArrayReferenceIntegerTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_Long"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_Long"));
         assertTrue(parser instanceof ArrayReferenceLongTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_Short"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_Short"));
         assertTrue(parser instanceof ArrayReferenceShortTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_String"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_String"));
         assertTrue(parser instanceof ArrayReferenceStringTextParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_WebElement"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_WebElement"));
         assertTrue(parser instanceof ArrayWebElementParser);
 
-        parser = DefaultFieldConfig.getArrayParser(PersonArrayParser.class.getDeclaredField("_Object"));
+        parser = DefaultFieldConfig.getParser(PersonArrayParser.class.getDeclaredField("_Object"));
         assertNull(parser);
     }
 
@@ -235,41 +235,41 @@ public class DefaultFieldConfigTest {
     public void getCollectionParserTest() throws Exception {
         IParser parser;
 
-        parser = DefaultFieldConfig.getCollectionParser(PersonCollectionParser.class.getDeclaredField("_Boolean"));
+        parser = DefaultFieldConfig.getParser(PersonCollectionParser.class.getDeclaredField("_Boolean"));
         assertTrue(parser instanceof CollectionReferenceBooleanTextParser);
 
-        parser = DefaultFieldConfig.getCollectionParser(PersonCollectionParser.class.getDeclaredField("_Byte"));
+        parser = DefaultFieldConfig.getParser(PersonCollectionParser.class.getDeclaredField("_Byte"));
         assertTrue(parser instanceof CollectionReferenceByteTextParser);
 
-        parser = DefaultFieldConfig.getCollectionParser(PersonCollectionParser.class.getDeclaredField("_Character"));
+        parser = DefaultFieldConfig.getParser(PersonCollectionParser.class.getDeclaredField("_Character"));
         assertTrue(parser instanceof CollectionReferenceCharacterTextParser);
 
-        parser = DefaultFieldConfig.getCollectionParser(PersonCollectionParser.class.getDeclaredField("_Date"));
+        parser = DefaultFieldConfig.getParser(PersonCollectionParser.class.getDeclaredField("_Date"));
         assertTrue(parser instanceof CollectionReferenceDateTextParser);
         assertEquals(DefaultFieldConfig.DEFAULT_DATE_FORMAT, ((CollectionReferenceDateTextParser)parser).getFormat());
 
-        parser = DefaultFieldConfig.getCollectionParser(PersonCollectionParser.class.getDeclaredField("_Double"));
+        parser = DefaultFieldConfig.getParser(PersonCollectionParser.class.getDeclaredField("_Double"));
         assertTrue(parser instanceof CollectionReferenceDoubleTextParser);
 
-        parser = DefaultFieldConfig.getCollectionParser(PersonCollectionParser.class.getDeclaredField("_Float"));
+        parser = DefaultFieldConfig.getParser(PersonCollectionParser.class.getDeclaredField("_Float"));
         assertTrue(parser instanceof CollectionReferenceFloatTextParser);
 
-        parser = DefaultFieldConfig.getCollectionParser(PersonCollectionParser.class.getDeclaredField("_Integer"));
+        parser = DefaultFieldConfig.getParser(PersonCollectionParser.class.getDeclaredField("_Integer"));
         assertTrue(parser instanceof CollectionReferenceIntegerTextParser);
 
-        parser = DefaultFieldConfig.getCollectionParser(PersonCollectionParser.class.getDeclaredField("_Long"));
+        parser = DefaultFieldConfig.getParser(PersonCollectionParser.class.getDeclaredField("_Long"));
         assertTrue(parser instanceof CollectionReferenceLongTextParser);
 
-        parser = DefaultFieldConfig.getCollectionParser(PersonCollectionParser.class.getDeclaredField("_Short"));
+        parser = DefaultFieldConfig.getParser(PersonCollectionParser.class.getDeclaredField("_Short"));
         assertTrue(parser instanceof CollectionReferenceShortTextParser);
 
-        parser = DefaultFieldConfig.getCollectionParser(PersonCollectionParser.class.getDeclaredField("_String"));
+        parser = DefaultFieldConfig.getParser(PersonCollectionParser.class.getDeclaredField("_String"));
         assertTrue(parser instanceof CollectionReferenceStringTextParser);
 
-        parser = DefaultFieldConfig.getCollectionParser(PersonCollectionParser.class.getDeclaredField("_WebElement"));
+        parser = DefaultFieldConfig.getParser(PersonCollectionParser.class.getDeclaredField("_WebElement"));
         assertTrue(parser instanceof CollectionWebElementParser);
 
-        parser = DefaultFieldConfig.getCollectionParser(PersonCollectionParser.class.getDeclaredField("_Object"));
+        parser = DefaultFieldConfig.getParser(PersonCollectionParser.class.getDeclaredField("_Object"));
         assertNull(parser);
     }
 
@@ -277,68 +277,68 @@ public class DefaultFieldConfigTest {
     public void getSingleParserTest() throws Exception {
         IParser parser;
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_boolean"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_boolean"));
         assertTrue(parser instanceof SinglePrimitiveBooleanTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_byte"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_byte"));
         assertTrue(parser instanceof SinglePrimitiveByteTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_char"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_char"));
         assertTrue(parser instanceof SinglePrimitiveCharacterTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_double"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_double"));
         assertTrue(parser instanceof SinglePrimitiveDoubleTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_float"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_float"));
         assertTrue(parser instanceof SinglePrimitiveFloatTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_int"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_int"));
         assertTrue(parser instanceof SinglePrimitiveIntegerTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_long"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_long"));
         assertTrue(parser instanceof SinglePrimitiveLongTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_short"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_short"));
         assertTrue(parser instanceof SinglePrimitiveShortTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_Boolean"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_Boolean"));
         assertTrue(parser instanceof SingleReferenceBooleanTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_Byte"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_Byte"));
         assertTrue(parser instanceof SingleReferenceByteTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_Character"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_Character"));
         assertTrue(parser instanceof SingleReferenceCharacterTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_Date"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_Date"));
         assertTrue(parser instanceof SingleReferenceDateTextParser);
         assertEquals(DefaultFieldConfig.DEFAULT_DATE_FORMAT, ((SingleReferenceDateTextParser)parser).getFormat());
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_Double"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_Double"));
         assertTrue(parser instanceof SingleReferenceDoubleTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_Float"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_Float"));
         assertTrue(parser instanceof SingleReferenceFloatTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_Integer"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_Integer"));
         assertTrue(parser instanceof SingleReferenceIntegerTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_Long"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_Long"));
         assertTrue(parser instanceof SingleReferenceLongTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_Short"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_Short"));
         assertTrue(parser instanceof SingleReferenceShortTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_String"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_String"));
         assertTrue(parser instanceof SingleReferenceStringTextParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_WebElement"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_WebElement"));
         assertTrue(parser instanceof SingleWebElementParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_WebDriver"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_WebDriver"));
         assertTrue(parser instanceof SingleWebDriverParser);
 
-        parser = DefaultFieldConfig.getSingleParser(PersonSingleParser.class.getDeclaredField("_Object"));
+        parser = DefaultFieldConfig.getParser(PersonSingleParser.class.getDeclaredField("_Object"));
         assertNull(parser);
     }
 

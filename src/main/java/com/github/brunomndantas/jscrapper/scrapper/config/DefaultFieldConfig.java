@@ -46,29 +46,33 @@ public class DefaultFieldConfig {
         return config;
     }
 
+
     public static IDriverLoader getDriverLoader(Field field) throws ScrapperException {
         return (diver) -> {};
     }
+
 
     public static ISelector getSelector(Field field) throws ScrapperException {
        return new IdSelector(field.getName());
     }
 
+
     public static IElementLoader getElementLoader(Field field) throws ScrapperException {
         return (driver, elements) -> {};
     }
+
 
     public static IParser getParser(Field field) throws ScrapperException {
         if(field.getType().isArray())
             return getArrayParser(field);
 
-        if(field.getType().isAssignableFrom(Collection.class))
+        if(field.getType().equals(Collection.class))
             return getCollectionParser(field);
 
         return getSingleParser(field);
     }
 
-    public static IParser getArrayParser(Field field) throws ScrapperException {
+    private static IParser getArrayParser(Field field) throws ScrapperException {
         if(field.getType().getComponentType().equals(boolean.class))
             return new ArrayPrimitiveBooleanTextParser();
 
@@ -130,7 +134,7 @@ public class DefaultFieldConfig {
         return null;
     }
 
-    public static IParser getCollectionParser(Field field) throws ScrapperException {
+    private static IParser getCollectionParser(Field field) throws ScrapperException {
         if(((ParameterizedType)(field.getGenericType())).getActualTypeArguments()[0].equals(Boolean.class))
             return new CollectionReferenceBooleanTextParser();
 
@@ -167,7 +171,7 @@ public class DefaultFieldConfig {
         return null;
     }
 
-    public static IParser getSingleParser(Field field) throws ScrapperException {
+    private static IParser getSingleParser(Field field) throws ScrapperException {
         if(field.getType().equals(boolean.class))
             return new SinglePrimitiveBooleanTextParser();
 
@@ -231,6 +235,7 @@ public class DefaultFieldConfig {
 
         return null;
     }
+
 
     public static IProperty getProperty(Field field) throws ScrapperException {
         boolean hasGetter = MethodProperty.getGetter(field.getDeclaringClass(), field) != null;

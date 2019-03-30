@@ -117,9 +117,7 @@ public class AnnotationClassConfigTest {
 
     @Test
     public void getClassConfigAnnotationTest() throws Exception {
-        Page annotation = AnnotationConfigEntity.class.getDeclaredAnnotation(Page.class);
-
-        ClassConfig config = AnnotationClassConfig.getClassConfig(AnnotationConfigEntity.class, annotation);
+        ClassConfig config = AnnotationClassConfig.getClassConfig(AnnotationConfigEntity.class);
 
         assertSame(AnnotationConfigEntity.class, config.getKlass());
         assertNotNull(config.getInstanceFactory());
@@ -132,39 +130,31 @@ public class AnnotationClassConfigTest {
 
     @Test
     public void getInstanceFactoryWithoutAnnotationTest() throws Exception {
-        InstanceFactory annotation = NoAnnotationConfigEntity.class.getDeclaredAnnotation(Page.class).instanceFactory();
-        assertNull(AnnotationClassConfig.getInstanceFactory(NoAnnotationConfigEntity.class, annotation));
+        assertNull(AnnotationClassConfig.getInstanceFactory(NoAnnotationConfigEntity.class));
+        assertNull(AnnotationClassConfig.getInstanceFactory(NoAnnotationEntity.class));
     }
 
     @Test
     public void getMyImplementationInstanceFactoryAnnotationTest() throws Exception {
-        InstanceFactory annotation = AnnotationConfigEntity.class.getDeclaredAnnotation(Page.class).instanceFactory();
-
-        IInstanceFactory factory = AnnotationClassConfig.getInstanceFactory(AnnotationConfigEntity.class, annotation);
-
+        IInstanceFactory factory = AnnotationClassConfig.getInstanceFactory(AnnotationConfigEntity.class);
         assertTrue(factory instanceof MyInstanceFactory);
      }
 
     @Test
     public void getDriverSupplierWithoutAnnotationTest() throws Exception {
-        DriverSupplier annotation = NoAnnotationConfigEntity.class.getDeclaredAnnotation(Page.class).driverSupplier();
-        assertNull(AnnotationClassConfig.getDriverSupplier(NoAnnotationConfigEntity.class, annotation));
+        assertNull(AnnotationClassConfig.getDriverSupplier(NoAnnotationConfigEntity.class));
+        assertNull(AnnotationClassConfig.getDriverSupplier(NoAnnotationEntity.class));
     }
 
     @Test
     public void getMyImplementationDriverSupplierAnnotationTest() throws Exception {
-        DriverSupplier annotation = AnnotationConfigEntity.class.getDeclaredAnnotation(Page.class).driverSupplier();
-
-        IDriverSupplier supplier = AnnotationClassConfig.getDriverSupplier(AnnotationConfigEntity.class, annotation);
-
+        IDriverSupplier supplier = AnnotationClassConfig.getDriverSupplier(AnnotationConfigEntity.class);
         assertTrue(supplier instanceof MyDriverSupplier);
     }
 
     @Test
     public void getChromeDriverSupplierAnnotationTest() throws Exception {
-        DriverSupplier annotation = ChromeDriverSupplierConfigEntity.class.getDeclaredAnnotation(Page.class).driverSupplier();
-
-        IDriverSupplier supplier = AnnotationClassConfig.getDriverSupplier(ChromeDriverSupplierConfigEntity.class, annotation);
+        IDriverSupplier supplier = AnnotationClassConfig.getDriverSupplier(ChromeDriverSupplierConfigEntity.class);
 
         assertTrue(supplier instanceof ChromeDriverSupplier);
         assertEquals("chrome", ((ChromeDriverSupplier)supplier).getDriverPath());
@@ -172,9 +162,7 @@ public class AnnotationClassConfigTest {
 
     @Test
     public void getFirefoxDriverSupplierAnnotationTest() throws Exception {
-        DriverSupplier annotation = FirefoxDriverSupplierConfigEntity.class.getDeclaredAnnotation(Page.class).driverSupplier();
-
-        IDriverSupplier supplier = AnnotationClassConfig.getDriverSupplier(FirefoxDriverSupplierConfigEntity.class, annotation);
+        IDriverSupplier supplier = AnnotationClassConfig.getDriverSupplier(FirefoxDriverSupplierConfigEntity.class);
 
         assertTrue(supplier instanceof FirefoxDriverSupplier);
         assertEquals("firefox", ((FirefoxDriverSupplier)supplier).getDriverPath());
@@ -182,9 +170,7 @@ public class AnnotationClassConfigTest {
 
     @Test
     public void getPhantomDriverSupplierAnnotationTest() throws Exception {
-        DriverSupplier annotation = PhantomDriverSupplierConfigEntity.class.getDeclaredAnnotation(Page.class).driverSupplier();
-
-        IDriverSupplier supplier = AnnotationClassConfig.getDriverSupplier(PhantomDriverSupplierConfigEntity.class, annotation);
+        IDriverSupplier supplier = AnnotationClassConfig.getDriverSupplier(PhantomDriverSupplierConfigEntity.class);
 
         assertTrue(supplier instanceof PhantomDriverSupplier);
         assertEquals("phantom", ((PhantomDriverSupplier)supplier).getDriverPath());
@@ -192,23 +178,20 @@ public class AnnotationClassConfigTest {
 
     @Test
     public void getDriverLoaderWithoutAnnotationTest() throws Exception {
-        DriverLoader annotation = NoAnnotationConfigEntity.class.getDeclaredAnnotation(Page.class).driverLoader();
-        assertNull(AnnotationClassConfig.getDriverLoader(NoAnnotationConfigEntity.class, annotation));
+        assertNull(AnnotationClassConfig.getDriverLoader(NoAnnotationConfigEntity.class));
+        assertNull(AnnotationClassConfig.getDriverLoader(NoAnnotationEntity.class));
     }
 
     @Test
     public void getMyImplementationDriverLoaderAnnotationTest() throws Exception {
-        DriverLoader annotation = AnnotationConfigEntity.class.getDeclaredAnnotation(Page.class).driverLoader();
-
-        IDriverLoader loader = AnnotationClassConfig.getDriverLoader(AnnotationConfigEntity.class, annotation);
-
+        IDriverLoader loader = AnnotationClassConfig.getDriverLoader(AnnotationConfigEntity.class);
         assertTrue(loader instanceof MyDriverLoader);
     }
 
     @Test
     public void getComposedDriverLoaderAnnotationTest() throws Exception {
         DriverLoader.Action[] actions = DriverLoaderConfigEntity.class.getDeclaredAnnotation(Page.class).driverLoader().actions();
-        IDriverLoader loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class, actions);
+        IDriverLoader loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class);
 
         assertTrue(loader instanceof ComposedDriverLoader);
 
@@ -219,131 +202,27 @@ public class AnnotationClassConfigTest {
         assertTrue(loaders.get(1) instanceof ClickDriverLoader);
         assertTrue(loaders.get(2) instanceof DoubleClickDriverLoader);
         assertTrue(loaders.get(3) instanceof SendKeysDriverLoader);
+        assertEquals("text",((SendKeysDriverLoader)loaders.get(3)).getKeys());
         assertTrue(loaders.get(4) instanceof SubmitDriverLoader);
         assertTrue(loaders.get(5) instanceof WaitDriverLoader);
+        assertEquals(1000, ((WaitDriverLoader)loaders.get(5)).getTime());
+        assertEquals(TimeUnit.DAYS, ((WaitDriverLoader)loaders.get(5)).getTimeUnit());
         assertTrue(loaders.get(6) instanceof WaitVisibleDriverLoader);
-    }
-
-    @Test
-    public void getDriverLoaderAnnotationTest() throws Exception {
-        DriverLoader.Action[] actions = DriverLoaderConfigEntity.class.getDeclaredAnnotation(Page.class).driverLoader().actions();
-        DriverLoader.Action action;
-
-        action = actions[0];
-        IDriverLoader loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class, action);
-        assertTrue(loader instanceof ClearDriverLoader);
-
-        action = actions[1];
-        loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class, action);
-        assertTrue(loader instanceof ClickDriverLoader);
-
-        action = actions[2];
-        loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class, action);
-        assertTrue(loader instanceof DoubleClickDriverLoader);
-
-        action = actions[3];
-        loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class, action);
-        assertTrue(loader instanceof SendKeysDriverLoader);
-
-        action = actions[4];
-        loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class, action);
-        assertTrue(loader instanceof SubmitDriverLoader);
-
-        action = actions[5];
-        loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class, action);
-        assertTrue(loader instanceof WaitDriverLoader);
-
-        action = actions[6];
-        loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class, action);
-        assertTrue(loader instanceof WaitVisibleDriverLoader);
+        assertEquals(1000, ((WaitVisibleDriverLoader)loaders.get(6)).getTime());
+        assertEquals(TimeUnit.DAYS, ((WaitVisibleDriverLoader)loaders.get(6)).getTimeUnit());
+        assertTrue(((WaitVisibleDriverLoader)loaders.get(6)).getBy() instanceof By.ById);
+        assertTrue(((WaitVisibleDriverLoader)loaders.get(6)).getBy().toString().contains("elementId"));
     }
 
     @Test
     public void getUnknownDriverLoaderAnnotationTest() throws Exception {
-        DriverLoader.Action[] actions = UnknownDriverLoaderConfigEntity.class.getDeclaredAnnotation(Page.class).driverLoader().actions();
-        DriverLoader.Action action = actions[0];
-
         try {
-            AnnotationClassConfig.getDriverLoader(UnknownDriverLoaderConfigEntity.class, action);
+            AnnotationClassConfig.getDriverLoader(UnknownDriverLoaderConfigEntity.class);
             fail("Exception should be thrown!");
         } catch (ScrapperException e) {
             assertTrue(e.getMessage().toLowerCase().contains("unknown"));
             assertTrue(e.getMessage().toLowerCase().contains("action"));
         }
-    }
-
-    @Test
-    public void getDriverLoaderClearAnnotationTest() throws Exception {
-        DriverLoader.Action[] actions = DriverLoaderConfigEntity.class.getDeclaredAnnotation(Page.class).driverLoader().actions();
-        DriverLoader.Action action = actions[0];
-
-        ClearDriverLoader loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class, action.clear());
-
-        assertNotNull(loader);
-    }
-
-    @Test
-    public void getDriverLoaderClickAnnotationTest() throws Exception {
-        DriverLoader.Action[] actions = DriverLoaderConfigEntity.class.getDeclaredAnnotation(Page.class).driverLoader().actions();
-        DriverLoader.Action action = actions[1];
-
-        ClickDriverLoader loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class, action.click());
-
-        assertNotNull(loader);
-    }
-
-    @Test
-    public void getDriverLoaderDoubleClickAnnotationTest() throws Exception {
-        DriverLoader.Action[] actions = DriverLoaderConfigEntity.class.getDeclaredAnnotation(Page.class).driverLoader().actions();
-        DriverLoader.Action action = actions[2];
-
-        DoubleClickDriverLoader loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class, action.doubleClick());
-
-        assertNotNull(loader);
-    }
-
-    @Test
-    public void getDriverLoaderSendKeysAnnotationTest() throws Exception {
-        DriverLoader.Action[] actions = DriverLoaderConfigEntity.class.getDeclaredAnnotation(Page.class).driverLoader().actions();
-        DriverLoader.Action action = actions[3];
-
-        SendKeysDriverLoader loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class, action.sendKeys());
-
-        assertEquals("text", loader.getKeys());
-    }
-
-    @Test
-    public void getDriverLoaderSubmitAnnotationTest() throws Exception {
-        DriverLoader.Action[] actions = DriverLoaderConfigEntity.class.getDeclaredAnnotation(Page.class).driverLoader().actions();
-        DriverLoader.Action action = actions[4];
-
-        SubmitDriverLoader loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class, action.submit());
-
-        assertNotNull(loader);
-    }
-
-    @Test
-    public void getDriverLoaderWaitAnnotationTest() throws Exception {
-        DriverLoader.Action[] actions = DriverLoaderConfigEntity.class.getDeclaredAnnotation(Page.class).driverLoader().actions();
-        DriverLoader.Action action = actions[5];
-
-        WaitDriverLoader loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class, action.waitFor());
-
-        assertEquals(1000, loader.getTime());
-        assertEquals(TimeUnit.DAYS, loader.getTimeUnit());
-    }
-
-    @Test
-    public void getDriverLoaderWaitVisibleAnnotationTest() throws Exception {
-        DriverLoader.Action[] actions = DriverLoaderConfigEntity.class.getDeclaredAnnotation(Page.class).driverLoader().actions();
-        DriverLoader.Action action = actions[6];
-
-        WaitVisibleDriverLoader loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class, action.waitVisible());
-
-        assertEquals(1000, loader.getTime());
-        assertEquals(TimeUnit.DAYS, loader.getTimeUnit());
-        assertTrue(loader.getBy() instanceof By.ById);
-        assertTrue(loader.getBy().toString().contains("elementId"));
     }
 
     @Test

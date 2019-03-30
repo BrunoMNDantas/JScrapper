@@ -45,23 +45,33 @@ public class AnnotationFieldConfig {
         }
     }
 
-    public static FieldConfig getFieldConfig(Field field , Element annotation) throws ScrapperException {
+    private static FieldConfig getFieldConfig(Field field , Element annotation) throws ScrapperException {
         FieldConfig config = new FieldConfig(field);
 
-        config.setDriverLoader(getDriverLoader(field, annotation.driverLoader()));
-        config.setSelector(getSelector(field, annotation.selector()));
-        config.setElementLoader(getElementLoader(field, annotation.elementLoader()));
-        config.setParser(getParser(field, annotation.parser()));
-        config.setProperty(getProperty(field, annotation.property()));
+        config.setDriverLoader(getDriverLoader(field));
+        config.setSelector(getSelector(field));
+        config.setElementLoader(getElementLoader(field));
+        config.setParser(getParser(field));
+        config.setProperty(getProperty(field));
 
         return config;
     }
 
-    public static IDriverLoader getDriverLoader(Field field, DriverLoader annotation) throws ScrapperException {
+
+    public static IDriverLoader getDriverLoader(Field field) throws ScrapperException {
+        if(field.getDeclaredAnnotation(Element.class) == null)
+            return null;
+
+        DriverLoader annotation = field.getDeclaredAnnotation(Element.class).driverLoader();
         return AnnotationClassConfig.getDriverLoader(field.getDeclaringClass(), annotation);
     }
 
-    public static ISelector getSelector(Field field, Selector annotation) throws ScrapperException {
+
+    public static ISelector getSelector(Field field) throws ScrapperException {
+        if(field.getDeclaredAnnotation(Element.class) == null)
+            return null;
+
+        Selector annotation = field.getDeclaredAnnotation(Element.class).selector();
         if(annotation.isUserDefined()) {
             if(annotation.value() != ISelector.class)
                 return Utils.createInstance(annotation.value());
@@ -82,7 +92,12 @@ public class AnnotationFieldConfig {
         return null;
     }
 
-    public static IElementLoader getElementLoader(Field field, ElementLoader annotation) throws ScrapperException {
+
+    public static IElementLoader getElementLoader(Field field) throws ScrapperException {
+        if(field.getDeclaredAnnotation(Element.class) == null)
+            return null;
+
+        ElementLoader annotation = field.getDeclaredAnnotation(Element.class).elementLoader();
         if(annotation.isUserDefined()) {
             if(annotation.value() != IElementLoader.class)
                 return Utils.createInstance(annotation.value());
@@ -93,7 +108,7 @@ public class AnnotationFieldConfig {
         return null;
     }
 
-    public static IElementLoader getElementLoader(Field field, ElementLoader.Action[] actions) throws ScrapperException {
+    private static IElementLoader getElementLoader(Field field, ElementLoader.Action[] actions) throws ScrapperException {
         Collection<IElementLoader> loaders = new LinkedList<>();
 
         for(ElementLoader.Action action : actions)
@@ -102,7 +117,7 @@ public class AnnotationFieldConfig {
         return new ComposedElementLoader(loaders);
     }
 
-    public static IElementLoader getElementLoader(Field field, ElementLoader.Action annotation) throws ScrapperException {
+    private static IElementLoader getElementLoader(Field field, ElementLoader.Action annotation) throws ScrapperException {
         if(annotation.clear().isUserDefined())
             return getElementLoader(field, annotation.clear());
 
@@ -127,35 +142,40 @@ public class AnnotationFieldConfig {
         throw new ScrapperException("Unknown ElementLoader Action!");
     }
 
-    public static ClearElementLoader getElementLoader(Field field, ElementLoader.Clear annotation) {
+    private static ClearElementLoader getElementLoader(Field field, ElementLoader.Clear annotation) {
         return new ClearElementLoader();
     }
 
-    public static ClickElementLoader getElementLoader(Field field, ElementLoader.Click annotation) {
+    private static ClickElementLoader getElementLoader(Field field, ElementLoader.Click annotation) {
         return new ClickElementLoader();
     }
 
-    public static DoubleClickElementLoader getElementLoader(Field field, ElementLoader.DoubleClick annotation) {
+    private static DoubleClickElementLoader getElementLoader(Field field, ElementLoader.DoubleClick annotation) {
         return new DoubleClickElementLoader();
     }
 
-    public static SendKeysElementLoader getElementLoader(Field field, ElementLoader.SendKeys annotation) {
+    private static SendKeysElementLoader getElementLoader(Field field, ElementLoader.SendKeys annotation) {
         return new SendKeysElementLoader(annotation.value());
     }
 
-    public static SubmitElementLoader getElementLoader(Field field, ElementLoader.Submit annotation) {
+    private static SubmitElementLoader getElementLoader(Field field, ElementLoader.Submit annotation) {
         return new SubmitElementLoader();
     }
 
-    public static WaitElementLoader getElementLoader(Field field, ElementLoader.Wait annotation) {
+    private static WaitElementLoader getElementLoader(Field field, ElementLoader.Wait annotation) {
         return new WaitElementLoader(annotation.unit(), annotation.value());
     }
 
-    public static WaitVisibleElementLoader getElementLoader(Field field, ElementLoader.WaitVisible annotation) {
+    private static WaitVisibleElementLoader getElementLoader(Field field, ElementLoader.WaitVisible annotation) {
         return new WaitVisibleElementLoader(annotation.unit(), annotation.value());
     }
 
-    public static IParser getParser(Field field, Parser annotation) throws ScrapperException {
+
+    public static IParser getParser(Field field) throws ScrapperException {
+        if(field.getDeclaredAnnotation(Element.class) == null)
+            return null;
+
+        Parser annotation = field.getDeclaredAnnotation(Element.class).parser();
         if(annotation.isUserDefined()) {
             if(annotation.value() != IParser.class)
                 return Utils.createInstance(annotation.value());
@@ -164,7 +184,7 @@ public class AnnotationFieldConfig {
                 if(field.getType().isArray())
                     return getArrayParser(field, annotation);
 
-                if(field.getType().isAssignableFrom(Collection.class))
+                if(field.getType().equals(Collection.class))
                     return getCollectionParser(field, annotation);
 
                 return getSingleParser(field, annotation);
@@ -174,7 +194,7 @@ public class AnnotationFieldConfig {
         return null;
     }
 
-    public static IParser getArrayParser(Field field, Parser annotation) throws ScrapperException {
+    private static IParser getArrayParser(Field field, Parser annotation) throws ScrapperException {
         if(field.getType().getComponentType().equals(boolean.class))
             return new ArrayPrimitiveBooleanAttributeParser(annotation.attribute());
 
@@ -233,7 +253,7 @@ public class AnnotationFieldConfig {
         return null;
     }
 
-    public static IParser getCollectionParser(Field field, Parser annotation) throws ScrapperException {
+    private static IParser getCollectionParser(Field field, Parser annotation) throws ScrapperException {
         if(((ParameterizedType)(field.getGenericType())).getActualTypeArguments()[0].equals(Boolean.class))
             return new CollectionReferenceBooleanAttributeParser(annotation.attribute());
 
@@ -267,7 +287,7 @@ public class AnnotationFieldConfig {
         return null;
     }
 
-    public static IParser getSingleParser(Field field, Parser annotation) throws ScrapperException {
+    private static IParser getSingleParser(Field field, Parser annotation) throws ScrapperException {
         if(field.getType().equals(boolean.class))
             return new SinglePrimitiveBooleanAttributeParser(annotation.attribute());
 
@@ -326,7 +346,12 @@ public class AnnotationFieldConfig {
         return null;
     }
 
-    public static IProperty getProperty(Field field, Property annotation) throws ScrapperException {
+
+    public static IProperty getProperty(Field field) throws ScrapperException {
+        if(field.getDeclaredAnnotation(Element.class) == null)
+            return null;
+
+        Property annotation = field.getDeclaredAnnotation(Element.class).property();
         if(annotation.isUserDefined())
             if(annotation.value() != IProperty.class)
                 return Utils.createInstance(annotation.value());
