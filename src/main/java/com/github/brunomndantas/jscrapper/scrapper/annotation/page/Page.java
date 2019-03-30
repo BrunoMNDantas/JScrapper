@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface Page {
 
-    String url() default "";
+    URLSupplier urlSupplier() default @URLSupplier(isUserDefined = false);
 
     InstanceFactory instanceFactory() default @InstanceFactory(isUserDefined = false);
 

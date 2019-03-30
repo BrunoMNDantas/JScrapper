@@ -4,6 +4,7 @@ import com.github.brunomndantas.jscrapper.core.config.ClassConfig;
 import com.github.brunomndantas.jscrapper.core.driverLoader.DriverLoaderException;
 import com.github.brunomndantas.jscrapper.core.driverSupplier.DriverSupplierException;
 import com.github.brunomndantas.jscrapper.core.instanceFactory.InstanceFactoryException;
+import com.github.brunomndantas.jscrapper.core.urlSupplier.URLSupplierException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -28,6 +29,9 @@ public class ClassScrapper {
         if(config.getInstanceFactory() == null)
             throw new ScrapperException("No InstanceFactory found for class:" + className + "!");
 
+        if(config.getURLSupplier() == null)
+            throw new ScrapperException("No URLSupplier found for class:" + className + "!");
+
         if(config.getDriverSupplier() == null)
             throw new ScrapperException("No DriverSupplier found for class:" + className + "!");
 
@@ -48,6 +52,20 @@ public class ClassScrapper {
             return instance;
         } catch (InstanceFactoryException e) {
             throw new ScrapperException("Error creating instance of class:" + this.className + "!", e);
+        }
+    }
+
+    public String getURL() throws ScrapperException {
+        try {
+            LOGGER.info("Getting url for class:" + this.className + "!");
+
+            String url = this.config.getURLSupplier().get();
+
+            LOGGER.info("URL for class:" + this.className + " received[" + url + "]!");
+
+            return url;
+        } catch (URLSupplierException e) {
+            throw new ScrapperException("Error getting url for class:" + this.className + "!", e);
         }
     }
 

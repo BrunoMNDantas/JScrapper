@@ -8,15 +8,16 @@ import com.github.brunomndantas.jscrapper.core.driverSupplier.DriverSupplierExce
 import com.github.brunomndantas.jscrapper.core.driverSupplier.IDriverSupplier;
 import com.github.brunomndantas.jscrapper.core.instanceFactory.IInstanceFactory;
 import com.github.brunomndantas.jscrapper.core.instanceFactory.InstanceFactoryException;
+import com.github.brunomndantas.jscrapper.core.urlSupplier.IURLSupplier;
+import com.github.brunomndantas.jscrapper.core.urlSupplier.URLSupplierException;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.SelectorType;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverLoader;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverSupplier;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.page.InstanceFactory;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.page.Page;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.page.*;
 import com.github.brunomndantas.jscrapper.support.driverLoader.*;
 import com.github.brunomndantas.jscrapper.support.driverSupplier.ChromeDriverSupplier;
 import com.github.brunomndantas.jscrapper.support.driverSupplier.FirefoxDriverSupplier;
 import com.github.brunomndantas.jscrapper.support.driverSupplier.PhantomDriverSupplier;
+import com.github.brunomndantas.jscrapper.support.urlSupplier.FixedURLSupplier;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -33,6 +34,10 @@ public class AnnotationClassConfigTest {
         @Override public Object create() throws InstanceFactoryException { return null; }
     }
 
+    private static class MyURLSupplier implements IURLSupplier {
+        @Override public String get() throws URLSupplierException { return null; }
+    }
+
     private static class MyDriverSupplier implements IDriverSupplier {
         @Override public WebDriver get() throws DriverSupplierException { return null; }
     }
@@ -43,6 +48,7 @@ public class AnnotationClassConfigTest {
 
     @Page(
         instanceFactory = @InstanceFactory(MyInstanceFactory.class),
+        urlSupplier = @URLSupplier(MyURLSupplier.class),
         driverSupplier = @DriverSupplier(MyDriverSupplier.class),
         driverLoader = @DriverLoader(MyDriverLoader.class)
     )
@@ -52,6 +58,9 @@ public class AnnotationClassConfigTest {
     private static class NoAnnotationConfigEntity { }
 
     private static class NoAnnotationEntity { }
+
+    @Page(urlSupplier = @URLSupplier(url = "url"))
+    private static class FixedURLEntity { }
 
     @Page(driverSupplier = @DriverSupplier(driverLocation = "chrome", driverType = DriverSupplier.DriverType.CHROME))
     private static class ChromeDriverSupplierConfigEntity { }
@@ -88,6 +97,7 @@ public class AnnotationClassConfigTest {
 
         assertSame(NoAnnotationEntity.class, config.getKlass());
         assertNull(config.getInstanceFactory());
+        assertNull(config.getURLSupplier());
         assertNull(config.getDriverSupplier());
         assertNull(config.getDriverLoader());
     }
@@ -99,6 +109,8 @@ public class AnnotationClassConfigTest {
         assertSame(AnnotationConfigEntity.class, config.getKlass());
         assertNotNull(config.getInstanceFactory());
         assertTrue(config.getInstanceFactory() instanceof MyInstanceFactory);
+        assertNotNull(config.getURLSupplier());
+        assertTrue(config.getURLSupplier() instanceof MyURLSupplier);
         assertNotNull(config.getDriverSupplier());
         assertTrue(config.getDriverSupplier() instanceof MyDriverSupplier);
         assertNotNull(config.getDriverLoader());
@@ -116,19 +128,6 @@ public class AnnotationClassConfigTest {
     }
 
     @Test
-    public void getClassConfigAnnotationTest() throws Exception {
-        ClassConfig config = AnnotationClassConfig.getClassConfig(AnnotationConfigEntity.class);
-
-        assertSame(AnnotationConfigEntity.class, config.getKlass());
-        assertNotNull(config.getInstanceFactory());
-        assertTrue(config.getInstanceFactory() instanceof MyInstanceFactory);
-        assertNotNull(config.getDriverSupplier());
-        assertTrue(config.getDriverSupplier() instanceof MyDriverSupplier);
-        assertNotNull(config.getDriverLoader());
-        assertTrue(config.getDriverLoader() instanceof MyDriverLoader);
-    }
-
-    @Test
     public void getInstanceFactoryWithoutAnnotationTest() throws Exception {
         assertNull(AnnotationClassConfig.getInstanceFactory(NoAnnotationConfigEntity.class));
         assertNull(AnnotationClassConfig.getInstanceFactory(NoAnnotationEntity.class));
@@ -139,6 +138,25 @@ public class AnnotationClassConfigTest {
         IInstanceFactory factory = AnnotationClassConfig.getInstanceFactory(AnnotationConfigEntity.class);
         assertTrue(factory instanceof MyInstanceFactory);
      }
+
+    @Test
+    public void getURLSupplierWithoutAnnotationTest() throws Exception {
+        assertNull(AnnotationClassConfig.getURLSupplier(NoAnnotationConfigEntity.class));
+        assertNull(AnnotationClassConfig.getURLSupplier(NoAnnotationEntity.class));
+    }
+
+    @Test
+    public void getMyImplementationURLSupplierAnnotationTest() throws Exception {
+        IURLSupplier supplier =  AnnotationClassConfig.getURLSupplier(AnnotationConfigEntity.class);
+        assertTrue(supplier instanceof MyURLSupplier);
+    }
+
+    @Test
+    public void getFixedURLSupplierAnnotationTest() throws Exception {
+        IURLSupplier supplier =  AnnotationClassConfig.getURLSupplier(FixedURLEntity.class);
+        assertTrue(supplier instanceof FixedURLSupplier);
+        assertEquals("url", ((FixedURLSupplier)supplier).get());
+    }
 
     @Test
     public void getDriverSupplierWithoutAnnotationTest() throws Exception {

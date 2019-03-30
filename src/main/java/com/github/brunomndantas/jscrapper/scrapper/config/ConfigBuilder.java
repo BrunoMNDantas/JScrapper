@@ -8,6 +8,7 @@ public class ConfigBuilder {
 
     public static void buildConfig(ClassConfig config) throws ScrapperException {
         buildInstanceFactory(config);
+        buildURLSupplier(config);
         buildDriverSupplier(config);
         buildDriverLoader(config);
 
@@ -30,6 +31,15 @@ public class ConfigBuilder {
 
             if(config.getInstanceFactory() == null)
                 config.setInstanceFactory(DefaultClassConfig.getInstanceFactory(config.getKlass()));
+        }
+    }
+
+    private static void buildURLSupplier(ClassConfig config) throws ScrapperException {
+        if(config.getURLSupplier() == null) {
+            config.setURLSupplier(AnnotationClassConfig.getURLSupplier(config.getKlass()));
+
+            if(config.getURLSupplier() == null)
+                config.setURLSupplier(DefaultClassConfig.getURLSupplier(config.getKlass()));
         }
     }
 

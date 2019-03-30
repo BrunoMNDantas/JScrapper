@@ -5,6 +5,7 @@ import com.github.brunomndantas.jscrapper.core.config.ClassConfig;
 import com.github.brunomndantas.jscrapper.core.driverLoader.IDriverLoader;
 import com.github.brunomndantas.jscrapper.core.driverSupplier.IDriverSupplier;
 import com.github.brunomndantas.jscrapper.core.instanceFactory.IInstanceFactory;
+import com.github.brunomndantas.jscrapper.core.urlSupplier.IURLSupplier;
 import com.github.brunomndantas.jscrapper.support.instanceFactory.EmptyConstructorInstanceFactory;
 
 public class DefaultClassConfig {
@@ -13,10 +14,15 @@ public class DefaultClassConfig {
         ClassConfig config = new ClassConfig(klass);
 
         config.setInstanceFactory(getInstanceFactory(klass));
+        config.setURLSupplier(getURLSupplier(klass));
         config.setDriverSupplier(getDriverSupplier(klass));
         config.setDriverLoader(getDriverLoader(klass));
 
         return config;
+    }
+
+    public static IURLSupplier getURLSupplier(Class<?> klass) throws ScrapperException {
+        return () -> null;
     }
 
     public static IInstanceFactory getInstanceFactory(Class klass) throws ScrapperException {

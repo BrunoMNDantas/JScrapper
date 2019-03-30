@@ -16,11 +16,10 @@ import com.github.brunomndantas.jscrapper.core.property.IProperty;
 import com.github.brunomndantas.jscrapper.core.property.PropertyException;
 import com.github.brunomndantas.jscrapper.core.selector.ISelector;
 import com.github.brunomndantas.jscrapper.core.selector.SelectorException;
+import com.github.brunomndantas.jscrapper.core.urlSupplier.IURLSupplier;
+import com.github.brunomndantas.jscrapper.core.urlSupplier.URLSupplierException;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.element.*;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverLoader;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverSupplier;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.page.InstanceFactory;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.page.Page;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.page.*;
 import com.github.brunomndantas.jscrapper.support.instanceFactory.EmptyConstructorInstanceFactory;
 import com.github.brunomndantas.jscrapper.support.parser.single.text.reference.SingleReferenceStringTextParser;
 import com.github.brunomndantas.jscrapper.support.property.FieldProperty;
@@ -39,6 +38,10 @@ public class ConfigBuilderTest {
 
     private static class MyInstanceFactory implements IInstanceFactory {
         @Override public Object create() throws InstanceFactoryException { return null; }
+    }
+
+    private static class MyURLSupplier implements IURLSupplier{
+        @Override public String get() throws URLSupplierException { return null; }
     }
 
     private static class MyDriverSupplier implements IDriverSupplier {
@@ -68,6 +71,7 @@ public class ConfigBuilderTest {
 
     @Page(
         instanceFactory = @InstanceFactory(MyInstanceFactory.class),
+        urlSupplier = @URLSupplier(MyURLSupplier.class),
         driverSupplier = @DriverSupplier(MyDriverSupplier.class),
         driverLoader = @DriverLoader(MyDriverLoader.class)
     )
@@ -94,6 +98,7 @@ public class ConfigBuilderTest {
     public void buildWithUserConfigTest() throws Exception {
         Class<?> klass = Person.class;
         IInstanceFactory instanceFactory = new MyInstanceFactory();
+        IURLSupplier urlSupplier = () -> null;
         IDriverSupplier driverSupplier = new MyDriverSupplier();
         IDriverLoader driverLoader = new MyDriverLoader();
         Field field = Person.class.getDeclaredField("name");
@@ -102,7 +107,7 @@ public class ConfigBuilderTest {
         IParser parser = new MyParser();
         IProperty property = new MyProperty();
 
-        ClassConfig classConfig = new ClassConfig(klass, instanceFactory, driverSupplier, driverLoader, new LinkedList<>());
+        ClassConfig classConfig = new ClassConfig(klass, instanceFactory, urlSupplier, driverSupplier, driverLoader, new LinkedList<>());
         FieldConfig fieldConfig = new FieldConfig(field, driverLoader, selector, elementLoader, parser, property);
         classConfig.getFieldsConfig().add(fieldConfig);
 
@@ -110,6 +115,7 @@ public class ConfigBuilderTest {
 
         assertSame(klass, classConfig.getKlass());
         assertSame(instanceFactory, classConfig.getInstanceFactory());
+        assertSame(urlSupplier, classConfig.getURLSupplier());
         assertSame(driverSupplier, classConfig.getDriverSupplier());
         assertSame(driverLoader, classConfig.getDriverLoader());
         assertSame(field, fieldConfig.getField());
@@ -130,6 +136,7 @@ public class ConfigBuilderTest {
 
         assertSame(Person.class, classConfig.getKlass());
         assertTrue(classConfig.getInstanceFactory() instanceof MyInstanceFactory);
+        assertTrue(classConfig.getURLSupplier() instanceof MyURLSupplier);
         assertTrue(classConfig.getDriverSupplier() instanceof MyDriverSupplier);
         assertTrue(classConfig.getDriverLoader() instanceof MyDriverLoader);
         assertEquals(Person.class.getDeclaredField("name"), fieldConfig.getField());
@@ -150,6 +157,7 @@ public class ConfigBuilderTest {
 
         assertSame(NoAnnotationPerson.class, classConfig.getKlass());
         assertTrue(classConfig.getInstanceFactory() instanceof EmptyConstructorInstanceFactory);
+        assertNotNull(classConfig.getURLSupplier());
         assertNull(classConfig.getDriverSupplier());
         assertNotNull(classConfig.getDriverLoader());
         assertEquals(NoAnnotationPerson.class.getDeclaredField("name"), fieldConfig.getField());

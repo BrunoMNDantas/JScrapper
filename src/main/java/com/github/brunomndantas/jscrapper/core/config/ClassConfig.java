@@ -3,6 +3,7 @@ package com.github.brunomndantas.jscrapper.core.config;
 import com.github.brunomndantas.jscrapper.core.driverLoader.IDriverLoader;
 import com.github.brunomndantas.jscrapper.core.driverSupplier.IDriverSupplier;
 import com.github.brunomndantas.jscrapper.core.instanceFactory.IInstanceFactory;
+import com.github.brunomndantas.jscrapper.core.urlSupplier.IURLSupplier;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -16,6 +17,10 @@ public class ClassConfig {
     private IInstanceFactory instanceFactory;
     public IInstanceFactory getInstanceFactory() { return instanceFactory; }
     public void setInstanceFactory(IInstanceFactory instanceFactory) { this.instanceFactory = instanceFactory; }
+
+    private IURLSupplier urlSupplier;
+    public IURLSupplier getURLSupplier() { return this.urlSupplier; }
+    public void setURLSupplier(IURLSupplier urlSupplier) { this.urlSupplier = urlSupplier; }
 
     private IDriverSupplier driverSupplier;
     public IDriverSupplier getDriverSupplier() { return driverSupplier; }
@@ -31,21 +36,22 @@ public class ClassConfig {
 
 
 
-    public ClassConfig(Class<?> klass, IInstanceFactory instanceFactory, IDriverSupplier driverSupplier, IDriverLoader driverLoader, Collection<FieldConfig> fieldsConfig) {
+    public ClassConfig(Class<?> klass, IInstanceFactory instanceFactory, IURLSupplier urlSupplier, IDriverSupplier driverSupplier, IDriverLoader driverLoader, Collection<FieldConfig> fieldsConfig) {
         this.klass = klass;
         this.instanceFactory = instanceFactory;
+        this.urlSupplier = urlSupplier;
         this.driverSupplier = driverSupplier;
         this.driverLoader = driverLoader;
         this.fieldsConfig = fieldsConfig;
     }
 
     public ClassConfig(Class<?> klass) {
-        this(klass, null, null, null, new LinkedList<>());
+        this(klass, null, null, null, null, new LinkedList<>());
         this.klass = klass;
     }
 
     public ClassConfig() {
-        this(null, null, null, null, new LinkedList<>());
+        this(null, null, null, null, null, new LinkedList<>());
     }
 
 }

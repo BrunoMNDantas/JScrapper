@@ -36,6 +36,10 @@ public class Scrapper {
     private WebDriver scrapClass(ClassScrapper classScrapper) throws ScrapperException {
         WebDriver driver = classScrapper.getDriver();
 
+        String url = classScrapper.getURL();
+        if(url != null)
+            driver.get(url);
+
         classScrapper.loadDriver(driver);
 
         return driver;

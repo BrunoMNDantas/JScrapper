@@ -6,15 +6,15 @@ import com.github.brunomndantas.jscrapper.core.config.ClassConfig;
 import com.github.brunomndantas.jscrapper.core.driverLoader.IDriverLoader;
 import com.github.brunomndantas.jscrapper.core.driverSupplier.IDriverSupplier;
 import com.github.brunomndantas.jscrapper.core.instanceFactory.IInstanceFactory;
+import com.github.brunomndantas.jscrapper.core.urlSupplier.IURLSupplier;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.SelectorType;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverLoader;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverSupplier;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.page.InstanceFactory;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.page.Page;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.page.*;
 import com.github.brunomndantas.jscrapper.support.driverLoader.*;
 import com.github.brunomndantas.jscrapper.support.driverSupplier.ChromeDriverSupplier;
 import com.github.brunomndantas.jscrapper.support.driverSupplier.FirefoxDriverSupplier;
 import com.github.brunomndantas.jscrapper.support.driverSupplier.PhantomDriverSupplier;
+import com.github.brunomndantas.jscrapper.support.urlSupplier.FixedURLSupplier;
 import org.openqa.selenium.By;
 
 import java.util.Collection;
@@ -39,6 +39,7 @@ public class AnnotationClassConfig {
         ClassConfig config = new ClassConfig(klass);
 
         config.setInstanceFactory(getInstanceFactory(klass));
+        config.setURLSupplier(getURLSupplier(klass));
         config.setDriverSupplier(getDriverSupplier(klass));
         config.setDriverLoader(getDriverLoader(klass));
 
@@ -54,6 +55,22 @@ public class AnnotationClassConfig {
         if(annotation.isUserDefined())
             if(annotation.value() != IInstanceFactory.class)
                 return Utils.createInstance(annotation.value());
+
+        return null;
+    }
+
+
+    public static IURLSupplier getURLSupplier(Class<?> klass) throws ScrapperException {
+        if(klass.getDeclaredAnnotation(Page.class) == null)
+            return null;
+
+        URLSupplier annotation = klass.getDeclaredAnnotation(Page.class).urlSupplier();
+        if(annotation.isUserDefined()) {
+            if(annotation.value() != IURLSupplier.class)
+                return Utils.createInstance(annotation.value());
+
+            return new FixedURLSupplier(annotation.url());
+        }
 
         return null;
     }

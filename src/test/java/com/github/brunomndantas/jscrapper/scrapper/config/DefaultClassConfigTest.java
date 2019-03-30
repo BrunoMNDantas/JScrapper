@@ -1,6 +1,7 @@
 package com.github.brunomndantas.jscrapper.scrapper.config;
 
 import com.github.brunomndantas.jscrapper.core.config.ClassConfig;
+import com.github.brunomndantas.jscrapper.core.urlSupplier.IURLSupplier;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -17,6 +18,7 @@ public class DefaultClassConfigTest {
 
         assertEquals(Person.class, config.getKlass());
         assertNotNull(config.getInstanceFactory());
+        assertNotNull(config.getURLSupplier());
         assertNull(config.getDriverSupplier());
         assertNotNull(config.getDriverLoader());
     }
@@ -24,6 +26,13 @@ public class DefaultClassConfigTest {
     @Test
     public void getInstanceFactoryTest() throws Exception {
         assertNotNull(DefaultClassConfig.getInstanceFactory(Person.class));
+    }
+
+    @Test
+    public void getURLSupplierTest() throws Exception {
+        IURLSupplier supplier = DefaultClassConfig.getURLSupplier(Person.class);
+        assertNotNull(supplier);
+        assertNull(supplier.get());
     }
 
     @Test

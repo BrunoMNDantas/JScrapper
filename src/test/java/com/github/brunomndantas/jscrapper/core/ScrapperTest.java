@@ -10,6 +10,7 @@ import com.github.brunomndantas.jscrapper.core.instanceFactory.IInstanceFactory;
 import com.github.brunomndantas.jscrapper.core.parser.IParser;
 import com.github.brunomndantas.jscrapper.core.property.IProperty;
 import com.github.brunomndantas.jscrapper.core.selector.ISelector;
+import com.github.brunomndantas.jscrapper.core.urlSupplier.IURLSupplier;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -43,10 +44,26 @@ public class ScrapperTest {
     }
 
     @Test
+    public void nonExistentURLSupplierTest() {
+        Class klass = Person.class;
+        ClassConfig config = new ClassConfig(klass);
+        config.setInstanceFactory(() -> null);
+
+        try {
+            new Scrapper().scrap(config);
+            fail("Exception should be thrown!");
+        } catch(ScrapperException e) {
+            assertTrue(e.getMessage().contains("No URLSupplier found"));
+            assertTrue(e.getMessage().contains(klass.getName()));
+        }
+    }
+
+    @Test
     public void nonExistentDriverSupplierTest() {
         Class klass = Person.class;
         ClassConfig config = new ClassConfig(klass);
         config.setInstanceFactory(() -> null);
+        config.setURLSupplier(() -> "");
 
         try {
             new Scrapper().scrap(config);
@@ -62,7 +79,8 @@ public class ScrapperTest {
         Class klass = Person.class;
         ClassConfig config = new ClassConfig(klass);
         config.setInstanceFactory(() -> null);
-        config.setDriverSupplier(() -> null);
+        config.setURLSupplier(() -> "");
+        config.setDriverSupplier(DummyDriver::new);
 
         try {
             new Scrapper().scrap(config);
@@ -79,7 +97,8 @@ public class ScrapperTest {
         Field field = Person.class.getDeclaredField("name");
         ClassConfig config = new ClassConfig(klass);
         config.setInstanceFactory(Person::new);
-        config.setDriverSupplier(() -> null);
+        config.setURLSupplier(() -> "");
+        config.setDriverSupplier(DummyDriver::new);
         config.setDriverLoader((d) -> {});
 
         FieldConfig fieldConfig = new FieldConfig(field);
@@ -101,7 +120,8 @@ public class ScrapperTest {
         Field field = Person.class.getDeclaredField("name");
         ClassConfig config = new ClassConfig(klass);
         config.setInstanceFactory(Person::new);
-        config.setDriverSupplier(() -> null);
+        config.setURLSupplier(() -> "");
+        config.setDriverSupplier(DummyDriver::new);
         config.setDriverLoader((d) -> {});
 
         FieldConfig fieldConfig = new FieldConfig(field);
@@ -124,7 +144,8 @@ public class ScrapperTest {
         Field field = Person.class.getDeclaredField("name");
         ClassConfig config = new ClassConfig(klass);
         config.setInstanceFactory(Person::new);
-        config.setDriverSupplier(() -> null);
+        config.setURLSupplier(() -> "");
+        config.setDriverSupplier(DummyDriver::new);
         config.setDriverLoader((d) -> {});
 
         FieldConfig fieldConfig = new FieldConfig(field);
@@ -148,7 +169,8 @@ public class ScrapperTest {
         Field field = Person.class.getDeclaredField("name");
         ClassConfig config = new ClassConfig(klass);
         config.setInstanceFactory(Person::new);
-        config.setDriverSupplier(() -> null);
+        config.setURLSupplier(() -> "");
+        config.setDriverSupplier(DummyDriver::new);
         config.setDriverLoader((d) -> {});
 
         FieldConfig fieldConfig = new FieldConfig(field);
@@ -173,7 +195,8 @@ public class ScrapperTest {
         Field field = Person.class.getDeclaredField("name");
         ClassConfig config = new ClassConfig(klass);
         config.setInstanceFactory(Person::new);
-        config.setDriverSupplier(() -> null);
+        config.setURLSupplier(() -> "");
+        config.setDriverSupplier(DummyDriver::new);
         config.setDriverLoader((d) -> {});
 
         FieldConfig fieldConfig = new FieldConfig(field);
@@ -194,14 +217,41 @@ public class ScrapperTest {
     }
 
     @Test
-    public void scrapTest() throws Exception {
-        Class klass = Person.class;
-        Field field = klass.getDeclaredField("name");
-        Object result = new Object();
-        WebDriver driver = new DummyDriver();
-        Collection<WebElement> elements = new LinkedList<>();
-        Object value = new Person();
+    public void ignoreNullURLTest() throws Exception {
+        boolean[] urlIgnored = { true };
 
+        ClassConfig config = new ClassConfig(Person.class);
+        config.setInstanceFactory(() -> null);
+        config.setURLSupplier(() -> null);
+        config.setDriverSupplier(() -> new DummyDriver() {
+            @Override
+            public void get(String url) {
+                urlIgnored[0] = false;
+                super.get(url);
+            }
+        });
+        config.setDriverLoader(driver -> {});
+
+        FieldConfig fieldConfig = new FieldConfig(Person.class.getDeclaredField("name"));
+        fieldConfig.setDriverLoader(driver -> {});
+        fieldConfig.setSelector(driver -> null);
+        fieldConfig.setElementLoader((driver, elements) -> {});
+        fieldConfig.setParser((driver, elements) -> null);
+        fieldConfig.setProperty(new IProperty() {
+            @Override public Object get(Object instance) { return null; }
+            @Override public void set(Object i, Object v) { }
+        });
+        config.getFieldsConfig().add(fieldConfig);
+
+        Scrapper scrapper = new Scrapper();
+        scrapper.scrap(config);
+
+        assertTrue(urlIgnored[0]);
+    }
+
+    @Test
+    public void scrapTest() throws Exception {
+        boolean[] urlSupplierPassed = new boolean[1];
         boolean[] driverSupplierPassed = new boolean[1];
         boolean[] classDriverLoaderPassed = new boolean[1];
         boolean[] fieldDriverLoaderPassed = new boolean[1];
@@ -210,7 +260,22 @@ public class ScrapperTest {
         boolean[] parserPassed = new boolean[1];
         boolean[] propertyPassed = new boolean[1];
 
+        Class klass = Person.class;
+        Field field = klass.getDeclaredField("name");
+        Object result = new Object();
+        String url = "";
+        WebDriver driver = new DummyDriver(){
+            @Override
+            public void get(String u) {
+                urlSupplierPassed[0] = url == u;
+                super.get(url);
+            }
+        };
+        Collection<WebElement> elements = new LinkedList<>();
+        Object value = new Person();
+
         IInstanceFactory instanceFactory = () -> result;
+        IURLSupplier urlSupplier = () -> url;
         IDriverSupplier driverSupplier = () -> { driverSupplierPassed[0] = true; return driver; };
         IDriverLoader classDriverLoader = (d) -> { classDriverLoaderPassed[0] = d == driver; };
         IDriverLoader fieldDriverLoader = (d) -> { fieldDriverLoaderPassed[0] = d == driver; };
@@ -224,6 +289,7 @@ public class ScrapperTest {
 
         ClassConfig config = new ClassConfig(klass);
         config.setInstanceFactory(instanceFactory);
+        config.setURLSupplier(urlSupplier);
         config.setDriverSupplier(driverSupplier);
         config.setDriverLoader(classDriverLoader);
 
@@ -239,6 +305,7 @@ public class ScrapperTest {
 
         assertSame(result, scrapper.scrap(config));
 
+        assertTrue(urlSupplierPassed[0]);
         assertTrue(driverSupplierPassed[0]);
         assertTrue(classDriverLoaderPassed[0]);
         assertTrue(fieldDriverLoaderPassed[0]);
