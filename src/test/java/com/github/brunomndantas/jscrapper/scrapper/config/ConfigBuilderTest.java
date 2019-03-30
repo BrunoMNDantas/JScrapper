@@ -95,6 +95,18 @@ public class ConfigBuilderTest {
 
 
     @Test
+    public void createConfigTest() throws Exception {
+        Class<?> klass = Person.class;
+        Field field = klass.getDeclaredField("name");
+
+        ClassConfig config = ConfigBuilder.createConfig(klass);
+
+        assertSame(klass, config.getKlass());
+        assertEquals(1, config.getFieldsConfig().size());
+        assertEquals(field, config.getFieldsConfig().stream().findFirst().get().getField());
+    }
+
+    @Test
     public void buildWithUserConfigTest() throws Exception {
         Class<?> klass = Person.class;
         IInstanceFactory instanceFactory = new MyInstanceFactory();

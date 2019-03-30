@@ -4,7 +4,19 @@ import com.github.brunomndantas.jscrapper.core.ScrapperException;
 import com.github.brunomndantas.jscrapper.core.config.ClassConfig;
 import com.github.brunomndantas.jscrapper.core.config.FieldConfig;
 
+import java.lang.reflect.Field;
+
 public class ConfigBuilder {
+
+    public static ClassConfig createConfig(Class<?> klass) throws ScrapperException {
+        ClassConfig config = new ClassConfig(klass);
+
+        for(Field field : klass.getDeclaredFields())
+            config.getFieldsConfig().add(new FieldConfig(field));
+
+        return config;
+    }
+
 
     public static void buildConfig(ClassConfig config) throws ScrapperException {
         buildInstanceFactory(config);
