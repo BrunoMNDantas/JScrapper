@@ -21,7 +21,7 @@ import java.util.LinkedList;
 
 import static org.junit.Assert.*;
 
-public class ScrapperTest {
+public class CoreScrapperTest {
 
     public static class Person {
         public String name;
@@ -35,7 +35,7 @@ public class ScrapperTest {
         ClassConfig config = new ClassConfig(klass);
 
         try {
-            new Scrapper().scrap(config);
+            new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No InstanceFactory found"));
@@ -50,7 +50,7 @@ public class ScrapperTest {
         config.setInstanceFactory(() -> null);
 
         try {
-            new Scrapper().scrap(config);
+            new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No URLSupplier found"));
@@ -66,7 +66,7 @@ public class ScrapperTest {
         config.setURLSupplier(() -> "");
 
         try {
-            new Scrapper().scrap(config);
+            new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No DriverSupplier found"));
@@ -83,7 +83,7 @@ public class ScrapperTest {
         config.setDriverSupplier(DummyDriver::new);
 
         try {
-            new Scrapper().scrap(config);
+            new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No DriverLoader found"));
@@ -105,7 +105,7 @@ public class ScrapperTest {
         config.getFieldsConfig().add(fieldConfig);
 
         try {
-            new Scrapper().scrap(config);
+            new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No DriverLoader found"));
@@ -129,7 +129,7 @@ public class ScrapperTest {
         config.getFieldsConfig().add(fieldConfig);
 
         try {
-            new Scrapper().scrap(config);
+            new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No Selector found"));
@@ -154,7 +154,7 @@ public class ScrapperTest {
         config.getFieldsConfig().add(fieldConfig);
 
         try {
-            new Scrapper().scrap(config);
+            new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No ElementLoader found"));
@@ -180,7 +180,7 @@ public class ScrapperTest {
         config.getFieldsConfig().add(fieldConfig);
 
         try {
-            new Scrapper().scrap(config);
+            new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No Parser found"));
@@ -207,7 +207,7 @@ public class ScrapperTest {
         config.getFieldsConfig().add(fieldConfig);
 
         try {
-            new Scrapper().scrap(config);
+            new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
             assertTrue(e.getMessage().contains("No Property found"));
@@ -243,7 +243,7 @@ public class ScrapperTest {
         });
         config.getFieldsConfig().add(fieldConfig);
 
-        Scrapper scrapper = new Scrapper();
+        CoreScrapper scrapper = new CoreScrapper();
         scrapper.scrap(config);
 
         assertTrue(urlIgnored[0]);
@@ -301,7 +301,7 @@ public class ScrapperTest {
         fieldConfig.setProperty(property);
         config.getFieldsConfig().add(fieldConfig);
 
-        Scrapper scrapper = new Scrapper();
+        CoreScrapper scrapper = new CoreScrapper();
 
         assertSame(result, scrapper.scrap(config));
 

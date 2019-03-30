@@ -9,9 +9,9 @@ import org.openqa.selenium.WebElement;
 
 import java.util.Collection;
 
-public class Scrapper {
+public class CoreScrapper {
 
-    private final Logger LOGGER = LogManager.getLogger(Scrapper.class);
+    private final Logger LOGGER = LogManager.getLogger(CoreScrapper.class);
 
 
 
