@@ -107,6 +107,70 @@ public class ConfigBuilderTest {
     }
 
     @Test
+    public void mergeConfigsTest() throws Exception {
+        Class<?> klass = Person.class;
+        IInstanceFactory instanceFactory = new MyInstanceFactory();
+        IURLSupplier urlSupplier = () -> null;
+        IDriverSupplier driverSupplier = new MyDriverSupplier();
+        IDriverLoader driverLoader = new MyDriverLoader();
+        Field field = Person.class.getDeclaredField("name");
+        ISelector selector = new MySelector();
+        IElementLoader elementLoader = new MyElementLoader();
+        IParser parser = new MyParser();
+        IProperty property = new MyProperty();
+
+        ClassConfig userClassConfig = new ClassConfig(klass, instanceFactory, urlSupplier, driverSupplier, driverLoader, new LinkedList<>());
+        FieldConfig userFieldConfig = new FieldConfig(field, driverLoader, selector, elementLoader, parser, property);
+        userClassConfig.getFieldsConfig().add(userFieldConfig);
+
+        ClassConfig classConfig = new ClassConfig(klass);
+        FieldConfig fieldConfig = new FieldConfig(field);
+        classConfig.getFieldsConfig().add(fieldConfig);
+
+        ConfigBuilder.mergeConfigs(classConfig, userClassConfig);
+
+        assertSame(classConfig.getInstanceFactory(), userClassConfig.getInstanceFactory());
+        assertSame(classConfig.getURLSupplier(), userClassConfig.getURLSupplier());
+        assertSame(classConfig.getDriverSupplier(), userClassConfig.getDriverSupplier());
+        assertSame(classConfig.getDriverLoader(), userClassConfig.getDriverLoader());
+
+        assertSame(fieldConfig.getDriverLoader(), userFieldConfig.getDriverLoader());
+        assertSame(fieldConfig.getSelector(), userFieldConfig.getSelector());
+        assertSame(fieldConfig.getElementLoader(), userFieldConfig.getElementLoader());
+        assertSame(fieldConfig.getParser(), userFieldConfig.getParser());
+        assertSame(fieldConfig.getProperty(), userFieldConfig.getProperty());
+    }
+
+    @Test
+    public void mergeConfigsWithoutFieldConfigsTest() throws Exception {
+        Class<?> klass = Person.class;
+        IInstanceFactory instanceFactory = new MyInstanceFactory();
+        IURLSupplier urlSupplier = () -> null;
+        IDriverSupplier driverSupplier = new MyDriverSupplier();
+        IDriverLoader driverLoader = new MyDriverLoader();
+        Field field = Person.class.getDeclaredField("name");
+
+        ClassConfig userClassConfig = new ClassConfig(klass, instanceFactory, urlSupplier, driverSupplier, driverLoader, new LinkedList<>());
+
+        ClassConfig classConfig = new ClassConfig(klass);
+        FieldConfig fieldConfig = new FieldConfig(field);
+        classConfig.getFieldsConfig().add(fieldConfig);
+
+        ConfigBuilder.mergeConfigs(classConfig, userClassConfig);
+
+        assertSame(classConfig.getInstanceFactory(), userClassConfig.getInstanceFactory());
+        assertSame(classConfig.getURLSupplier(), userClassConfig.getURLSupplier());
+        assertSame(classConfig.getDriverSupplier(), userClassConfig.getDriverSupplier());
+        assertSame(classConfig.getDriverLoader(), userClassConfig.getDriverLoader());
+
+        assertNull(fieldConfig.getDriverLoader());
+        assertNull(fieldConfig.getSelector());
+        assertNull(fieldConfig.getElementLoader());
+        assertNull(fieldConfig.getParser());
+        assertNull(fieldConfig.getProperty());
+    }
+
+    @Test
     public void buildWithUserConfigTest() throws Exception {
         Class<?> klass = Person.class;
         IInstanceFactory instanceFactory = new MyInstanceFactory();
