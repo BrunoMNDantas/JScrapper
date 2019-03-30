@@ -160,7 +160,8 @@ public class FieldScrapperTest {
 
         try {
             scrapper.loadDriver(null);
-        }catch (ScrapperException e) {
+            fail("Exception should be thrown!");
+        } catch (ScrapperException e) {
             assertSame(e.getCause(), exception);
         }
     }
@@ -189,7 +190,8 @@ public class FieldScrapperTest {
 
         try {
             scrapper.selectElements(null);
-        }catch (ScrapperException e) {
+            fail("Exception should be thrown!");
+        } catch (ScrapperException e) {
             assertSame(e.getCause(), exception);
         }
     }
@@ -218,7 +220,8 @@ public class FieldScrapperTest {
 
         try {
             scrapper.loadElements(null, null);
-        }catch (ScrapperException e) {
+            fail("Exception should be thrown!");
+        } catch (ScrapperException e) {
             assertSame(e.getCause(), exception);
         }
     }
@@ -248,7 +251,8 @@ public class FieldScrapperTest {
 
         try {
             scrapper.parseElements(null, null);
-        }catch (ScrapperException e) {
+            fail("Exception should be thrown!");
+        } catch (ScrapperException e) {
             assertSame(e.getCause(), exception);
         }
     }
@@ -283,7 +287,8 @@ public class FieldScrapperTest {
 
         try {
             scrapper.getValue(null);
-        }catch (ScrapperException e) {
+            fail("Exception should be thrown!");
+        } catch (ScrapperException e) {
             assertSame(e.getCause(), exception);
         }
     }
@@ -318,7 +323,8 @@ public class FieldScrapperTest {
 
         try {
             scrapper.setValue(null, null);
-        }catch (ScrapperException e) {
+            fail("Exception should be thrown!");
+        } catch (ScrapperException e) {
             assertSame(e.getCause(), exception);
         }
     }

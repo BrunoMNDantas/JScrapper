@@ -131,6 +131,7 @@ public class UtilsTest {
 
         try {
             Utils.getAbsolutePath("non_existent_path");
+            fail("Exception should be thrown!");
         } catch (Exception e) {
             assertTrue(e.getMessage().contains("Path not found"));
         }

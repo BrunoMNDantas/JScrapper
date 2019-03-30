@@ -62,6 +62,7 @@ public class FirefoxDriverSupplierTest {
         supplier = new FirefoxDriverSupplier("not_existent_path");
         try {
             supplier.get();
+            fail("Exception should be thrown!");
         } catch (Exception e) {
             assertTrue(e.getCause().getMessage().contains("Path not found"));
         }
