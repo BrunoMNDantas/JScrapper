@@ -18,14 +18,21 @@ public class CoreScrapper {
     public Object scrap(ClassConfig classConfig) throws ScrapperException {
         LOGGER.info("Scrapping class:" + classConfig.getKlass().getName() + "!");
 
-        ClassScrapper classScrapper = new ClassScrapper(classConfig);
+        try {
+            ClassScrapper classScrapper = new ClassScrapper(classConfig);
+            return scrap(classScrapper);
+        } catch (Exception e) {
+            throw new ScrapperException("Error scrapping class:" + classConfig.getKlass().getName() + "!", e);
+        }
+    }
 
+    private Object scrap(ClassScrapper classScrapper) throws ScrapperException {
         Object instance = classScrapper.createInstance();
 
         WebDriver driver = scrapClass(classScrapper);
 
         FieldScrapper fieldScrapper;
-        for(FieldConfig fieldConfig : classConfig.getFieldsConfig()) {
+        for(FieldConfig fieldConfig : classScrapper.getConfig().getFieldsConfig()) {
             fieldScrapper = new FieldScrapper(fieldConfig);
             scrapField(fieldScrapper, driver, instance);
         }

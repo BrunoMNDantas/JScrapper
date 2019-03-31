@@ -30,6 +30,24 @@ public class CoreScrapperTest {
 
 
     @Test
+    public void scrapWrapsException() {
+        RuntimeException exception = new RuntimeException();
+        Class<?> klass = Person.class;
+        ClassConfig config = new ClassConfig(klass){
+            @Override public IInstanceFactory getInstanceFactory() { throw exception; }
+        };
+        CoreScrapper scrapper = new CoreScrapper();
+
+        try {
+            scrapper.scrap(config);
+            fail("Exception should be thrown!");
+        } catch (ScrapperException e) {
+            assertSame(exception, e.getCause());
+            assertTrue(e.getMessage().contains(klass.getName()));
+        }
+    }
+
+    @Test
     public void nonExistentInstanceFactoryTest() {
         Class klass = Person.class;
         ClassConfig config = new ClassConfig(klass);
@@ -38,8 +56,8 @@ public class CoreScrapperTest {
             new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
-            assertTrue(e.getMessage().contains("No InstanceFactory found"));
-            assertTrue(e.getMessage().contains(klass.getName()));
+            assertTrue(e.getCause().getMessage().contains("No InstanceFactory found"));
+            assertTrue(e.getCause().getMessage().contains(klass.getName()));
         }
     }
 
@@ -53,8 +71,8 @@ public class CoreScrapperTest {
             new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
-            assertTrue(e.getMessage().contains("No URLSupplier found"));
-            assertTrue(e.getMessage().contains(klass.getName()));
+            assertTrue(e.getCause().getMessage().contains("No URLSupplier found"));
+            assertTrue(e.getCause().getMessage().contains(klass.getName()));
         }
     }
 
@@ -69,8 +87,8 @@ public class CoreScrapperTest {
             new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
-            assertTrue(e.getMessage().contains("No DriverSupplier found"));
-            assertTrue(e.getMessage().contains(klass.getName()));
+            assertTrue(e.getCause().getMessage().contains("No DriverSupplier found"));
+            assertTrue(e.getCause().getMessage().contains(klass.getName()));
         }
     }
 
@@ -86,8 +104,8 @@ public class CoreScrapperTest {
             new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
-            assertTrue(e.getMessage().contains("No DriverLoader found"));
-            assertTrue(e.getMessage().contains(klass.getName()));
+            assertTrue(e.getCause().getMessage().contains("No DriverLoader found"));
+            assertTrue(e.getCause().getMessage().contains(klass.getName()));
         }
     }
 
@@ -108,9 +126,9 @@ public class CoreScrapperTest {
             new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
-            assertTrue(e.getMessage().contains("No DriverLoader found"));
-            assertTrue(e.getMessage().contains(klass.getName()));
-            assertTrue(e.getMessage().contains(field.getName()));
+            assertTrue(e.getCause().getMessage().contains("No DriverLoader found"));
+            assertTrue(e.getCause().getMessage().contains(klass.getName()));
+            assertTrue(e.getCause().getMessage().contains(field.getName()));
         }
     }
 
@@ -132,9 +150,9 @@ public class CoreScrapperTest {
             new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
-            assertTrue(e.getMessage().contains("No Selector found"));
-            assertTrue(e.getMessage().contains(klass.getName()));
-            assertTrue(e.getMessage().contains(field.getName()));
+            assertTrue(e.getCause().getMessage().contains("No Selector found"));
+            assertTrue(e.getCause().getMessage().contains(klass.getName()));
+            assertTrue(e.getCause().getMessage().contains(field.getName()));
         }
     }
 
@@ -157,9 +175,9 @@ public class CoreScrapperTest {
             new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
-            assertTrue(e.getMessage().contains("No ElementLoader found"));
-            assertTrue(e.getMessage().contains(klass.getName()));
-            assertTrue(e.getMessage().contains(field.getName()));
+            assertTrue(e.getCause().getMessage().contains("No ElementLoader found"));
+            assertTrue(e.getCause().getMessage().contains(klass.getName()));
+            assertTrue(e.getCause().getMessage().contains(field.getName()));
         }
     }
 
@@ -183,9 +201,9 @@ public class CoreScrapperTest {
             new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
-            assertTrue(e.getMessage().contains("No Parser found"));
-            assertTrue(e.getMessage().contains(klass.getName()));
-            assertTrue(e.getMessage().contains(field.getName()));
+            assertTrue(e.getCause().getMessage().contains("No Parser found"));
+            assertTrue(e.getCause().getMessage().contains(klass.getName()));
+            assertTrue(e.getCause().getMessage().contains(field.getName()));
         }
     }
 
@@ -210,9 +228,9 @@ public class CoreScrapperTest {
             new CoreScrapper().scrap(config);
             fail("Exception should be thrown!");
         } catch(ScrapperException e) {
-            assertTrue(e.getMessage().contains("No Property found"));
-            assertTrue(e.getMessage().contains(klass.getName()));
-            assertTrue(e.getMessage().contains(field.getName()));
+            assertTrue(e.getCause().getMessage().contains("No Property found"));
+            assertTrue(e.getCause().getMessage().contains(klass.getName()));
+            assertTrue(e.getCause().getMessage().contains(field.getName()));
         }
     }
 
