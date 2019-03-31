@@ -5,10 +5,8 @@ import com.github.brunomndantas.jscrapper.core.driverSupplier.DriverSupplierExce
 import com.github.brunomndantas.jscrapper.core.driverSupplier.IDriverSupplier;
 import com.github.brunomndantas.jscrapper.core.parser.IParser;
 import com.github.brunomndantas.jscrapper.core.parser.ParserException;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.element.Element;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.element.Parser;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverSupplier;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.page.Page;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -28,12 +26,10 @@ public class ScrapperTest {
         @Override public Object parse(WebDriver driver, Collection<WebElement> elements) throws ParserException { return "name"; }
     }
 
-    @Page(driverSupplier = @DriverSupplier(MyDriverSupplier.class))
+    @DriverSupplier(MyDriverSupplier.class)
     private static class Person {
-
-        @Element(parser = @Parser(MyParser.class))
+        @Parser(MyParser.class)
         public String name;
-
     }
     
 

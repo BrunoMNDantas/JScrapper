@@ -55,6 +55,7 @@ public @interface DriverLoader {
     @interface Wait {
         long value() default 1;
         TimeUnit unit() default TimeUnit.SECONDS;
+        /*Ignore this property. This property it is just to distinguish between userDefined annotation or default value annotation*/
         boolean isUserDefined() default true;
     }
 
@@ -64,6 +65,7 @@ public @interface DriverLoader {
         TimeUnit unit() default TimeUnit.SECONDS;
         String selector() default "";
         SelectorType selectorType() default SelectorType.ID;
+        /*Ignore this property. This property it is just to distinguish between userDefined annotation or default value annotation*/
         boolean isUserDefined() default true;
     }
 
@@ -83,8 +85,5 @@ public @interface DriverLoader {
     Action[] actions() default {};
 
     Class<? extends IDriverLoader> value() default IDriverLoader.class;
-
-    /*Ignore this property. This property it is just to distinguish between userDefined annotation or default value annotation*/
-    @Deprecated boolean isUserDefined() default true;
 
 }

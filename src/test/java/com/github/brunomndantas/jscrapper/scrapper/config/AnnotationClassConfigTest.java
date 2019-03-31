@@ -12,7 +12,9 @@ import com.github.brunomndantas.jscrapper.core.urlSupplier.IURLSupplier;
 import com.github.brunomndantas.jscrapper.core.urlSupplier.URLSupplierException;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.SelectorType;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverLoader;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.page.*;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverSupplier;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.page.InstanceFactory;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.page.URLSupplier;
 import com.github.brunomndantas.jscrapper.support.driverLoader.*;
 import com.github.brunomndantas.jscrapper.support.driverSupplier.ChromeDriverSupplier;
 import com.github.brunomndantas.jscrapper.support.driverSupplier.FirefoxDriverSupplier;
@@ -46,47 +48,38 @@ public class AnnotationClassConfigTest {
         @Override public void load(WebDriver driver) throws DriverLoaderException { }
     }
 
-    @Page(
-        instanceFactory = @InstanceFactory(MyInstanceFactory.class),
-        urlSupplier = @URLSupplier(MyURLSupplier.class),
-        driverSupplier = @DriverSupplier(MyDriverSupplier.class),
-        driverLoader = @DriverLoader(MyDriverLoader.class)
-    )
+    @InstanceFactory(MyInstanceFactory.class)
+    @URLSupplier(MyURLSupplier.class)
+    @DriverSupplier(MyDriverSupplier.class)
+    @DriverLoader(MyDriverLoader.class)
     private static class AnnotationConfigEntity { }
-
-    @Page()
-    private static class NoAnnotationConfigEntity { }
 
     private static class NoAnnotationEntity { }
 
-    @Page(urlSupplier = @URLSupplier(url = "url"))
+    @URLSupplier(url = "url")
     private static class FixedURLEntity { }
 
-    @Page(driverSupplier = @DriverSupplier(driverLocation = "chrome", driverType = DriverSupplier.DriverType.CHROME))
+    @DriverSupplier(driverLocation = "chrome", driverType = DriverSupplier.DriverType.CHROME)
     private static class ChromeDriverSupplierConfigEntity { }
 
-    @Page(driverSupplier = @DriverSupplier(driverLocation = "firefox", driverType = DriverSupplier.DriverType.FIREFOX))
+    @DriverSupplier(driverLocation = "firefox", driverType = DriverSupplier.DriverType.FIREFOX)
     private static class FirefoxDriverSupplierConfigEntity { }
 
-    @Page(driverSupplier = @DriverSupplier(driverLocation = "phantom", driverType = DriverSupplier.DriverType.PHANTOM))
+    @DriverSupplier(driverLocation = "phantom", driverType = DriverSupplier.DriverType.PHANTOM)
     private static class PhantomDriverSupplierConfigEntity { }
 
-    @Page(driverLoader = @DriverLoader(
-        actions = {
-            @DriverLoader.Action(clear = @DriverLoader.Clear(selector = "elementId", selectorType = SelectorType.ID)),
-            @DriverLoader.Action(click = @DriverLoader.Click(selector = "elementId", selectorType = SelectorType.ID)),
-            @DriverLoader.Action(doubleClick = @DriverLoader.DoubleClick(selector = "elementId", selectorType = SelectorType.ID)),
-            @DriverLoader.Action(sendKeys = @DriverLoader.SendKeys(value = "text", selector = "elementId", selectorType = SelectorType.ID)),
-            @DriverLoader.Action(submit = @DriverLoader.Submit(selector = "elementId", selectorType = SelectorType.ID)),
-            @DriverLoader.Action(waitFor = @DriverLoader.Wait(value = 1000, unit = TimeUnit.DAYS)),
-            @DriverLoader.Action(waitVisible = @DriverLoader.WaitVisible(value = 1000, unit = TimeUnit.DAYS, selector = "elementId", selectorType = SelectorType.ID))
-        }
-    ))
+    @DriverLoader(actions = {
+        @DriverLoader.Action(clear = @DriverLoader.Clear(selector = "elementId", selectorType = SelectorType.ID)),
+        @DriverLoader.Action(click = @DriverLoader.Click(selector = "elementId", selectorType = SelectorType.ID)),
+        @DriverLoader.Action(doubleClick = @DriverLoader.DoubleClick(selector = "elementId", selectorType = SelectorType.ID)),
+        @DriverLoader.Action(sendKeys = @DriverLoader.SendKeys(value = "text", selector = "elementId", selectorType = SelectorType.ID)),
+        @DriverLoader.Action(submit = @DriverLoader.Submit(selector = "elementId", selectorType = SelectorType.ID)),
+        @DriverLoader.Action(waitFor = @DriverLoader.Wait(value = 1000, unit = TimeUnit.DAYS)),
+        @DriverLoader.Action(waitVisible = @DriverLoader.WaitVisible(value = 1000, unit = TimeUnit.DAYS, selector = "elementId", selectorType = SelectorType.ID))
+    })
     private static class DriverLoaderConfigEntity { }
 
-    @Page(driverLoader = @DriverLoader(actions = {
-        @DriverLoader.Action()
-    }))
+    @DriverLoader(actions = {@DriverLoader.Action()})
     private static class UnknownDriverLoaderConfigEntity { }
 
 
@@ -129,7 +122,6 @@ public class AnnotationClassConfigTest {
 
     @Test
     public void getInstanceFactoryWithoutAnnotationTest() throws Exception {
-        assertNull(AnnotationClassConfig.getInstanceFactory(NoAnnotationConfigEntity.class));
         assertNull(AnnotationClassConfig.getInstanceFactory(NoAnnotationEntity.class));
     }
 
@@ -141,7 +133,6 @@ public class AnnotationClassConfigTest {
 
     @Test
     public void getURLSupplierWithoutAnnotationTest() throws Exception {
-        assertNull(AnnotationClassConfig.getURLSupplier(NoAnnotationConfigEntity.class));
         assertNull(AnnotationClassConfig.getURLSupplier(NoAnnotationEntity.class));
     }
 
@@ -160,7 +151,6 @@ public class AnnotationClassConfigTest {
 
     @Test
     public void getDriverSupplierWithoutAnnotationTest() throws Exception {
-        assertNull(AnnotationClassConfig.getDriverSupplier(NoAnnotationConfigEntity.class));
         assertNull(AnnotationClassConfig.getDriverSupplier(NoAnnotationEntity.class));
     }
 
@@ -196,7 +186,6 @@ public class AnnotationClassConfigTest {
 
     @Test
     public void getDriverLoaderWithoutAnnotationTest() throws Exception {
-        assertNull(AnnotationClassConfig.getDriverLoader(NoAnnotationConfigEntity.class));
         assertNull(AnnotationClassConfig.getDriverLoader(NoAnnotationEntity.class));
     }
 
@@ -208,7 +197,7 @@ public class AnnotationClassConfigTest {
 
     @Test
     public void getComposedDriverLoaderAnnotationTest() throws Exception {
-        DriverLoader.Action[] actions = DriverLoaderConfigEntity.class.getDeclaredAnnotation(Page.class).driverLoader().actions();
+        DriverLoader.Action[] actions = DriverLoaderConfigEntity.class.getDeclaredAnnotation(DriverLoader.class).actions();
         IDriverLoader loader = AnnotationClassConfig.getDriverLoader(DriverLoaderConfigEntity.class);
 
         assertTrue(loader instanceof ComposedDriverLoader);

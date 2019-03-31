@@ -9,7 +9,9 @@ import com.github.brunomndantas.jscrapper.core.instanceFactory.IInstanceFactory;
 import com.github.brunomndantas.jscrapper.core.urlSupplier.IURLSupplier;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.SelectorType;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverLoader;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.page.*;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverSupplier;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.page.InstanceFactory;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.page.URLSupplier;
 import com.github.brunomndantas.jscrapper.support.driverLoader.*;
 import com.github.brunomndantas.jscrapper.support.driverSupplier.ChromeDriverSupplier;
 import com.github.brunomndantas.jscrapper.support.driverSupplier.FirefoxDriverSupplier;
@@ -23,49 +25,43 @@ import java.util.LinkedList;
 public class AnnotationClassConfig {
 
     public static ClassConfig getClassConfig(Class<?> klass) throws ScrapperException {
-        Page page = klass.getDeclaredAnnotation(Page.class);
-
-        if(page == null)
-            return new ClassConfig(klass);
-
         try {
-            return getClassConfig(klass, page);
+            ClassConfig config = new ClassConfig(klass);
+
+            config.setInstanceFactory(getInstanceFactory(klass));
+            config.setURLSupplier(getURLSupplier(klass));
+            config.setDriverSupplier(getDriverSupplier(klass));
+            config.setDriverLoader(getDriverLoader(klass));
+
+            return config;
         } catch (ScrapperException e) {
             throw new ScrapperException("Error getting config for class:" + klass.getName() + "!");
         }
     }
 
-    private static ClassConfig getClassConfig(Class<?> klass, Page annotation) throws ScrapperException {
-        ClassConfig config = new ClassConfig(klass);
-
-        config.setInstanceFactory(getInstanceFactory(klass));
-        config.setURLSupplier(getURLSupplier(klass));
-        config.setDriverSupplier(getDriverSupplier(klass));
-        config.setDriverLoader(getDriverLoader(klass));
-
-        return config;
-    }
-
 
     public static IInstanceFactory getInstanceFactory(Class<?> klass) throws ScrapperException {
-        if(klass.getDeclaredAnnotation(Page.class) == null)
-            return null;
+        InstanceFactory annotation = klass.getDeclaredAnnotation(InstanceFactory.class);
+        return getInstanceFactory(klass, annotation);
+    }
 
-        InstanceFactory annotation = klass.getDeclaredAnnotation(Page.class).instanceFactory();
-        if(annotation.isUserDefined())
+    private static IInstanceFactory getInstanceFactory(Class<?> klass, InstanceFactory annotation) throws ScrapperException {
+        if(annotation != null) {
             if(annotation.value() != IInstanceFactory.class)
                 return Utils.createInstance(annotation.value());
+        }
 
         return null;
     }
 
 
     public static IURLSupplier getURLSupplier(Class<?> klass) throws ScrapperException {
-        if(klass.getDeclaredAnnotation(Page.class) == null)
-            return null;
+        URLSupplier annotation = klass.getDeclaredAnnotation(URLSupplier.class);
+        return  getURLSupplier(klass, annotation);
+    }
 
-        URLSupplier annotation = klass.getDeclaredAnnotation(Page.class).urlSupplier();
-        if(annotation.isUserDefined()) {
+    private static IURLSupplier getURLSupplier(Class<?> klass, URLSupplier annotation) throws ScrapperException {
+        if(annotation != null) {
             if(annotation.value() != IURLSupplier.class)
                 return Utils.createInstance(annotation.value());
 
@@ -77,11 +73,12 @@ public class AnnotationClassConfig {
 
 
     public static IDriverSupplier getDriverSupplier(Class<?> klass) throws ScrapperException {
-        if(klass.getDeclaredAnnotation(Page.class) == null)
-            return null;
+        DriverSupplier annotation = klass.getDeclaredAnnotation(DriverSupplier.class);
+        return getDriverSupplier(klass, annotation);
+    }
 
-        DriverSupplier annotation = klass.getDeclaredAnnotation(Page.class).driverSupplier();
-        if(annotation.isUserDefined()) {
+    private static IDriverSupplier getDriverSupplier(Class<?> klass, DriverSupplier annotation) throws ScrapperException {
+        if(annotation != null) {
             if(annotation.value() != IDriverSupplier.class)
                 return Utils.createInstance(annotation.value());
 
@@ -98,15 +95,12 @@ public class AnnotationClassConfig {
 
 
     public static IDriverLoader getDriverLoader(Class<?> klass) throws ScrapperException {
-        if(klass.getDeclaredAnnotation(Page.class) == null)
-            return null;
-
-        DriverLoader annotation = klass.getDeclaredAnnotation(Page.class).driverLoader();
+        DriverLoader annotation = klass.getDeclaredAnnotation(DriverLoader.class);
         return getDriverLoader(klass, annotation);
     }
 
     public static IDriverLoader getDriverLoader(Class<?> klass, DriverLoader annotation) throws ScrapperException {
-        if(annotation.isUserDefined()) {
+        if(annotation != null) {
             if(annotation.value() != IDriverLoader.class)
                 return Utils.createInstance(annotation.value());
 

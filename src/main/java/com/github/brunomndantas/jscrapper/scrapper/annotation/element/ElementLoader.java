@@ -2,11 +2,14 @@ package com.github.brunomndantas.jscrapper.scrapper.annotation.element;
 
 import com.github.brunomndantas.jscrapper.core.elementLoader.IElementLoader;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
 @Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
 public @interface ElementLoader {
 
     @Retention(RetentionPolicy.RUNTIME)
@@ -72,8 +75,5 @@ public @interface ElementLoader {
     Action[] actions() default {};
 
     Class<? extends IElementLoader> value() default IElementLoader.class;
-
-    /*Ignore this property. This property it is just to distinguish between userDefined annotation or default value annotation*/
-    @Deprecated boolean isUserDefined() default true;
 
 }

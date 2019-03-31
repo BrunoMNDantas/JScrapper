@@ -18,8 +18,14 @@ import com.github.brunomndantas.jscrapper.core.selector.ISelector;
 import com.github.brunomndantas.jscrapper.core.selector.SelectorException;
 import com.github.brunomndantas.jscrapper.core.urlSupplier.IURLSupplier;
 import com.github.brunomndantas.jscrapper.core.urlSupplier.URLSupplierException;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.element.*;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.page.*;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.element.ElementLoader;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.element.Parser;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.element.Property;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.element.Selector;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverLoader;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverSupplier;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.page.InstanceFactory;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.page.URLSupplier;
 import com.github.brunomndantas.jscrapper.support.instanceFactory.EmptyConstructorInstanceFactory;
 import com.github.brunomndantas.jscrapper.support.parser.single.text.reference.SingleReferenceStringTextParser;
 import com.github.brunomndantas.jscrapper.support.property.FieldProperty;
@@ -69,21 +75,16 @@ public class ConfigBuilderTest {
         @Override public void set(Object instance, Object value) throws PropertyException { }
     }
 
-    @Page(
-        instanceFactory = @InstanceFactory(MyInstanceFactory.class),
-        urlSupplier = @URLSupplier(MyURLSupplier.class),
-        driverSupplier = @DriverSupplier(MyDriverSupplier.class),
-        driverLoader = @DriverLoader(MyDriverLoader.class)
-    )
+    @InstanceFactory(MyInstanceFactory.class)
+    @URLSupplier(MyURLSupplier.class)
+    @DriverSupplier(MyDriverSupplier.class)
+    @DriverLoader(MyDriverLoader.class)
     private static class Person {
-
-        @Element(
-            driverLoader = @DriverLoader(MyDriverLoader.class),
-            selector = @Selector(MySelector.class),
-            elementLoader = @ElementLoader(MyElementLoader.class),
-            parser = @Parser(MyParser.class),
-            property = @Property(MyProperty.class)
-        )
+        @DriverLoader(MyDriverLoader.class)
+        @Selector(MySelector.class)
+        @ElementLoader(MyElementLoader.class)
+        @Parser(MyParser.class)
+        @Property(MyProperty.class)
         public String name;
 
     }

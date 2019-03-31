@@ -8,8 +8,9 @@ import com.github.brunomndantas.jscrapper.core.elementLoader.IElementLoader;
 import com.github.brunomndantas.jscrapper.core.parser.IParser;
 import com.github.brunomndantas.jscrapper.core.property.IProperty;
 import com.github.brunomndantas.jscrapper.core.selector.ISelector;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.element.*;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.element.ElementLoader;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.element.Parser;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.element.Property;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.element.Selector;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverLoader;
 import com.github.brunomndantas.jscrapper.support.elementLoader.*;
@@ -33,46 +34,39 @@ public class AnnotationFieldConfig {
 
 
     public static FieldConfig getFieldConfig(Field field) throws ScrapperException {
-        Element element = field.getDeclaredAnnotation(Element.class);
-
-        if(element == null)
-            return new FieldConfig(field);
-
         try {
-            return getFieldConfig(field, element);
+            FieldConfig config = new FieldConfig(field);
+
+            config.setDriverLoader(getDriverLoader(field));
+            config.setSelector(getSelector(field));
+            config.setElementLoader(getElementLoader(field));
+            config.setParser(getParser(field));
+            config.setProperty(getProperty(field));
+
+            return config;
         } catch(ScrapperException e) {
             throw new ScrapperException("Error getting config for field:" + field.getName() + "!",e);
         }
     }
 
-    private static FieldConfig getFieldConfig(Field field , Element annotation) throws ScrapperException {
-        FieldConfig config = new FieldConfig(field);
-
-        config.setDriverLoader(getDriverLoader(field));
-        config.setSelector(getSelector(field));
-        config.setElementLoader(getElementLoader(field));
-        config.setParser(getParser(field));
-        config.setProperty(getProperty(field));
-
-        return config;
-    }
-
 
     public static IDriverLoader getDriverLoader(Field field) throws ScrapperException {
-        if(field.getDeclaredAnnotation(Element.class) == null)
-            return null;
+        DriverLoader annotation = field.getDeclaredAnnotation(DriverLoader.class);
+        return getDriverLoader(field, annotation);
+    }
 
-        DriverLoader annotation = field.getDeclaredAnnotation(Element.class).driverLoader();
+    private static IDriverLoader getDriverLoader(Field field, DriverLoader annotation) throws ScrapperException {
         return AnnotationClassConfig.getDriverLoader(field.getDeclaringClass(), annotation);
     }
 
 
     public static ISelector getSelector(Field field) throws ScrapperException {
-        if(field.getDeclaredAnnotation(Element.class) == null)
-            return null;
+        Selector annotation = field.getDeclaredAnnotation(Selector.class);
+        return getSelector(field, annotation);
+    }
 
-        Selector annotation = field.getDeclaredAnnotation(Element.class).selector();
-        if(annotation.isUserDefined()) {
+    private static ISelector getSelector(Field field, Selector annotation) throws ScrapperException {
+        if(annotation != null) {
             if(annotation.value() != ISelector.class)
                 return Utils.createInstance(annotation.value());
 
@@ -94,11 +88,12 @@ public class AnnotationFieldConfig {
 
 
     public static IElementLoader getElementLoader(Field field) throws ScrapperException {
-        if(field.getDeclaredAnnotation(Element.class) == null)
-            return null;
+        ElementLoader annotation = field.getDeclaredAnnotation(ElementLoader.class);
+        return getElementLoader(field, annotation);
+    }
 
-        ElementLoader annotation = field.getDeclaredAnnotation(Element.class).elementLoader();
-        if(annotation.isUserDefined()) {
+    private static IElementLoader getElementLoader(Field field, ElementLoader annotation) throws ScrapperException {
+        if(annotation != null) {
             if(annotation.value() != IElementLoader.class)
                 return Utils.createInstance(annotation.value());
 
@@ -172,11 +167,12 @@ public class AnnotationFieldConfig {
 
 
     public static IParser getParser(Field field) throws ScrapperException {
-        if(field.getDeclaredAnnotation(Element.class) == null)
-            return null;
+        Parser annotation = field.getDeclaredAnnotation(Parser.class);
+        return getParser(field, annotation);
+    }
 
-        Parser annotation = field.getDeclaredAnnotation(Element.class).parser();
-        if(annotation.isUserDefined()) {
+    private static IParser getParser(Field field, Parser annotation) throws ScrapperException {
+        if(annotation != null) {
             if(annotation.value() != IParser.class)
                 return Utils.createInstance(annotation.value());
 
@@ -348,13 +344,15 @@ public class AnnotationFieldConfig {
 
 
     public static IProperty getProperty(Field field) throws ScrapperException {
-        if(field.getDeclaredAnnotation(Element.class) == null)
-            return null;
+        Property annotation = field.getDeclaredAnnotation(Property.class);
+        return getProperty(field, annotation);
+    }
 
-        Property annotation = field.getDeclaredAnnotation(Element.class).property();
-        if(annotation.isUserDefined())
+    private static IProperty getProperty(Field field, Property annotation) throws ScrapperException {
+        if(annotation != null) {
             if(annotation.value() != IProperty.class)
                 return Utils.createInstance(annotation.value());
+        }
 
         return null;
     }

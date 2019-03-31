@@ -13,8 +13,9 @@ import com.github.brunomndantas.jscrapper.core.property.PropertyException;
 import com.github.brunomndantas.jscrapper.core.selector.ISelector;
 import com.github.brunomndantas.jscrapper.core.selector.SelectorException;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.SelectorType;
-import com.github.brunomndantas.jscrapper.scrapper.annotation.element.*;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.element.ElementLoader;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.element.Parser;
+import com.github.brunomndantas.jscrapper.scrapper.annotation.element.Property;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.element.Selector;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverLoader;
 import com.github.brunomndantas.jscrapper.support.elementLoader.*;
@@ -64,18 +65,11 @@ public class AnnotationFieldConfigTest {
     }
 
     private static class AnnotationConfigEntity {
-        @Element(
-            driverLoader = @DriverLoader(MyDriverLoader.class),
-            selector =  @Selector(MySelector.class),
-            elementLoader = @ElementLoader(MyElementLoader.class),
-            parser = @Parser(MyParser.class),
-            property = @Property(MyProperty.class)
-        )
-        public String name;
-    }
-
-    private static class NoAnnotationConfigEntity {
-        @Element
+        @DriverLoader(MyDriverLoader.class)
+        @Selector(MySelector.class)
+        @ElementLoader(MyElementLoader.class)
+        @Parser(MyParser.class)
+        @Property(MyProperty.class)
         public String name;
     }
 
@@ -84,161 +78,155 @@ public class AnnotationFieldConfigTest {
     }
 
     private static class ElementLoaderConfigEntity {
-        @Element(elementLoader = @ElementLoader(
-            actions = {
-                @ElementLoader.Action(clear = @ElementLoader.Clear()),
-                @ElementLoader.Action(click = @ElementLoader.Click()),
-                @ElementLoader.Action(doubleClick = @ElementLoader.DoubleClick()),
-                @ElementLoader.Action(sendKeys = @ElementLoader.SendKeys("text")),
-                @ElementLoader.Action(submit = @ElementLoader.Submit()),
-                @ElementLoader.Action(waitFor = @ElementLoader.Wait(value = 1000, unit = TimeUnit.DAYS)),
-                @ElementLoader.Action(waitVisible = @ElementLoader.WaitVisible(value = 1000, unit = TimeUnit.DAYS))
-            }
-        ))
+        @ElementLoader(actions = {
+            @ElementLoader.Action(clear = @ElementLoader.Clear()),
+            @ElementLoader.Action(click = @ElementLoader.Click()),
+            @ElementLoader.Action(doubleClick = @ElementLoader.DoubleClick()),
+            @ElementLoader.Action(sendKeys = @ElementLoader.SendKeys("text")),
+            @ElementLoader.Action(submit = @ElementLoader.Submit()),
+            @ElementLoader.Action(waitFor = @ElementLoader.Wait(value = 1000, unit = TimeUnit.DAYS)),
+            @ElementLoader.Action(waitVisible = @ElementLoader.WaitVisible(value = 1000, unit = TimeUnit.DAYS))
+        })
         public String name;
     }
 
     private static class UnknownElementLoaderConfigEntity {
-        @Element(elementLoader = @ElementLoader(
-            actions = {
-                @ElementLoader.Action(clear = @ElementLoader.Clear(isUserDefined = false)),
-            }
-        ))
+        @ElementLoader(actions = {@ElementLoader.Action(clear = @ElementLoader.Clear(isUserDefined = false))})
         public String name;
     }
 
     private static class SelectorConfigEntity {
-        @Element(selector = @Selector(selector = "id", selectorType = SelectorType.ID))
+        @Selector(selector = "id", selectorType = SelectorType.ID)
         public String id;
 
-        @Element(selector = @Selector(selector = "name", selectorType = SelectorType.NAME))
+        @Selector(selector = "name", selectorType = SelectorType.NAME)
         public String name;
 
-        @Element(selector = @Selector(selector = "class", selectorType = SelectorType.CLASS))
+        @Selector(selector = "class", selectorType = SelectorType.CLASS)
         public String klass;
 
-        @Element(selector = @Selector(selector = "tag", selectorType = SelectorType.TAG))
+        @Selector(selector = "tag", selectorType = SelectorType.TAG)
         public String tag;
 
-        @Element(selector = @Selector(selector = "linkText", selectorType = SelectorType.LINK_TEXT))
+        @Selector(selector = "linkText", selectorType = SelectorType.LINK_TEXT)
         public String linkText;
 
-        @Element(selector = @Selector(selector = "partialLinkText", selectorType = SelectorType.PARTIAL_LINK_TEXT))
+        @Selector(selector = "partialLinkText", selectorType = SelectorType.PARTIAL_LINK_TEXT)
         public String partialLinkText;
 
-        @Element(selector = @Selector(selector = "css", selectorType = SelectorType.CSS))
+        @Selector(selector = "css", selectorType = SelectorType.CSS)
         public String css;
 
-        @Element(selector = @Selector(selector = "xpath", selectorType = SelectorType.XPATH))
+        @Selector(selector = "xpath", selectorType = SelectorType.XPATH)
         public String xpath;
     }
 
     private static class PersonSingleParser {
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public boolean _boolean;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public byte _byte;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public char _char;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public double _double;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public float _float;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public int _int;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public long _long;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public short _short;
 
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Boolean _Boolean;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Byte _Byte;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Character _Character;
-        @Element(parser = @Parser(attribute = "att", dateFormat = "date"))
+        @Parser(attribute = "att", dateFormat = "date")
         public Date _Date;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Double _Double;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Float _Float;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Integer _Integer;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Long _Long;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Short _Short;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public String _String;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Object _Object;
     }
 
     private static class PersonArrayParser {
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public boolean[] _boolean;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public byte[] _byte;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public char[] _char;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public double[] _double;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public float[] _float;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public int[] _int;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public long[] _long;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public short[] _short;
 
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Boolean[] _Boolean;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Byte[] _Byte;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Character[] _Character;
-        @Element(parser = @Parser(attribute = "att", dateFormat = "date"))
+        @Parser(attribute = "att", dateFormat = "date")
         public Date[] _Date;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Double[] _Double;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Float[] _Float;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Integer[] _Integer;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Long[] _Long;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Short[] _Short;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public String[] _String;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Object[] _Object;
     }
 
     private static class PersonCollectionParser {
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Collection<Boolean> _Boolean;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Collection<Byte> _Byte;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Collection<Character> _Character;
-        @Element(parser = @Parser(attribute = "att", dateFormat = "date"))
+        @Parser(attribute = "att", dateFormat = "date")
         public Collection<Date> _Date;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Collection<Double> _Double;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Collection<Float> _Float;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Collection<Integer> _Integer;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Collection<Long> _Long;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Collection<Short> _Short;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Collection<String> _String;
-        @Element(parser = @Parser(attribute = "att"))
+        @Parser(attribute = "att")
         public Collection<Object> _Object;
     }
 
@@ -303,10 +291,7 @@ public class AnnotationFieldConfigTest {
 
     @Test
     public void getDriverLoaderWithoutAnnotationTest() throws Exception {
-        Field field = NoAnnotationConfigEntity.class.getDeclaredField("name");
-        assertNull(AnnotationFieldConfig.getDriverLoader(field));
-
-        field = NoAnnotationEntity.class.getDeclaredField("name");
+        Field field = NoAnnotationEntity.class.getDeclaredField("name");
         assertNull(AnnotationFieldConfig.getDriverLoader(field));
     }
 
@@ -321,10 +306,7 @@ public class AnnotationFieldConfigTest {
 
     @Test
     public void getSelectorWithoutAnnotationTest() throws Exception {
-        Field field = NoAnnotationConfigEntity.class.getDeclaredField("name");
-        assertNull(AnnotationFieldConfig.getSelector(field));
-
-        field = NoAnnotationEntity.class.getDeclaredField("name");
+        Field field = NoAnnotationEntity.class.getDeclaredField("name");
         assertNull(AnnotationFieldConfig.getSelector(field));
     }
 
@@ -419,10 +401,7 @@ public class AnnotationFieldConfigTest {
 
     @Test
     public void getElementLoaderWithoutAnnotationTest() throws Exception {
-        Field field = NoAnnotationConfigEntity.class.getDeclaredField("name");
-        assertNull(AnnotationFieldConfig.getElementLoader(field));
-
-        field = NoAnnotationEntity.class.getDeclaredField("name");
+        Field field = NoAnnotationEntity.class.getDeclaredField("name");
         assertNull(AnnotationFieldConfig.getElementLoader(field));
     }
 
@@ -438,7 +417,7 @@ public class AnnotationFieldConfigTest {
     @Test
     public void getComposedElementLoaderAnnotationTest() throws Exception {
         Field field = ElementLoaderConfigEntity.class.getDeclaredField("name");
-        ElementLoader.Action[] actions = field.getDeclaredAnnotation(Element.class).elementLoader().actions();
+        ElementLoader.Action[] actions = field.getDeclaredAnnotation(ElementLoader.class).actions();
         IElementLoader loader = AnnotationFieldConfig.getElementLoader(field);
 
         assertTrue(loader instanceof ComposedElementLoader);
@@ -483,10 +462,7 @@ public class AnnotationFieldConfigTest {
 
     @Test
     public void getParserWithoutAnnotationTest() throws Exception {
-        Field field = NoAnnotationConfigEntity.class.getDeclaredField("name");
-        assertNull(AnnotationFieldConfig.getParser(field));
-
-        field = NoAnnotationEntity.class.getDeclaredField("name");
+        Field field = NoAnnotationEntity.class.getDeclaredField("name");
         assertNull(AnnotationFieldConfig.getParser(field));
     }
 
@@ -783,10 +759,7 @@ public class AnnotationFieldConfigTest {
 
     @Test
     public void getPropertyWithoutAnnotationTest() throws Exception {
-        Field field = NoAnnotationConfigEntity.class.getDeclaredField("name");
-        assertNull(AnnotationFieldConfig.getProperty(field));
-
-        field = NoAnnotationEntity.class.getDeclaredField("name");
+        Field field = NoAnnotationEntity.class.getDeclaredField("name");
         assertNull(AnnotationFieldConfig.getProperty(field));
     }
 
