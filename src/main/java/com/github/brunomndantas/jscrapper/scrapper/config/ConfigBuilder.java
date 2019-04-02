@@ -5,7 +5,6 @@ import com.github.brunomndantas.jscrapper.core.config.ClassConfig;
 import com.github.brunomndantas.jscrapper.core.config.FieldConfig;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
 
 public class ConfigBuilder {
 
@@ -16,38 +15,6 @@ public class ConfigBuilder {
             config.getFieldsConfig().add(new FieldConfig(field));
 
         return config;
-    }
-
-
-    public static void mergeConfigs(ClassConfig config, ClassConfig userConfig) throws ScrapperException {
-        config.setInstanceFactory(userConfig.getInstanceFactory());
-        config.setURLSupplier(userConfig.getURLSupplier());
-        config.setDriverSupplier(userConfig.getDriverSupplier());
-        config.setDriverLoader(userConfig.getDriverLoader());
-
-        FieldConfig userFieldConfig;
-        for(FieldConfig fieldConfig : config.getFieldsConfig()) {
-            userFieldConfig = getConfigForField(userConfig.getFieldsConfig(), fieldConfig.getField());
-
-            if(userFieldConfig != null)
-                mergeConfigs(fieldConfig, userFieldConfig);
-        }
-    }
-
-    private static FieldConfig getConfigForField(Collection<FieldConfig> configs, Field field) {
-        for(FieldConfig config : configs)
-            if(config.getField().equals(field))
-                return config;
-
-        return null;
-    }
-
-    private static void mergeConfigs(FieldConfig config, FieldConfig userConfig) throws ScrapperException {
-        config.setDriverLoader(userConfig.getDriverLoader());
-        config.setSelector(userConfig.getSelector());
-        config.setElementLoader(userConfig.getElementLoader());
-        config.setParser(userConfig.getParser());
-        config.setProperty(userConfig.getProperty());
     }
 
 
