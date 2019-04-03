@@ -12,6 +12,7 @@ public class ArrayReferenceCharacterAttributeParserTest {
     public void constructorTest() {
         String attribute = "";
         ArrayReferenceCharacterAttributeParser parser = new ArrayReferenceCharacterAttributeParser(attribute);
+        assertSame(Character.class, parser.getKlass());
         assertEquals(null, parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }

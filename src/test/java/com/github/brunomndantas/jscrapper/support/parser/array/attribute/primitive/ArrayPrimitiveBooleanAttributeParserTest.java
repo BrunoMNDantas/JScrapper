@@ -12,6 +12,7 @@ public class ArrayPrimitiveBooleanAttributeParserTest {
     public void constructorTest() {
         String attribute = "";
         ArrayPrimitiveBooleanAttributeParser parser = new ArrayPrimitiveBooleanAttributeParser(attribute);
+        assertSame(boolean.class, parser.getKlass());
         assertEquals(false, parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }

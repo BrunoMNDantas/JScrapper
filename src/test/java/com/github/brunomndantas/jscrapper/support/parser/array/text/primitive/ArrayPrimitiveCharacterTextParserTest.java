@@ -4,12 +4,14 @@ import com.github.brunomndantas.jscrapper.DummyElement;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class ArrayPrimitiveCharacterTextParserTest {
 
     @Test
     public void constructorTest() {
         ArrayPrimitiveCharacterTextParser parser = new ArrayPrimitiveCharacterTextParser();
+        assertSame(char.class, parser.getKlass());
         assertEquals('\u0000', parser.getDefaultValue());
     }
 

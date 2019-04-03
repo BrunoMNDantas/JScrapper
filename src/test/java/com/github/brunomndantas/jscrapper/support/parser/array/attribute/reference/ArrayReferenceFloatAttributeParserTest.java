@@ -12,6 +12,7 @@ public class ArrayReferenceFloatAttributeParserTest {
     public void constructorTest() {
         String attribute = "";
         ArrayReferenceFloatAttributeParser parser = new ArrayReferenceFloatAttributeParser(attribute);
+        assertSame(Float.class, parser.getKlass());
         assertEquals(null, parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }

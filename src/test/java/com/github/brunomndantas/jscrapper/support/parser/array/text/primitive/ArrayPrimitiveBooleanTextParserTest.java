@@ -4,12 +4,14 @@ import com.github.brunomndantas.jscrapper.DummyElement;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class ArrayPrimitiveBooleanTextParserTest {
 
     @Test
     public void constructorTest() {
         ArrayPrimitiveBooleanTextParser parser = new ArrayPrimitiveBooleanTextParser();
+        assertSame(boolean.class, parser.getKlass());
         assertEquals(false, parser.getDefaultValue());
     }
 

@@ -12,6 +12,7 @@ public class ArrayReferenceLongAttributeParserTest {
     public void constructorTest() {
         String attribute = "";
         ArrayReferenceLongAttributeParser parser = new ArrayReferenceLongAttributeParser(attribute);
+        assertSame(Long.class, parser.getKlass());
         assertEquals(null, parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }

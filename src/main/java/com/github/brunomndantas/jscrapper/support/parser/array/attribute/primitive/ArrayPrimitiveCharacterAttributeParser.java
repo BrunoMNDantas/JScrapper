@@ -6,9 +6,9 @@ import org.openqa.selenium.WebElement;
 public class ArrayPrimitiveCharacterAttributeParser extends ArrayAttributeParser {
 
     public ArrayPrimitiveCharacterAttributeParser(String attribute) {
-        super(attribute, '\u0000');
-    }
+        super(char.class, attribute, '\u0000');
 
+}
 
 
     @Override

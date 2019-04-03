@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayReferenceDoubleTextParser extends ArrayTextParser {
 
     public ArrayReferenceDoubleTextParser() {
-        super(null);
+        super(Double.class, null);
     }
 
 

@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayReferenceByteTextParser extends ArrayTextParser {
 
     public ArrayReferenceByteTextParser() {
-        super(null);
+        super(Byte.class, null);
     }
 
 

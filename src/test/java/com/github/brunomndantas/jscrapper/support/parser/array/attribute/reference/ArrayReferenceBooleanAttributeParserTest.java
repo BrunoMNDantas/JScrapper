@@ -12,6 +12,7 @@ public class ArrayReferenceBooleanAttributeParserTest {
     public void constructorTest() {
         String attribute = "";
         ArrayReferenceBooleanAttributeParser parser = new ArrayReferenceBooleanAttributeParser(attribute);
+        assertSame(Boolean.class, parser.getKlass());
         assertEquals(null, parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }

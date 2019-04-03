@@ -12,6 +12,7 @@ public class ArrayPrimitiveByteAttributeParserTest {
     public void constructorTest() {
         String attribute = "";
         ArrayPrimitiveByteAttributeParser parser = new ArrayPrimitiveByteAttributeParser(attribute);
+        assertSame(byte.class, parser.getKlass());
         assertEquals((byte)0, parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }

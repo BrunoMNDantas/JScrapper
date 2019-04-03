@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayPrimitiveByteTextParser extends ArrayTextParser {
 
     public ArrayPrimitiveByteTextParser() {
-        super((byte)0);
+        super(byte.class, (byte)0);
     }
 
 

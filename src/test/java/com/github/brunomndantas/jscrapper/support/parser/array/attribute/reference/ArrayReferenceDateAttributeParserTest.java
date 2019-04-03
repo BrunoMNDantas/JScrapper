@@ -4,6 +4,7 @@ import com.github.brunomndantas.jscrapper.DummyElement;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -14,7 +15,6 @@ public class ArrayReferenceDateAttributeParserTest {
     public void getFormatTest() {
         String format = "";
         ArrayReferenceDateAttributeParser parser = new ArrayReferenceDateAttributeParser(null, format);
-
         assertSame(format, parser.getFormat());
     }
 
@@ -23,6 +23,7 @@ public class ArrayReferenceDateAttributeParserTest {
         String attribute = "";
         String format = "";
         ArrayReferenceDateAttributeParser parser = new ArrayReferenceDateAttributeParser(attribute, format);
+        assertSame(Date.class, parser.getKlass());
         assertEquals(null, parser.getDefaultValue());
         assertSame(format, parser.getFormat());
         assertSame(attribute, parser.getAttribute());

@@ -12,6 +12,7 @@ public class ArrayPrimitiveFloatAttributeParserTest {
     public void constructorTest() {
         String attribute = "";
         ArrayPrimitiveFloatAttributeParser parser = new ArrayPrimitiveFloatAttributeParser(attribute);
+        assertSame(float.class, parser.getKlass());
         assertEquals(0.0f, parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }

@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayPrimitiveBooleanTextParser extends ArrayTextParser {
 
     public ArrayPrimitiveBooleanTextParser() {
-        super(false);
+        super(boolean.class, false);
     }
 
 

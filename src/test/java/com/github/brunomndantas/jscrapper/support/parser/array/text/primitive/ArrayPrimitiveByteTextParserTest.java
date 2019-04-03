@@ -4,12 +4,14 @@ import com.github.brunomndantas.jscrapper.DummyElement;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class ArrayPrimitiveByteTextParserTest {
 
     @Test
     public void constructorTest() {
         ArrayPrimitiveByteTextParser parser = new ArrayPrimitiveByteTextParser();
+        assertSame(byte.class, parser.getKlass());
         assertEquals((byte)0, parser.getDefaultValue());
     }
 

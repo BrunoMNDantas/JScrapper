@@ -12,6 +12,7 @@ public class ArrayPrimitiveIntegerAttributeParserTest {
     public void constructorTest() {
         String attribute = "";
         ArrayPrimitiveIntegerAttributeParser parser = new ArrayPrimitiveIntegerAttributeParser(attribute);
+        assertSame(int.class, parser.getKlass());
         assertEquals(0, parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }

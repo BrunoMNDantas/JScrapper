@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayReferenceIntegerTextParser extends ArrayTextParser {
 
     public ArrayReferenceIntegerTextParser() {
-        super(null);
+        super(Integer.class, null);
     }
 
 

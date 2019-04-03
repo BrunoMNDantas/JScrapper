@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayReferenceCharacterAttributeParser extends ArrayAttributeParser {
 
     public ArrayReferenceCharacterAttributeParser(String attribute) {
-        super(attribute, null);
+        super(Character.class, attribute, null);
     }
 
 

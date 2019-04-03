@@ -12,6 +12,7 @@ public class ArrayPrimitiveDoubleAttributeParserTest {
     public void constructorTest() {
         String attribute = "";
         ArrayPrimitiveDoubleAttributeParser parser = new ArrayPrimitiveDoubleAttributeParser(attribute);
+        assertSame(double.class, parser.getKlass());
         assertEquals(0.0d, parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }

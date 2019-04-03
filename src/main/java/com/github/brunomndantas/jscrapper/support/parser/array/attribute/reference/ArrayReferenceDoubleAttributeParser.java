@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayReferenceDoubleAttributeParser extends ArrayAttributeParser {
 
     public ArrayReferenceDoubleAttributeParser(String attribute) {
-        super(attribute, null);
+        super(Double.class, attribute, null);
     }
 
 

@@ -4,6 +4,7 @@ import com.github.brunomndantas.jscrapper.support.parser.array.attribute.ArrayAt
 import org.openqa.selenium.WebElement;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ArrayReferenceDateAttributeParser extends ArrayAttributeParser {
 
@@ -13,7 +14,7 @@ public class ArrayReferenceDateAttributeParser extends ArrayAttributeParser {
 
 
     public ArrayReferenceDateAttributeParser(String attribute, String format) {
-        super(attribute, null);
+        super(Date.class, attribute, null);
         this.format = format;
     }
 

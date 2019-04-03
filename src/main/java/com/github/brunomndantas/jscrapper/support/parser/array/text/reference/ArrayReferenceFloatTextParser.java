@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayReferenceFloatTextParser extends ArrayTextParser {
 
     public ArrayReferenceFloatTextParser() {
-        super(null);
+        super(Float.class, null);
     }
 
 

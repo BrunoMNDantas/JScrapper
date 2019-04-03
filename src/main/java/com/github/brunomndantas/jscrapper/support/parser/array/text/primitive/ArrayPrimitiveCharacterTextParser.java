@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayPrimitiveCharacterTextParser extends ArrayTextParser {
 
     public ArrayPrimitiveCharacterTextParser() {
-        super('\u0000');
+        super(char.class, '\u0000');
     }
 
 

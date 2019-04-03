@@ -4,12 +4,14 @@ import com.github.brunomndantas.jscrapper.DummyElement;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class ArrayPrimitiveLongTextParserTest {
 
     @Test
     public void constructorTest() {
         ArrayPrimitiveLongTextParser parser = new ArrayPrimitiveLongTextParser();
+        assertSame(long.class, parser.getKlass());
         assertEquals(0L, parser.getDefaultValue());
     }
 

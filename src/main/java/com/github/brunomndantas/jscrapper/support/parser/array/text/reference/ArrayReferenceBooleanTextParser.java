@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayReferenceBooleanTextParser extends ArrayTextParser {
 
     public ArrayReferenceBooleanTextParser() {
-        super(null);
+        super(Boolean.class, null);
     }
 
 

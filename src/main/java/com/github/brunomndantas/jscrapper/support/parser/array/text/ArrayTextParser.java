@@ -11,7 +11,8 @@ public abstract class ArrayTextParser extends ArrayParser {
 
 
 
-    protected ArrayTextParser(Object defaultValue) {
+    protected ArrayTextParser(Class<?> klass, Object defaultValue) {
+        super(klass);
         this.defaultValue = defaultValue;
     }
 

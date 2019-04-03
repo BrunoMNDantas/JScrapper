@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayPrimitiveFloatTextParser extends ArrayTextParser {
 
     public ArrayPrimitiveFloatTextParser() {
-        super(0.0f);
+        super(float.class, 0.0f);
     }
 
 

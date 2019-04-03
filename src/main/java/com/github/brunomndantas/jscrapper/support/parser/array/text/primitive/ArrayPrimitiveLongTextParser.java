@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayPrimitiveLongTextParser extends ArrayTextParser {
 
     public ArrayPrimitiveLongTextParser() {
-        super(0L);
+        super(long.class, 0L);
     }
 
 

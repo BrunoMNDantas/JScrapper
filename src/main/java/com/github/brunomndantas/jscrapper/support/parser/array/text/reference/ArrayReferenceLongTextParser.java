@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayReferenceLongTextParser extends ArrayTextParser {
 
     public ArrayReferenceLongTextParser() {
-        super(null);
+        super(Long.class, null);
     }
 
 

@@ -4,12 +4,14 @@ import com.github.brunomndantas.jscrapper.DummyElement;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class ArrayReferenceDoubleTextParserTest {
 
     @Test
     public void constructorTest() {
         ArrayReferenceDoubleTextParser parser = new ArrayReferenceDoubleTextParser();
+        assertSame(Double.class, parser.getKlass());
         assertEquals(null, parser.getDefaultValue());
     }
 

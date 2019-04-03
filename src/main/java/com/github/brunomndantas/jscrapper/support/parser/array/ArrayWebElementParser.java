@@ -5,6 +5,12 @@ import org.openqa.selenium.WebElement;
 
 public class ArrayWebElementParser extends ArrayParser {
 
+    public ArrayWebElementParser() {
+        super(WebElement.class);
+    }
+
+
+
     @Override
     protected Object parseElement(WebDriver driver, WebElement element) throws Exception {
         return element;

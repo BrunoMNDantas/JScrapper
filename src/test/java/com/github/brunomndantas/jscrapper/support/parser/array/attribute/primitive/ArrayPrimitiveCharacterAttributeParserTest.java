@@ -12,6 +12,7 @@ public class ArrayPrimitiveCharacterAttributeParserTest {
     public void constructorTest() {
         String attribute = "";
         ArrayPrimitiveCharacterAttributeParser parser = new ArrayPrimitiveCharacterAttributeParser(attribute);
+        assertSame(char.class, parser.getKlass());
         assertEquals('\u0000', parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }

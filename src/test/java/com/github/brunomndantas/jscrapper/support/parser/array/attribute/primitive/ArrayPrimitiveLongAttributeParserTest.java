@@ -12,6 +12,7 @@ public class ArrayPrimitiveLongAttributeParserTest {
     public void constructorTest() {
         String attribute = "";
         ArrayPrimitiveLongAttributeParser parser = new ArrayPrimitiveLongAttributeParser(attribute);
+        assertSame(long.class, parser.getKlass());
         assertEquals(0L, parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }

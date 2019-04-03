@@ -12,6 +12,7 @@ public class ArrayPrimitiveShortAttributeParserTest {
     public void constructorTest() {
         String attribute = "";
         ArrayPrimitiveShortAttributeParser parser = new ArrayPrimitiveShortAttributeParser(attribute);
+        assertSame(short.class, parser.getKlass());
         assertEquals((short)0, parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }

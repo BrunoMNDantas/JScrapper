@@ -12,6 +12,7 @@ public class ArrayReferenceShortAttributeParserTest {
     public void constructorTest() {
         String attribute = "";
         ArrayReferenceShortAttributeParser parser = new ArrayReferenceShortAttributeParser(attribute);
+        assertSame(Short.class, parser.getKlass());
         assertEquals(null, parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }

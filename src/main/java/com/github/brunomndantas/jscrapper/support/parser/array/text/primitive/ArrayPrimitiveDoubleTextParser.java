@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayPrimitiveDoubleTextParser extends ArrayTextParser {
 
     public ArrayPrimitiveDoubleTextParser() {
-        super(0.0d);
+        super(double.class,0.0d);
     }
 
 

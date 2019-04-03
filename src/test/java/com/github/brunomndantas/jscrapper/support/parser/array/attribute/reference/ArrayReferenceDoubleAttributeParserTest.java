@@ -12,6 +12,7 @@ public class ArrayReferenceDoubleAttributeParserTest {
     public void constructorTest() {
         String attribute = "";
         ArrayReferenceDoubleAttributeParser parser = new ArrayReferenceDoubleAttributeParser(attribute);
+        assertSame(Double.class, parser.getKlass());
         assertEquals(null, parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }

@@ -4,6 +4,7 @@ import com.github.brunomndantas.jscrapper.support.parser.array.text.ArrayTextPar
 import org.openqa.selenium.WebElement;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ArrayReferenceDateTextParser extends ArrayTextParser {
 
@@ -13,7 +14,7 @@ public class ArrayReferenceDateTextParser extends ArrayTextParser {
 
 
     public ArrayReferenceDateTextParser(String format) {
-        super(null);
+        super(Date.class, null);
         this.format = format;
     }
 

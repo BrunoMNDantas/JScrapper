@@ -11,7 +11,7 @@ public class ArrayTextParserTest{
     @Test
     public void getDefaultValueTest() {
         Object defaultValue = new Object();
-        ArrayTextParser parser = new ArrayTextParser(defaultValue) {
+        ArrayTextParser parser = new ArrayTextParser(Integer.class, defaultValue) {
             @Override
             protected Object parseElement(WebElement element) throws Exception {
                 return null;
@@ -23,21 +23,23 @@ public class ArrayTextParserTest{
 
     @Test
     public void constructorTest() {
+        Class<?> klass = Integer.class;
         Object defaultValue = new Object();
-        ArrayTextParser parser = new ArrayTextParser(defaultValue) {
+        ArrayTextParser parser = new ArrayTextParser(klass, defaultValue) {
             @Override
             protected Object parseElement(WebElement element) throws Exception {
                 return null;
             }
         };
 
+        assertSame(klass, parser.getKlass());
         assertSame(defaultValue, parser.getDefaultValue());
     }
 
     @Test
     public void parseNullElementTest() throws Exception {
         Object defaultValue = new Object();
-        ArrayTextParser parser = new ArrayTextParser(defaultValue) {
+        ArrayTextParser parser = new ArrayTextParser(Integer.class, defaultValue) {
             @Override
             protected Object parseElement(WebElement element) throws Exception {
                 return null;
@@ -50,7 +52,7 @@ public class ArrayTextParserTest{
     @Test
     public void parseNullTestElementTest() throws Exception {
         Object defaultValue = new Object();
-        ArrayTextParser parser = new ArrayTextParser(defaultValue) {
+        ArrayTextParser parser = new ArrayTextParser(Integer.class, defaultValue) {
             @Override
             protected Object parseElement(WebElement element) throws Exception {
                 return null;
@@ -69,7 +71,7 @@ public class ArrayTextParserTest{
     public void parseElementTest() throws Exception {
         Object defaultValue = new Object();
         Object value = new Object();
-        ArrayTextParser parser = new ArrayTextParser(defaultValue) {
+        ArrayTextParser parser = new ArrayTextParser(Integer.class, defaultValue) {
             @Override
             protected Object parseElement(WebElement element) throws Exception {
                 return value;

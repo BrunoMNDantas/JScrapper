@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayReferenceShortTextParser extends ArrayTextParser {
 
     public ArrayReferenceShortTextParser() {
-        super(null);
+        super(Short.class, null);
     }
 
 

@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayReferenceCharacterTextParser extends ArrayTextParser {
 
     public ArrayReferenceCharacterTextParser() {
-        super(null);
+        super(Character.class, null);
     }
 
 

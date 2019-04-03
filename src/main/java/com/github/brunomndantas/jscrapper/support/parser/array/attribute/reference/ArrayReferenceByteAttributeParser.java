@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 public class ArrayReferenceByteAttributeParser extends ArrayAttributeParser {
 
     public ArrayReferenceByteAttributeParser(String attribute) {
-        super(attribute, null);
+        super(Byte.class, attribute, null);
     }
 
 

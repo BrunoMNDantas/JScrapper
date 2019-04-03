@@ -14,7 +14,8 @@ public abstract class ArrayAttributeParser extends ArrayParser {
 
 
 
-    protected ArrayAttributeParser(String attribute, Object defaultValue) {
+    protected ArrayAttributeParser(Class<?> klass, String attribute, Object defaultValue) {
+        super(klass);
         this.attribute = attribute;
         this.defaultValue = defaultValue;
     }
