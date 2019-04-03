@@ -4,8 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.Collection;
-
 public class SendKeysDriverLoader extends DriverLoader {
 
     private String keys;

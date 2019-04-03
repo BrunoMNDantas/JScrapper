@@ -3,8 +3,7 @@ package com.github.brunomndantas.jscrapper.support.parser.single.attribute.refer
 import com.github.brunomndantas.jscrapper.DummyElement;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 public class SingleReferenceFloatAttributeParserTest {
 
@@ -12,7 +11,7 @@ public class SingleReferenceFloatAttributeParserTest {
     public void constructorTest() {
         String attribute = "";
         SingleReferenceFloatAttributeParser parser = new SingleReferenceFloatAttributeParser(attribute);
-        assertEquals(null, parser.getDefaultValue());
+        assertNull( parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }
 

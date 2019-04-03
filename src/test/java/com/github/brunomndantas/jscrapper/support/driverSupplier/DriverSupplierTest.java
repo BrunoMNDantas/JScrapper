@@ -1,7 +1,7 @@
 package com.github.brunomndantas.jscrapper.support.driverSupplier;
 
-import com.github.brunomndantas.jscrapper.core.driverSupplier.DriverSupplierException;
 import com.github.brunomndantas.jscrapper.DummyDriver;
+import com.github.brunomndantas.jscrapper.core.driverSupplier.DriverSupplierException;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 

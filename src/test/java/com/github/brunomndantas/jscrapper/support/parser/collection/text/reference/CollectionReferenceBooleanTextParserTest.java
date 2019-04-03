@@ -4,13 +4,14 @@ import com.github.brunomndantas.jscrapper.DummyElement;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class CollectionReferenceBooleanTextParserTest {
 
     @Test
     public void constructorTest() {
-         CollectionReferenceBooleanTextParser parser = new CollectionReferenceBooleanTextParser();
-        assertEquals(null, parser.getDefaultValue());
+        CollectionReferenceBooleanTextParser parser = new CollectionReferenceBooleanTextParser();
+        assertNull( parser.getDefaultValue());
     }
 
     @Test

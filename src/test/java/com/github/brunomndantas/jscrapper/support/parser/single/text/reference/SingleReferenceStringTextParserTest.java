@@ -4,13 +4,14 @@ import com.github.brunomndantas.jscrapper.DummyElement;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class SingleReferenceStringTextParserTest {
 
     @Test
     public void constructorTest() {
         SingleReferenceStringTextParser parser = new SingleReferenceStringTextParser();
-        assertEquals(null, parser.getDefaultValue());
+        assertNull( parser.getDefaultValue());
     }
 
     @Test

@@ -3,8 +3,7 @@ package com.github.brunomndantas.jscrapper.support.parser.array.attribute.refere
 import com.github.brunomndantas.jscrapper.DummyElement;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 public class ArrayReferenceIntegerAttributeParserTest {
 
@@ -13,7 +12,7 @@ public class ArrayReferenceIntegerAttributeParserTest {
         String attribute = "";
         ArrayReferenceIntegerAttributeParser parser = new ArrayReferenceIntegerAttributeParser(attribute);
         assertSame(Integer.class, parser.getKlass());
-        assertEquals(null, parser.getDefaultValue());
+        assertNull( parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }
 

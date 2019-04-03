@@ -1,7 +1,7 @@
 package com.github.brunomndantas.jscrapper.support.elementLoader;
 
-import com.github.brunomndantas.jscrapper.core.elementLoader.ElementLoaderException;
 import com.github.brunomndantas.jscrapper.DummyDriver;
+import com.github.brunomndantas.jscrapper.core.elementLoader.ElementLoaderException;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

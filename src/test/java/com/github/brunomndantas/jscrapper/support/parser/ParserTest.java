@@ -1,7 +1,7 @@
 package com.github.brunomndantas.jscrapper.support.parser;
 
-import com.github.brunomndantas.jscrapper.core.parser.ParserException;
 import com.github.brunomndantas.jscrapper.DummyDriver;
+import com.github.brunomndantas.jscrapper.core.parser.ParserException;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

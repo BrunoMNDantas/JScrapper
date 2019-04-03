@@ -5,8 +5,7 @@ import org.junit.Test;
 
 import java.text.SimpleDateFormat;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 public class CollectionReferenceDateAttributeParserTest {
 
@@ -23,7 +22,7 @@ public class CollectionReferenceDateAttributeParserTest {
         String attribute = "";
         String format = "";
          CollectionReferenceDateAttributeParser parser = new CollectionReferenceDateAttributeParser(attribute, format);
-        assertEquals(null, parser.getDefaultValue());
+        assertNull( parser.getDefaultValue());
         assertSame(format, parser.getFormat());
         assertSame(attribute, parser.getAttribute());
     }

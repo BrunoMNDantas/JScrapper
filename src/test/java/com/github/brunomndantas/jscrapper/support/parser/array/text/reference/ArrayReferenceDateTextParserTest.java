@@ -6,8 +6,7 @@ import org.junit.Test;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 public class ArrayReferenceDateTextParserTest {
 
@@ -22,7 +21,7 @@ public class ArrayReferenceDateTextParserTest {
     public void constructorTest() {
         ArrayReferenceDateTextParser parser = new ArrayReferenceDateTextParser("");
         assertSame(Date.class, parser.getKlass());
-        assertEquals(null, parser.getDefaultValue());
+        assertNull( parser.getDefaultValue());
     }
 
     @Test

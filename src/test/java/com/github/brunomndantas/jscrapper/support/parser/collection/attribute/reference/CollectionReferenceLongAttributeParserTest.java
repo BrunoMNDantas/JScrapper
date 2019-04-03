@@ -3,16 +3,15 @@ package com.github.brunomndantas.jscrapper.support.parser.collection.attribute.r
 import com.github.brunomndantas.jscrapper.DummyElement;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 public class CollectionReferenceLongAttributeParserTest {
 
     @Test
     public void constructorTest() {
         String attribute = "";
-         CollectionReferenceLongAttributeParser parser = new CollectionReferenceLongAttributeParser(attribute);
-        assertEquals(null, parser.getDefaultValue());
+        CollectionReferenceLongAttributeParser parser = new CollectionReferenceLongAttributeParser(attribute);
+        assertNull( parser.getDefaultValue());
         assertSame(attribute, parser.getAttribute());
     }
 

@@ -5,8 +5,7 @@ import org.junit.Test;
 
 import java.text.SimpleDateFormat;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 public class CollectionReferenceDateTextParserTest {
 
@@ -20,8 +19,8 @@ public class CollectionReferenceDateTextParserTest {
 
     @Test
     public void constructorTest() {
-         CollectionReferenceDateTextParser parser = new CollectionReferenceDateTextParser("");
-        assertEquals(null, parser.getDefaultValue());
+        CollectionReferenceDateTextParser parser = new CollectionReferenceDateTextParser("");
+        assertNull( parser.getDefaultValue());
     }
 
     @Test

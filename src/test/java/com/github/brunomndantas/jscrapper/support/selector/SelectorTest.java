@@ -1,7 +1,7 @@
 package com.github.brunomndantas.jscrapper.support.selector;
 
-import com.github.brunomndantas.jscrapper.core.selector.SelectorException;
 import com.github.brunomndantas.jscrapper.DummyDriver;
+import com.github.brunomndantas.jscrapper.core.selector.SelectorException;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

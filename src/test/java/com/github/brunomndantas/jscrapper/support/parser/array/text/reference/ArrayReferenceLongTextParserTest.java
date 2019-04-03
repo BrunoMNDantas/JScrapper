@@ -3,10 +3,7 @@ package com.github.brunomndantas.jscrapper.support.parser.array.text.reference;
 import com.github.brunomndantas.jscrapper.DummyElement;
 import org.junit.Test;
 
-import java.util.Date;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 public class ArrayReferenceLongTextParserTest {
 
@@ -14,7 +11,7 @@ public class ArrayReferenceLongTextParserTest {
     public void constructorTest() {
         ArrayReferenceLongTextParser parser = new ArrayReferenceLongTextParser();
         assertSame(Long.class, parser.getKlass());
-        assertEquals(null, parser.getDefaultValue());
+        assertNull( parser.getDefaultValue());
     }
 
     @Test
