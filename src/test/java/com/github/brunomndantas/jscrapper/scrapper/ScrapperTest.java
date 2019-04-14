@@ -1,6 +1,7 @@
 package com.github.brunomndantas.jscrapper.scrapper;
 
 import com.github.brunomndantas.jscrapper.DummyDriver;
+import com.github.brunomndantas.jscrapper.core.config.ClassConfig;
 import com.github.brunomndantas.jscrapper.core.driverSupplier.DriverSupplierException;
 import com.github.brunomndantas.jscrapper.core.driverSupplier.IDriverSupplier;
 import com.github.brunomndantas.jscrapper.core.parser.IParser;
@@ -101,6 +102,21 @@ public class ScrapperTest {
     }
 
     @Test
+    public void scrapWithUserConfigTest() throws Exception {
+        boolean[] passed = new boolean[1];
+        IDriverSupplier driverSupplier = () -> { passed[0] = true; return new MyDriver(); };
+
+        ClassConfig userConfig = new ClassConfig(Person.class);
+        userConfig.setDriverSupplier(driverSupplier);
+
+        Person person = new Scrapper().scrap(Person.class, userConfig);
+
+        assertNotNull(person);
+        assertEquals("name", person.name);
+        assertTrue(passed[0]);
+    }
+
+    @Test
     public void scrapParameterizedURLTest() throws Exception {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("name", "paul");
@@ -109,6 +125,24 @@ public class ScrapperTest {
 
         assertNotNull(person);
         assertEquals("www.google.pt/paul", person.name);
+    }
+
+    @Test
+    public void scrapParameterizedURLWithUserConfigTest() throws Exception {
+        boolean[] passed = new boolean[1];
+        IDriverSupplier driverSupplier = () -> { passed[0] = true; return new MyDriver(); };
+
+        ClassConfig userConfig = new ClassConfig(Person.class);
+        userConfig.setDriverSupplier(driverSupplier);
+
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("name", "paul");
+
+        ParameterizedPerson person = new Scrapper().scrap(ParameterizedPerson.class, parameters, userConfig);
+
+        assertNotNull(person);
+        assertEquals("www.google.pt/paul", person.name);
+        assertTrue(passed[0]);
     }
 
     @Test
@@ -125,6 +159,29 @@ public class ScrapperTest {
         assertEquals(2, people.size());
         assertEquals("www.google.pt/paul", people.stream().findFirst().get().name);
         assertEquals("www.google.pt/ana", people.stream().skip(1).findFirst().get().name);
+    }
+
+    @Test
+    public void scrapMultipleParameterizedURLWithUserConfigTest() throws Exception {
+        boolean[] passed = new boolean[1];
+        IDriverSupplier driverSupplier = () -> { passed[0] = true; return new MyDriver(); };
+
+        ClassConfig userConfig = new ClassConfig(Person.class);
+        userConfig.setDriverSupplier(driverSupplier);
+
+        Map<String, String> parametersA = new HashMap<>();
+        parametersA.put("name", "paul");
+        Map<String, String> parametersB = new HashMap<>();
+        parametersB.put("name", "ana");
+        Collection<Map<String, String>> parameters = Arrays.asList(parametersA, parametersB);
+
+        Collection<ParameterizedPerson> people = new Scrapper().scrap(ParameterizedPerson.class, parameters, userConfig);
+
+        assertNotNull(people);
+        assertEquals(2, people.size());
+        assertEquals("www.google.pt/paul", people.stream().findFirst().get().name);
+        assertEquals("www.google.pt/ana", people.stream().skip(1).findFirst().get().name);
+        assertTrue(passed[0]);
     }
 
 }

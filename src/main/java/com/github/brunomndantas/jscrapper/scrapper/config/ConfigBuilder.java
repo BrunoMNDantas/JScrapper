@@ -8,6 +8,53 @@ import java.lang.reflect.Field;
 
 public class ConfigBuilder {
 
+    public static void mergeConfig(ClassConfig config, ClassConfig userConfig) {
+        if(userConfig.getInstanceFactory() != null)
+            config.setInstanceFactory(userConfig.getInstanceFactory());
+
+        if(userConfig.getDriverSupplier() != null)
+            config.setDriverSupplier(userConfig.getDriverSupplier());
+
+        if(userConfig.getURLSupplier() != null)
+            config.setURLSupplier(userConfig.getURLSupplier());
+
+        if(userConfig.getDriverLoader() != null)
+            config.setDriverLoader(userConfig.getDriverLoader());
+
+        FieldConfig userFieldConfig;
+        for(FieldConfig fieldConfig : config.getFieldsConfig()) {
+            userFieldConfig = getConfigForField(userConfig, fieldConfig.getField());
+            if(userFieldConfig != null)
+                mergeConfig(fieldConfig, userFieldConfig);
+        }
+    }
+
+    private static FieldConfig getConfigForField(ClassConfig config, Field field) {
+        for(FieldConfig fieldConfig : config.getFieldsConfig())
+            if(field.equals(fieldConfig.getField()))
+                return fieldConfig;
+
+            return null;
+    }
+
+    private static void mergeConfig(FieldConfig config, FieldConfig userConfig) {
+        if(userConfig.getDriverLoader() != null)
+            config.setDriverLoader(userConfig.getDriverLoader());
+
+        if(userConfig.getSelector() != null)
+            config.setSelector(userConfig.getSelector());
+
+        if(userConfig.getElementLoader() != null)
+            config.setElementLoader(userConfig.getElementLoader());
+
+        if(userConfig.getParser() != null)
+            config.setParser(userConfig.getParser());
+
+        if(userConfig.getProperty() != null)
+            config.setProperty(userConfig.getProperty());
+    }
+
+
     public static ClassConfig createConfig(Class<?> klass) throws ScrapperException {
         ClassConfig config = new ClassConfig(klass);
 

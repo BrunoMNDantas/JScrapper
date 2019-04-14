@@ -87,6 +87,12 @@ public class ConfigBuilderTest {
         @Property(MyProperty.class)
         public String name;
 
+        @DriverLoader(MyDriverLoader.class)
+        @Selector(MySelector.class)
+        @ElementLoader(MyElementLoader.class)
+        @Parser(MyParser.class)
+        @Property(MyProperty.class)
+        public int age;
     }
 
     private static class NoAnnotationPerson {
@@ -94,6 +100,44 @@ public class ConfigBuilderTest {
     }
 
 
+    @Test
+    public void mergeConfigTest() throws Exception {
+        Class<?> klass = Person.class;
+        ClassConfig classConfig = ConfigBuilder.createConfig(klass);
+        FieldConfig fieldConfig = classConfig.getFieldsConfig().stream().findFirst().get();
+        FieldConfig ageFieldConfig = classConfig.getFieldsConfig().stream().skip(1).findFirst().get();
+
+        IInstanceFactory instanceFactory = new MyInstanceFactory();
+        IURLSupplier urlSupplier = () -> null;
+        IDriverSupplier driverSupplier = new MyDriverSupplier();
+        IDriverLoader driverLoader = new MyDriverLoader();
+        Field field = Person.class.getDeclaredField("name");
+        ISelector selector = new MySelector();
+        IElementLoader elementLoader = new MyElementLoader();
+        IParser parser = new MyParser();
+        IProperty property = new MyProperty();
+
+        ClassConfig userClassConfig = new ClassConfig(klass, instanceFactory, urlSupplier, driverSupplier, driverLoader, new LinkedList<>());
+        FieldConfig userFieldConfig = new FieldConfig(field, driverLoader, selector, elementLoader, parser, property);
+        userClassConfig.getFieldsConfig().add(userFieldConfig);
+
+        ConfigBuilder.mergeConfig(classConfig, userClassConfig);
+
+        assertSame(instanceFactory, classConfig.getInstanceFactory());
+        assertSame(urlSupplier, classConfig.getURLSupplier());
+        assertSame(driverSupplier, classConfig.getDriverSupplier());
+        assertSame(driverLoader, classConfig.getDriverLoader());
+        assertSame(driverLoader, fieldConfig.getDriverLoader());
+        assertSame(selector, fieldConfig.getSelector());
+        assertSame(elementLoader, fieldConfig.getElementLoader());
+        assertSame(parser, fieldConfig.getParser());
+        assertSame(property, fieldConfig.getProperty());
+        assertNull(ageFieldConfig.getDriverLoader());
+        assertNull(ageFieldConfig.getSelector());
+        assertNull(ageFieldConfig.getElementLoader());
+        assertNull(ageFieldConfig.getParser());
+        assertNull(ageFieldConfig.getProperty());
+    }
 
     @Test
     public void createConfigTest() throws Exception {
@@ -103,7 +147,7 @@ public class ConfigBuilderTest {
         ClassConfig config = ConfigBuilder.createConfig(klass);
 
         assertSame(klass, config.getKlass());
-        assertEquals(1, config.getFieldsConfig().size());
+        assertEquals(2, config.getFieldsConfig().size());
         assertEquals(field, config.getFieldsConfig().stream().findFirst().get().getField());
     }
 
