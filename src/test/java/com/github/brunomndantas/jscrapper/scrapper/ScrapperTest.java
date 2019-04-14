@@ -9,16 +9,13 @@ import com.github.brunomndantas.jscrapper.scrapper.annotation.element.Parser;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.page.DriverSupplier;
 import com.github.brunomndantas.jscrapper.scrapper.annotation.page.URLSupplier;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class ScrapperTest {
 
@@ -57,8 +54,44 @@ public class ScrapperTest {
         @Parser(URLParser.class)
         public String name;
     }
-    
 
+    @URLSupplier(url = "www.google.pt")
+    private static class DefaultDriverEntity {
+        public WebDriver driver;
+    }
+
+
+
+    @Test
+    public void getDefaultDriverSupplier() {
+        IDriverSupplier supplier = () -> null;
+        Scrapper scrapper = new Scrapper(supplier);
+        assertSame(supplier, scrapper.getDefaultDriverSupplier());
+    }
+
+    @Test
+    public void constructorsTest() {
+        Scrapper scrapper = new Scrapper();
+        assertNull(scrapper.getDefaultDriverSupplier());
+
+        IDriverSupplier supplier = () -> null;
+        scrapper = new Scrapper(supplier);
+        assertSame(supplier, scrapper.getDefaultDriverSupplier());
+    }
+
+    @Test
+    public void usesDefaultDriverSupplier() throws Exception {
+        WebDriver driver = new DummyDriver(){
+            @Override
+            public List<WebElement> findElements(By by) {
+                return new LinkedList<>();
+            }
+        };
+        IDriverSupplier supplier = () -> driver;
+
+        DefaultDriverEntity entity = new Scrapper(supplier).scrap(DefaultDriverEntity.class);
+        assertSame(driver, entity.driver);
+    }
 
     @Test
     public void scrapTest() throws Exception {
