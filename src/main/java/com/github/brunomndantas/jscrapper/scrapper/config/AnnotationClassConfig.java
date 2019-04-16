@@ -15,7 +15,6 @@ import com.github.brunomndantas.jscrapper.scrapper.annotation.page.URLSupplier;
 import com.github.brunomndantas.jscrapper.support.driverLoader.*;
 import com.github.brunomndantas.jscrapper.support.driverSupplier.ChromeDriverSupplier;
 import com.github.brunomndantas.jscrapper.support.driverSupplier.FirefoxDriverSupplier;
-import com.github.brunomndantas.jscrapper.support.driverSupplier.PhantomDriverSupplier;
 import com.github.brunomndantas.jscrapper.support.urlSupplier.FixedURLSupplier;
 import org.openqa.selenium.By;
 
@@ -85,7 +84,6 @@ public class AnnotationClassConfig {
             switch (annotation.driverType()) {
                 case CHROME: return new ChromeDriverSupplier(annotation.driverLocation());
                 case FIREFOX: return new FirefoxDriverSupplier(annotation.driverLocation());
-                case PHANTOM: return new PhantomDriverSupplier(annotation.driverLocation());
                 default: throw new ScrapperException("Unknown DriverType:" + annotation.driverType() + "!");
             }
         }

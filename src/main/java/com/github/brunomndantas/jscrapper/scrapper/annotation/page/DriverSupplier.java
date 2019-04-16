@@ -13,8 +13,7 @@ public @interface DriverSupplier {
 
     enum DriverType {
         CHROME,
-        FIREFOX,
-        PHANTOM
+        FIREFOX
     }
 
 

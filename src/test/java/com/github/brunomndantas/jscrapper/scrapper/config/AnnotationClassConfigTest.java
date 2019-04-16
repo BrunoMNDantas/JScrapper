@@ -18,7 +18,6 @@ import com.github.brunomndantas.jscrapper.scrapper.annotation.page.URLSupplier;
 import com.github.brunomndantas.jscrapper.support.driverLoader.*;
 import com.github.brunomndantas.jscrapper.support.driverSupplier.ChromeDriverSupplier;
 import com.github.brunomndantas.jscrapper.support.driverSupplier.FirefoxDriverSupplier;
-import com.github.brunomndantas.jscrapper.support.driverSupplier.PhantomDriverSupplier;
 import com.github.brunomndantas.jscrapper.support.urlSupplier.FixedURLSupplier;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -64,9 +63,6 @@ public class AnnotationClassConfigTest {
 
     @DriverSupplier(driverLocation = "firefox", driverType = DriverSupplier.DriverType.FIREFOX)
     private static class FirefoxDriverSupplierConfigEntity { }
-
-    @DriverSupplier(driverLocation = "phantom", driverType = DriverSupplier.DriverType.PHANTOM)
-    private static class PhantomDriverSupplierConfigEntity { }
 
     @DriverLoader(actions = {
         @DriverLoader.Action(clear = @DriverLoader.Clear(selector = "elementId", selectorType = SelectorType.ID)),
@@ -174,14 +170,6 @@ public class AnnotationClassConfigTest {
 
         assertTrue(supplier instanceof FirefoxDriverSupplier);
         assertEquals("firefox", ((FirefoxDriverSupplier)supplier).getDriverPath());
-    }
-
-    @Test
-    public void getPhantomDriverSupplierAnnotationTest() throws Exception {
-        IDriverSupplier supplier = AnnotationClassConfig.getDriverSupplier(PhantomDriverSupplierConfigEntity.class);
-
-        assertTrue(supplier instanceof PhantomDriverSupplier);
-        assertEquals("phantom", ((PhantomDriverSupplier)supplier).getDriverPath());
     }
 
     @Test

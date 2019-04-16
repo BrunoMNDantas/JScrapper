@@ -1,5 +1,5 @@
 group 'com.github.brunomndantas'
-version '1.0.0'
+version '1.1.0'
 
 apply plugin: 'java'
 apply plugin: 'maven-publish'
@@ -28,14 +28,9 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
 
     //Selenium
-    compile('org.seleniumhq.selenium:selenium-java:3.4.0') {
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-android-driver'
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-iphone-driver'
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-safari-driver'
-        exclude group: 'org.webbitserver', module: 'webbit'
-        exclude group: 'commons-codec', module: 'commons-codec'
-        exclude group: 'cglib', module: 'cglib-nodep'
-    }
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '3.141.59'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '3.141.59'
 }
 
 task sourceJar(type: Jar) {
@@ -64,7 +59,7 @@ publishing {
             customizePom(pom)
             groupId 'com.github.brunomndantas'
             artifactId 'jscrapper'
-            version '1.0.0'
+            version '1.1.0'
 
             from components.java
 

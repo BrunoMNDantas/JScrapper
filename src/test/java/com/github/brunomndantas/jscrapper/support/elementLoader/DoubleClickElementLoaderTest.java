@@ -4,9 +4,9 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,18 +15,20 @@ import static org.junit.Assert.assertEquals;
 
 public class DoubleClickElementLoaderTest {
 
-    private static final String DRIVER_PATH = "phantomjs/phantomjs.exe";
+    private static final String DRIVER_PATH = "chrome/chromedriver.exe";
 
 
 
     private static WebDriver getDriver() {
-        String driverPath = ClassLoader.getSystemResource(DRIVER_PATH).getPath();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
 
-        DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
+        String path = ClassLoader.getSystemResource(DRIVER_PATH).getPath();
+        System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, path);
 
-        capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, driverPath);
+        System.setProperty(ChromeDriverService.CHROME_DRIVER_SILENT_OUTPUT_PROPERTY, Boolean.toString(true));
 
-        return new PhantomJSDriver(capabilities);
+        return new ChromeDriver(options);
     }
 
 
