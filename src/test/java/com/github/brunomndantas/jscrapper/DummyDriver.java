@@ -1,13 +1,11 @@
 package com.github.brunomndantas.jscrapper;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import java.util.List;
 import java.util.Set;
 
-public class DummyDriver implements WebDriver {
+public class DummyDriver implements WebDriver, JavascriptExecutor, TakesScreenshot {
 
     @Override
     public void get(String url) {
@@ -71,6 +69,21 @@ public class DummyDriver implements WebDriver {
 
     @Override
     public Options manage() {
+        return null;
+    }
+
+    @Override
+    public Object executeScript(String script, Object... args) {
+        return null;
+    }
+
+    @Override
+    public Object executeAsyncScript(String script, Object... args) {
+        return null;
+    }
+
+    @Override
+    public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {
         return null;
     }
 

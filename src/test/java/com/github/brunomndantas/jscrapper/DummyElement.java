@@ -1,10 +1,11 @@
 package com.github.brunomndantas.jscrapper;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.remote.RemoteWebElement;
 
 import java.util.List;
 
-public class DummyElement implements WebElement {
+public class DummyElement extends RemoteWebElement implements WebElement {
 
     @Override
     public void click() {
