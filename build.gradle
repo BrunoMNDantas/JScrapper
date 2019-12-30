@@ -1,5 +1,5 @@
 group 'com.github.brunomndantas'
-version '1.1.0'
+version '1.1.1'
 
 apply plugin: 'java'
 apply plugin: 'maven-publish'
@@ -59,7 +59,7 @@ publishing {
             customizePom(pom)
             groupId 'com.github.brunomndantas'
             artifactId 'jscrapper'
-            version '1.1.0'
+            version '1.1.1O'
 
             from components.java
 
